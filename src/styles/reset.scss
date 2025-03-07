@@ -101,9 +101,17 @@ table {
 }
 
 input {
-  -webkit-appearance: none;
-  border-radius: 0;
+  background: none;
+  outline: none;
+  font: inherit; /* Наследует шрифт */
+  color: inherit; /* Наследует цвет текста */
+  box-shadow: none;
 }
 a {
   text-decoration: none;
+}
+button {
+  background: none;
+  cursor: pointer;
+  border: none;
 }
