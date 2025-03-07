@@ -1,0 +1,18 @@
+.menu {
+  margin-top: 50px;
+
+  &__item a {
+    display: flex;
+    align-items: center;
+    color: $text-secondary;
+  }
+
+  &__item span {
+    margin-left: 10px;
+    font-size: $fz-medium;
+  }
+
+  &__item + &__item {
+    margin-top: 30px;
+  }
+}

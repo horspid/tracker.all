@@ -9,7 +9,10 @@
     "baseUrl": "./src",
     "paths": {
       "@components/*": ["components/*"],
+      "@routes/*": ["routes/*"],
+      "@layouts/*": ["layouts/*"]
     },
+    "types": ["vite-plugin-svgr/client"],
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,

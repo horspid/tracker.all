@@ -1,0 +1,12 @@
+@use './reset.scss';
+@use './fonts.scss';
+
+* {
+    font-family: 'Inter-SemiBold', sans-serif;
+    font-weight: 600;
+    font-size: $fz-small;
+}
+
+body {
+    background-color: $color-background;
+}

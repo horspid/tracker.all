@@ -1,5 +1,18 @@
 .logo {
-    max-height: 160px;
-    height: 100%;
-    margin-left: 40px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid $text-tertiary;
+  padding: 40px 0;
+
+  &__text {
+    margin-left: 10px;
+    font-size: $fz-large;
+
+    span:first-child {
+      color: $color-primary;
+    }
+    span:nth-child(2) {
+      color: $text-primary;
+    }
+  }
 }
