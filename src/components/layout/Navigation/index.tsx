@@ -7,65 +7,56 @@ import FavoriteICO from "@assets/images/icons/favorite.svg?react";
 import RatingICO from "@assets/images/icons/rating.svg?react";
 import { NavLink } from "react-router";
 
+const menuItems = [
+  {
+    link: "/",
+    name: "Browse",
+    iconClassName: styles.ico__browse,
+    Icon: BrowseICO,
+  },
+  {
+    link: "/categories",
+    name: "Category",
+    iconClassName: styles.ico__category,
+    Icon: CategoryICO,
+  },
+  {
+    link: "/watchlist",
+    name: "Watchlist",
+    iconClassName: styles.ico__favorite,
+    Icon: FavoriteICO,
+  },
+  {
+    link: "/ratings",
+    name: "Ratings",
+    iconClassName: styles.ico__rating,
+    Icon: RatingICO,
+  },
+  {
+    link: "/soon",
+    name: "Soon",
+    iconClassName: styles.ico__calendar,
+    Icon: CalendarICO,
+  },
+];
+
 const Navigation = () => {
   return (
     <nav className={styles.menu}>
       <ul>
-        <li className={styles.menu__item}>
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              isActive ? styles.menu__item_active : ""
-            }
-          >
-            <BrowseICO className={styles.ico__browse} />
-            <span>Browse</span>
-          </NavLink>
-        </li>
-        <li className={styles.menu__item}>
-          <NavLink
-            to="/categories"
-            className={({ isActive }) =>
-              isActive ? styles.menu__item_active : ""
-            }
-          >
-            <CategoryICO className={styles.ico__category} />
-            <span>Categories</span>
-          </NavLink>
-        </li>
-        <li className={styles.menu__item}>
-          <NavLink
-            to="/watchlist"
-            className={({ isActive }) =>
-              isActive ? styles.menu__item_active : ""
-            }
-          >
-            <FavoriteICO className={styles.ico__favorite} />
-            <span>Watchlist</span>
-          </NavLink>
-        </li>
-        <li className={styles.menu__item}>
-          <NavLink
-            to="/ratings"
-            className={({ isActive }) =>
-              isActive ? styles.menu__item_active : ""
-            }
-          >
-            <RatingICO className={styles.ico__rating} />
-            <span>My Ratings</span>
-          </NavLink>
-        </li>
-        <li className={styles.menu__item}>
-          <NavLink
-            to="/soon"
-            className={({ isActive }) =>
-              isActive ? styles.menu__item_active : ""
-            }
-          >
-            <CalendarICO className={styles.ico__calendar} />
-            <span>Coming soon</span>
-          </NavLink>
-        </li>
+        {menuItems.map(({ link, name, iconClassName, Icon }) => (
+          <li className={styles.menu__item}>
+            <NavLink
+              to={link}
+              className={({ isActive }) =>
+                isActive ? styles.menu__item_active : ""
+              }
+            >
+              <Icon className={iconClassName} />
+              <span>{name}</span>
+            </NavLink>
+          </li>
+        ))}
       </ul>
     </nav>
   );
