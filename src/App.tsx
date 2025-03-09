@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Outlet } from "react-router";
+import { BrowserRouter, Routes, Route } from "react-router";
 import Browse from "@routes/Browse";
 import SidebarLayout from "@layouts/SidebarLayout";
 import Categories from "@routes/Categories";

@@ -2,7 +2,8 @@
   display: flex;
   align-items: center;
   border-bottom: 1px solid $text-tertiary;
-  padding: 40px 0;
+  max-height: 160px;
+  height: 100%;
 
   &__text {
     margin-left: 10px;
