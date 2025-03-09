@@ -1,0 +1,52 @@
+.menu {
+  margin-top: 50px;
+
+  &__item a {
+    display: flex;
+    align-items: center;
+    color: $text-secondary;
+  }
+
+  &__item_active {
+    span {
+      color: $text-primary;
+    }
+    .ico__browse {
+      path:nth-child(2) {
+        stroke: $text-primary;
+      }
+      path:nth-child(3) {
+        fill: $text-primary;
+      }
+      path:nth-child(1) {
+        stroke: $color-primary;
+        fill: $color-primary;
+      }
+    }
+    .ico__category {
+      path:nth-child(1),
+      path:nth-child(3) {
+        fill: $color-primary;
+      }
+    }
+
+    .ico__favorite path,
+    .ico__rating path {
+      fill: $color-primary;
+      stroke: $color-primary;
+    }
+
+    .ico__calendar path {
+      stroke: $color-primary;
+    }
+  }
+
+  &__item span {
+    margin-left: 10px;
+    font-size: $fz-medium;
+  }
+
+  &__item + &__item {
+    margin-top: 30px;
+  }
+}
