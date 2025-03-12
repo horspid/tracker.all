@@ -1,15 +1,12 @@
 .product_card {
   border-radius: 20px;
-  max-width: 269px;
   padding: 15px;
   background-color: $color-secondary;
 
   &__img {
     border-radius: 20px;
     object-fit: cover;
-    max-height: 300px;
     width: 100%;
-    opacity: 0.6;
   }
 
   &__title {

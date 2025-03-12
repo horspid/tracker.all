@@ -7,34 +7,25 @@ import { useMovieStore } from "../../store/popularFilmes.ts";
 
 const Browse = () => {
   const { films, getFilms } = useMovieStore();
-  const [currentPage, setCurrentPage] = useState(1);
 
+
+  const [popularDate, setPopularDate] = useState('day');
   // ДОБАВИТЬ ОБРАБОТЧИК СОБЫТИЯ ONPAGE, ПЕРЕДАВАТЬ В STORE ЗАПРОС
 
-  const onPageChangeHandler = (event) => {
-    setCurrentPage(event.selected + 1);
-  };
+  const popularChangeHandler = () => {
+    setPopularDate(popularDate === 'day' ? 'week' : 'day')  
+  }
 
   useEffect(() => {
-    getFilms(currentPage);
-  }, [getFilms, currentPage]);
+    getFilms(popularDate);
+  }, [getFilms, popularDate]);
 
   return (
     <section className={styles.browse}>
       <div className={styles.browse__content}>
         <div className={styles.browse__entry}>
           <Movie />
-          <h1 className={styles.browse__title}>Popular</h1>
-          {/*<ReactPaginate*/}
-          {/*  className={styles.browse__pagination}*/}
-          {/*  onPageChange={onPageChangeHandler}*/}
-          {/*  pageCount={5}*/}
-          {/*  previousClassName={styles.browse__pagination_previous}*/}
-          {/*  nextClassName={styles.browse__pagination_next}*/}
-          {/*  previousLabel={<Arrow className={styles.browse_left_arrow} />}*/}
-          {/*  nextLabel={<Arrow className={styles.browse__right_arrow} />}*/}
-          {/*  pageClassName={styles.browse__pagination_page}*/}
-          {/*/>*/}
+          <h1 className={styles.browse__title}>Popular in this <span onClick={popularChangeHandler}>{popularDate}</span></h1>
         </div>
       </div>
       <div className={styles.browse__items}>
