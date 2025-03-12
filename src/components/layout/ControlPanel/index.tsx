@@ -6,14 +6,14 @@ import ProfileICO from "@assets/images/icons/profile.svg?react";
 
 const ControlPanel = () => {
   return (
-    <section className={styles.control}>
-      <button className={styles.control__item}>
+    <section className={styles.user_control}>
+      <button className={styles.user_control__item}>
         <BookmarkICO />
       </button>
-      <button className={styles.control__item}>
+      <button className={styles.user_control__item}>
         <NotificationICO />
       </button>
-      <button className={styles.control__item}>
+      <button className={styles.user_control__item}>
         <ProfileICO />
       </button>
     </section>

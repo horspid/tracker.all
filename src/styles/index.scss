@@ -10,3 +10,27 @@
 body {
     background-color: $color-background;
 }
+
+h1 {
+    font-size: $fz-large;
+    color: $text-primary;
+}
+
+h2 {
+    font-size: $fz-small;
+    color: $text-primary;
+}
+
+body::-webkit-scrollbar {
+    width: 12px;               /* ширина всей полосы прокрутки */
+}
+
+body::-webkit-scrollbar-track {
+    background: orange;        /* цвет зоны отслеживания */
+}
+
+body {
+    scrollbar-width: thin;
+
+    scrollbar-color:  $text-tertiary $color-background;
+}

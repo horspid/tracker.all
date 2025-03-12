@@ -10,7 +10,8 @@
     "paths": {
       "@components/*": ["components/*"],
       "@routes/*": ["routes/*"],
-      "@layouts/*": ["layouts/*"]
+      "@layouts/*": ["layouts/*"],
+      "@interfaces/*": ["@interfaces/*"],
     },
     "types": ["vite-plugin-svgr/client"],
     /* Bundler mode */

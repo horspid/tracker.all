@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router";
 import Browse from "@routes/Browse";
-import SidebarLayout from "@layouts/SidebarLayout";
+import MainLayout from "@layouts/MainLayout.tsx";
 import Categories from "@routes/Categories";
 import Watchlist from "@routes/Watchlist";
 import Soon from "@routes/Soon";
@@ -10,12 +10,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<SidebarLayout />}>
+        <Route path="/" element={<MainLayout />}>
           <Route index element={<Browse />} />
           <Route path="categories" element={<Categories />} />
           <Route path="watchlist" element={<Watchlist />} />
-          <Route path="ratings" element={<Ratings />} />
-          <Route path="soon" element={<Soon />} />
+          <Route path="ratings" element={<Soon />} />
+          <Route path="soon" element={<Ratings />} />
         </Route>
       </Routes>
     </BrowserRouter>
