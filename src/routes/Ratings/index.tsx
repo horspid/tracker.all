@@ -1,4 +1,4 @@
-const Watchlist = () => {
+const Index = () => {
   return (
     <>
       <h1>Ghbdtn</h1>
@@ -6,4 +6,4 @@ const Watchlist = () => {
   );
 };
 
-export default Watchlist;
+export default Index;

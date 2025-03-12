@@ -1,4 +1,4 @@
-const Soon = () => {
+const Index = () => {
   return (
     <>
       <h1>Ghbdtn</h1>
@@ -6,4 +6,4 @@ const Soon = () => {
   );
 };
 
-export default Soon;
+export default Index;

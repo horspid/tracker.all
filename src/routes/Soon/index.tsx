@@ -1,4 +1,4 @@
-const Ratings = () => {
+const Index = () => {
   return (
     <>
       <h1>Ghbdtn</h1>
@@ -6,4 +6,4 @@ const Ratings = () => {
   );
 };
 
-export default Ratings;
+export default Index;

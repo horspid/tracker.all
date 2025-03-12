@@ -1,0 +1,18 @@
+.user_rating {
+  display: flex;
+  align-items: center;
+  background-color: $text-tertiary;
+  border-radius: 20px;
+  padding: 5px 10px;
+
+  &__label {
+    margin-left: 5px;
+    font-size: 16px;
+    color: $text-primary;
+  }
+
+  &__ico_active path{
+    fill: $color-primary;
+    stroke: $color-primary;
+  }
+}
