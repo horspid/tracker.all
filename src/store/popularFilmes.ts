@@ -10,13 +10,10 @@ const options = {
   },
 };
 
-const popularFilms = async (currentPage: string) => {
+const popularFilms = async (popularDate: string) => {
   try {
-    // const url = new URL(
-    //   `https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${currentPage}`,
-    // );
     const url = new URL(
-      `https://api.themoviedb.org/3/trending/movie/week?language=en-US'`,
+      `https://api.themoviedb.org/3/trending/movie/${popularDate}?language=en-US`,
     );
     const response = await fetch(url, options);
 
