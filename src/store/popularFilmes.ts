@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { Movie } from "@interfaces/movies";
-
-const API_KEY = import.meta.env.VITE_API_KEY;
+import { options } from "@config/config";
 
 
 interface movieResponse {
@@ -16,13 +15,7 @@ interface movieStore {
   getFilms: (currentPage: string) => Promise<Movie[]>;
 }
 
-const options = {
-  method: "GET",
-  headers: {
-    accept: "application/json",
-    Authorization: `Bearer ${API_KEY}`,
-  },
-};
+
 
 const popularFilms = async (popularDate: string) => {
   try {
