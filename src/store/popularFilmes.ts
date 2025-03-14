@@ -1,6 +1,20 @@
 import { create } from "zustand";
+import { Movie } from "@interfaces/movies";
 
 const API_KEY = import.meta.env.VITE_API_KEY;
+
+
+interface movieResponse {
+  page: number;
+  results: Movie[];
+  total_pages: number;
+  total_results: number;
+}
+
+interface movieStore {
+  films: [] | Movie[];
+  getFilms: (currentPage: string) => Promise<Movie[]>;
+}
 
 const options = {
   method: "GET",
@@ -20,18 +34,20 @@ const popularFilms = async (popularDate: string) => {
     if (!response.ok) {
       throw new Error(`Ошибка HTTP: ${response.status}`);
     }
-    const data = await response.json();
-
+    const data: movieResponse = await response.json();
     return data.results;
+
   } catch (error) {
     console.log(error);
+    return [];
   }
 };
 
-export const useMovieStore = create((set) => ({
+export const useMovieStore = create<movieStore>((set) => ({
   films: [],
   getFilms: async (currentPage: string) => {
     const response = await popularFilms(currentPage);
     set({ films: response });
+    return response;
   },
 }));

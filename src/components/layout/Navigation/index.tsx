@@ -44,8 +44,8 @@ const Navigation = () => {
   return (
     <nav className={styles.menu}>
       <ul>
-        {menuItems.map(({ link, name, iconClassName, Icon }) => (
-          <li className={styles.menu__item}>
+        {menuItems.map(({ link, name, iconClassName, Icon }, index) => (
+          <li className={styles.menu__item} key={index}>
             <NavLink
               to={link}
               className={({ isActive }) =>
