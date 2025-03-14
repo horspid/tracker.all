@@ -4,7 +4,7 @@ import { useState } from "react";
 const media = ["films", "serials"];
 
 const MediaSwitcher = () => {
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState<number>(0);
 
   return (
     <div className={styles.media_switcher}>

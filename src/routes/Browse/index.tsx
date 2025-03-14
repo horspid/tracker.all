@@ -7,10 +7,7 @@ import { useMovieStore } from "../../store/popularFilmes.ts";
 
 const Browse = () => {
   const { films, getFilms } = useMovieStore();
-
-
-  const [popularDate, setPopularDate] = useState('day');
-  // ДОБАВИТЬ ОБРАБОТЧИК СОБЫТИЯ ONPAGE, ПЕРЕДАВАТЬ В STORE ЗАПРОС
+  const [popularDate, setPopularDate] = useState<string>('day');
 
   const popularChangeHandler = () => {
     setPopularDate(popularDate === 'day' ? 'week' : 'day')  
@@ -31,8 +28,6 @@ const Browse = () => {
       <div className={styles.browse__items}>
         {films.map((item) => (
           <ProductCard
-            hasRating={true}
-            userRating={7}
             key={item.id}
             movie={item}
           />
