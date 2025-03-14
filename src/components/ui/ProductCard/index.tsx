@@ -15,8 +15,8 @@ const checkRateHandle = (rating: number) => {
 
 
 const ProductCard = ({ movie }: ProductCardProps) => {
-  let navigate = useNavigate();
 
+  let navigate = useNavigate();
   const formattedRating = checkRateHandle(movie.vote_average)
 
   const navigateHandle = () => {
