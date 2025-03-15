@@ -1,0 +1,40 @@
+.movie {
+  margin-top: 50px;
+
+  &__container {
+    margin-top: 50px;
+    display: flex;
+    max-height: calc(100vh - 160px - 100px - 50px);
+  }
+
+  &__content {
+    margin-left: 30px;
+    width: 100%;
+  }
+
+
+  &__images {
+    max-width: 300px;
+    width: 100%;
+    > img {
+      width: 100%;
+      display: block;
+    }
+    img {
+      border-radius: 20px;
+    }
+
+    &_backdrop {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+
+      img {
+        max-width: calc(150px - 10px);
+      }
+
+    }
+
+  }
+}

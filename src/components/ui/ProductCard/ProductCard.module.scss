@@ -3,6 +3,7 @@
   padding: 15px;
   background-color: $color-secondary;
   cursor: pointer;
+  max-width: 270px;
 
   &__image {
     position: relative;
@@ -29,8 +30,7 @@
     width: 100%;
     white-space: nowrap;
     text-overflow: ellipsis;
-    overflow-x: hidden;
-
+    overflow: hidden;
   }
 
   &__stats {

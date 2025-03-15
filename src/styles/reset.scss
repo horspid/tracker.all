@@ -111,7 +111,12 @@ a {
   text-decoration: none;
 }
 button {
-  background: none;
-  cursor: pointer;
-  border: none;
+  all: unset; /* Сбрасывает все стили */
+  display: inline-block; /* Если нужно, чтобы кнопка отображалась как блочный элемент */
+  background: none; /* Убирает фоновое изображение */
+  border: none; /* Убирает рамки */
+  padding: 0; /* Убирает отступы */
+  font: inherit; /* Наследует шрифт от родителя */
+  text-align: inherit; /* Наследует выравнивание текста */
+  cursor: pointer; /* Устанавливает указатель при наведении */
 }
