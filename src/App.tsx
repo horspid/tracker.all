@@ -5,7 +5,7 @@ import Categories from "@routes/Categories";
 import Watchlist from "@routes/Watchlist";
 import Soon from "@routes/Soon";
 import Ratings from "@routes/Ratings";
-import MoviePage from "@routes/Movie";
+import MoviePage from "@routes/MoviePage";
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
           <Route path="watchlist" element={<Watchlist />} />
           <Route path="ratings" element={<Soon />} />
           <Route path="soon" element={<Ratings />} />
-          <Route path="movies/:id" element={<MoviePage />} />
+          <Route path="/movies/:id" element={<MoviePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

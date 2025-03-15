@@ -1,0 +1,58 @@
+.tabs {
+
+  margin-top: 30px;
+
+  &__heading {
+    color: $text-secondary;
+    font-size: 20px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  &__active {
+    color: $text-primary;
+  }
+
+  &__container {
+    display: flex;
+    gap: 40px;
+  }
+
+  &__panel {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    p {
+      line-height: 1.6;
+    }
+    * {
+      color: $text-primary;
+      font-size: 18px;
+      font-family: 'Inter-Regular', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+    };
+
+    &__description {
+      margin-top: 20px;
+    }
+    &_related {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      article {
+        max-width: 200px;
+
+      }
+    }
+
+    &_slider {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  }
+
+}
