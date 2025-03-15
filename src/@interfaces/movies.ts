@@ -31,6 +31,7 @@ export interface MovieInfo {
   poster_path: string;
   production_companies: [];
   logo_path: string;
+  id: number;
   name: string;
   origin_country: string;
   production_countries: [];

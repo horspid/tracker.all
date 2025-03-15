@@ -4,13 +4,20 @@ import { Movie, MovieInfo } from "@interfaces/movies.ts";
 import Slider from "@components/ui/Slider";
 import ProductCard from "@components/ui/ProductCard";
 import { options } from "@config/config.ts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface MovieTabsProps {
   data: MovieInfo;
 }
 
-interface MovieTabsState {
+interface SimilarMovies {
+  page: number;
+  results: Movie[];
+  total_pages: number;
+  total_results: number;
+}
+
+interface RelatedMovies {
   id: number;
   name: string;
   overview: string;
@@ -20,7 +27,9 @@ interface MovieTabsState {
 }
 
 const MovieTabs = ({ data }: MovieTabsProps) => {
-  const [collection, setCollection] = useState<MovieTabsState | null>(null);
+  const [collection, setCollection] = useState<RelatedMovies | null>(null);
+  const [similar, setSimilar] = useState<SimilarMovies | null>(null)
+  const [tabIndex, setTabIndex] = useState(0);
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -49,10 +58,30 @@ const MovieTabs = ({ data }: MovieTabsProps) => {
     }
   };
 
-  console.log(collection);
+  const fetchSimilar = async (id: number) => {
+    try {
+      const url = new URL(`https://api.themoviedb.org/3/movie/${id}/similar`)
+      const response = await fetch(url, options)
+
+      if (!response.ok) {
+        throw new Error(`Ошибка HTTP: ${response.status}`);
+      }
+
+      const similar = await response.json();
+
+      setSimilar(similar)
+
+    } catch (error) {
+      console.log(error)
+    }
+  } 
+
+  useEffect(() => {
+    setTabIndex(0)
+  }, [data.id])
 
   return (
-    <Tabs className={styles.tabs} selectedTabClassName={styles.tabs__active}>
+    <Tabs className={styles.tabs} selectedTabClassName={styles.tabs__active} selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
       <TabList className={styles.tabs__container}>
         <Tab className={styles.tabs__heading}>Description</Tab>
         <Tab className={styles.tabs__heading}>About</Tab>
@@ -62,7 +91,7 @@ const MovieTabs = ({ data }: MovieTabsProps) => {
         >
           Related
         </Tab>
-        <Tab className={styles.tabs__heading}>Similar</Tab>
+        <Tab className={styles.tabs__heading} onClick={() => fetchSimilar(data.id)}>Similar</Tab>
       </TabList>
 
       <TabPanel selectedClassName={styles.tabs__panel}>
@@ -100,6 +129,18 @@ const MovieTabs = ({ data }: MovieTabsProps) => {
       >
         {collection ? (
           collection.parts.map((item) => (
+            <ProductCard movie={item} key={item.id} />
+          ))
+        ) : (
+          <p>Collection Not found.</p>
+        )}
+      </TabPanel>
+      <TabPanel
+        selectedClassName={styles.tabs__panel}
+        className={styles.tabs__panel_similar}
+      >
+        {similar ? (
+          similar.results.map((item) => (
             <ProductCard movie={item} key={item.id} />
           ))
         ) : (
