@@ -1,18 +1,18 @@
+import { Movie } from "@interfaces/movies";
 import styles from "./ProductCard.module.scss";
 import UserRating from "@components/ui/UserRating";
-import { MoviePreview } from "@interfaces/movies";
 import { useNavigate } from "react-router";
 
-interface ProductCardProps {
-  data: MoviePreview;
+interface productCardProps {
+  data: Movie
 }
 
-const ProductCard = ({ data }: ProductCardProps) => {
+const ProductCard = ({ data }: productCardProps) => {
 
   let navigate = useNavigate();
 
   const navigateHandle = () => {
-    navigate(`/movies/${data.id}`)
+    navigate(`/movies/${data.kinopoiskId}`)
   }
   
 
@@ -20,19 +20,17 @@ const ProductCard = ({ data }: ProductCardProps) => {
     <article className={styles.product_card} onClick={navigateHandle}>
       <div className={styles.product_card__image}>
         <img
-          src={data.poster.previewUrl}
+          src={data.posterUrlPreview}
           alt="card"
           className={styles.product_card__img}
         />
-          {data.rating && (
-            <div className={styles.product_card__rate}>
-              <span>{data.rating?.imdb}</span>
-            </div>
-          )}
+          <div className={styles.product_card__rate}>
+            <span>{data.ratingKinopoisk}</span>
+          </div>
       </div>
       <div className={styles.product_card__stats}>
         <h2 className={styles.product_card__title}>
-          {data.name || data.alternativeName}
+          {data.nameOriginal === null ? data.nameRu : data.nameOriginal}
         </h2>
         <UserRating />
       </div>
