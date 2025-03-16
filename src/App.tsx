@@ -17,7 +17,7 @@ function App() {
           <Route path="watchlist" element={<Watchlist />} />
           <Route path="ratings" element={<Soon />} />
           <Route path="soon" element={<Ratings />} />
-          <Route path="/movies/:id" element={<MoviePage />} />
+          <Route path="movies/:id" element={<MoviePage />} />
         </Route>
       </Routes>
     </BrowserRouter>

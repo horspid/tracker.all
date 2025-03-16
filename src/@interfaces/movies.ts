@@ -1,55 +1,63 @@
-export interface Movie {
-  adult: boolean;
-  backdrop_path: string;
-  id: number;
-  title: string;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  poster_path: string;
-  media_type: string;
-  genre_ids: number[];
-  popularity: number;
-  release_date: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
+export interface Genre {
+  genre: string;
 }
 
-export interface MovieInfo {
-  adult: boolean;
-  backdrop_path: string;
-  belongs_to_collection: MovieCollection;
-  budget: number;
-  genres: [];
-  homepage: string;
-  imdb_id: string;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  production_companies: [];
-  logo_path: string;
-  id: number;
-  name: string;
-  origin_country: string;
-  production_countries: [];
-  release_date: string;
-  revenue: number;
-  runtime: number;
-  spoken_languages: [];
-  status: string;
-  tagline: string;
-  title: string;
-  video: boolean;
-  vote_average: number;
-  vote_count: number;
+interface Country {
+  country: string;
 }
 
-interface MovieCollection {
-  backdrop_path: string;
-  id: number;
-  name: string;
-  poster_path: string;
+export interface MovieResponse {
+  total: number;
+  totalPages: number;
+  items: MoviePreview[];
+}
+
+export interface MoviePreview {
+  countries: Country[];
+  coverUrl: string | null;
+  description: string;
+  genres: Genre[];
+  imdbId: string | null;
+  kinopoiskId: number;
+  logoUrl: string | null;
+  nameEn: string | null;
+  nameOriginal: string | null;
+  nameRu: string;
+  posterUrl: string;
+  posterUrlPreview: string;
+  ratingAgeLimits: string;
+  ratingImdb: number | null;
+  ratingKinopoisk: number | null;
+  type: string;
+  year: number;
+}
+
+export interface Movie extends MoviePreview{
+  reviewsCount: number;
+  ratingGoodReview: number;
+  ratingGoodReviewVoteCount: number;
+  ratingKinopoiskVoteCount: number;
+  ratingImdbVoteCount: number;
+  ratingFilmCritics: number;
+  ratingFilmCriticsVoteCount: number;
+  ratingAwait: number;
+  ratingAwaitCount: number;
+  ratingRfCritics: number;
+  ratingRfCriticsVoteCount: number;
+  webUrl: string;
+  filmLength: number;
+  slogan: string;
+  shortDescription: string;
+  editorAnnotation: string;
+  isTicketsAvailable: boolean;
+  productionStatus: string;
+  ratingMpaa: string;
+  hasImax: boolean;
+  has3D: boolean;
+  lastSync: string;
+  startYear: number;
+  endYear: number;
+  serial: boolean;
+  shortFilm: boolean;
+  completed: boolean;
 }

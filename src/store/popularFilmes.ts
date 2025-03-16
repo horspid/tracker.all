@@ -1,34 +1,24 @@
 import { create } from "zustand";
-import { Movie } from "@interfaces/movies";
 import { options } from "@config/config";
+import { MoviePreview, MovieResponse } from "@interfaces/movies";
 
-
-interface movieResponse {
-  page: number;
-  results: Movie[];
-  total_pages: number;
-  total_results: number;
+interface MovieStore{
+  data: [] | MoviePreview[];
+  getData: () => Promise<MoviePreview[]>;
 }
 
-interface movieStore {
-  films: [] | Movie[];
-  getFilms: (currentPage: string) => Promise<Movie[]>;
-}
-
-
-
-const popularFilms = async (popularDate: string) => {
+const popularFilms = async () => {
   try {
     const url = new URL(
-      `https://api.themoviedb.org/3/trending/movie/${popularDate}?language=en-US`,
+      'https://kinopoiskapiunofficial.tech/api/v2.2/films/collections?type=TOP_POPULAR_ALL&page=1',
     );
     const response = await fetch(url, options);
 
     if (!response.ok) {
       throw new Error(`Ошибка HTTP: ${response.status}`);
     }
-    const data: movieResponse = await response.json();
-    return data.results;
+    const data: MovieResponse = await response.json();
+    return data.items;
 
   } catch (error) {
     console.log(error);
@@ -36,11 +26,11 @@ const popularFilms = async (popularDate: string) => {
   }
 };
 
-export const useMovieStore = create<movieStore>((set) => ({
-  films: [],
-  getFilms: async (currentPage: string) => {
-    const response = await popularFilms(currentPage);
-    set({ films: response });
+export const useMovieStore = create<MovieStore>((set) => ({
+  data: [],
+  getData: async () => {
+    const response = await popularFilms();
+    set({ data: response });
     return response;
   },
 }));

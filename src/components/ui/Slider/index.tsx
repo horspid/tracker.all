@@ -1,20 +1,16 @@
+import { Genre } from "@interfaces/movies";
 import styles from "./Slider.module.scss";
 import Button from "@components/ui/Button";
 
 interface SliderProps {
-  data: genresItem[];
-}
-
-interface genresItem {
-  name: string;
-  id: number;
+  data: Genre[];
 }
 
 const Slider = ({ data }: SliderProps) => {
   return (
     <div className={styles.slider}>
-      {data.map((item: genresItem) => (
-        <Button name={item.name} key={item.id} />
+      {data.map((item: Genre, index) => (
+        <Button name={item.genre} key={index} />
       ))}
     </div>
   );

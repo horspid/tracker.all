@@ -1,151 +1,150 @@
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import styles from "./MovieTabs.module.scss";
-import { Movie, MovieInfo } from "@interfaces/movies.ts";
+import { Movie, MoviePreview } from "@interfaces/movies.ts";
 import Slider from "@components/ui/Slider";
 import ProductCard from "@components/ui/ProductCard";
 import { options } from "@config/config.ts";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface MovieTabsProps {
-  data: MovieInfo;
+  data: Movie;
 }
-
-interface SimilarMovies {
-  page: number;
-  results: Movie[];
-  total_pages: number;
-  total_results: number;
-}
-
-interface RelatedMovies {
-  id: number;
+interface Budget {
+  type: string;
+  amount: number;
+  currencyCode: string;
   name: string;
-  overview: string;
-  poster_path: string;
-  backdrop_path: string;
-  parts: Movie[];
+  symbol: string;
 }
+
+interface Budgets {
+  total: number;
+  items: Budget[];
+}
+
+
 
 const MovieTabs = ({ data }: MovieTabsProps) => {
-  const [collection, setCollection] = useState<RelatedMovies | null>(null);
-  const [similar, setSimilar] = useState<SimilarMovies | null>(null)
+  const [similar, setSimilar] = useState<MoviePreview[] | null>(null)
+  const [budget, setBudget] = useState<Budgets | null>(null)
   const [tabIndex, setTabIndex] = useState(0);
+  const [error, setError] = useState<number | null>(null);
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-GB", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-  };
-
-  const fetchCollection = async (id: number) => {
+  const fetchSimilar = useCallback(async (id: number) => {
     try {
-      const response = await fetch(
-        `https://api.themoviedb.org/3/collection/${id}`,
-        options,
-      );
-
-      if (!response.ok) {
-        throw new Error(`Ошибка HTTP: ${response.status}`);
-      }
-
-      const collection = await response.json();
-      setCollection(collection);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const fetchSimilar = async (id: number) => {
-    try {
-      const url = new URL(`https://api.themoviedb.org/3/movie/${id}/similar`)
+      const url = new URL(`https://kinopoiskapiunofficial.tech/api/v2.1/films/${id}/sequels_and_prequels`)
       const response = await fetch(url, options)
 
       if (!response.ok) {
+        setError(response.status)
         throw new Error(`Ошибка HTTP: ${response.status}`);
       }
 
       const similar = await response.json();
 
       setSimilar(similar)
-
+      setError(null); 
     } catch (error) {
       console.log(error)
     }
-  } 
+  }, [])
 
+  const fetchAbout = useCallback(async (id: number) => {
+    try {
+      const url = new URL(
+        `https://kinopoiskapiunofficial.tech/api/v2.2/films/${id}/box_office`
+      );
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        throw new Error(`Ошибка HTTP: ${response.status}`);
+      }
+      const data = await response.json();
+      setBudget(data);
+    } catch (error) {
+      console.error("Ошибка загрузки бюджета:", error);
+    } 
+  }, []);
+
+  const getErrorMessage = (status: number) => {
+    switch (status) {
+      case 400:
+        return "Query was not corrected";
+      case 401:
+        return "Unauthorized user";
+      case 403:
+        return "Access denied";
+      case 404:
+        return "Movies not found.";
+      case 500:
+        return "Server Error. Try later";
+      default:
+        return null;
+    }
+  }
   useEffect(() => {
     setTabIndex(0)
-  }, [data.id])
-
+    setError(null)
+  }, [data.kinopoiskId])
+  console.log(budget)
   return (
     <Tabs className={styles.tabs} selectedTabClassName={styles.tabs__active} selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)}>
       <TabList className={styles.tabs__container}>
         <Tab className={styles.tabs__heading}>Description</Tab>
-        <Tab className={styles.tabs__heading}>About</Tab>
-        <Tab
-          className={styles.tabs__heading}
-          onClick={() => fetchCollection(data.belongs_to_collection.id)}
-        >
-          Related
-        </Tab>
-        <Tab className={styles.tabs__heading} onClick={() => fetchSimilar(data.id)}>Similar</Tab>
+        <Tab className={styles.tabs__heading} onClick={() => fetchAbout(data.kinopoiskId)}>About</Tab>
+        <Tab className={styles.tabs__heading} onClick={() => fetchSimilar(data.kinopoiskId)}>Similar</Tab>
       </TabList>
 
       <TabPanel selectedClassName={styles.tabs__panel}>
-        <p>Country: {data.origin_country}</p>
-        <p>Release Date: {formatDate(data.release_date)}</p>
+        <p>Total Votes: {data.ratingKinopoiskVoteCount}</p>
+        <p>Rating: {data.ratingKinopoisk}</p>
+        <p>Countries: {data.countries[0].country}</p>
+        <p>Release Year: {data.year}</p>
         <div className={styles.tabs__panel_slider}>
           Genres: <Slider data={data.genres} />
         </div>
-        <p className={styles.tabs__panel_description}>{data.overview}</p>
+        <p className={styles.tabs__panel_description}>{data.description}</p>
       </TabPanel>
       <TabPanel selectedClassName={styles.tabs__panel}>
-        <p>Country: {data.origin_country}</p>
-        <p>Release Date: {formatDate(data.release_date)}</p>
+        <p>Countries: {data.countries[0].country}</p>
+        <p>Release Year: {data.year}</p>
         <div className={styles.tabs__panel_slider}>
           Genres: <Slider data={data.genres} />
         </div>
-        <p>Status: {data.status}</p>
-        <p>Language: {data.original_language}</p>
-        <p>
-          Budget:{" "}
-          {data.budget === 0
-            ? "Budget information not available."
-            : `$${data.budget}`}
-        </p>{" "}
-        <p>
-          Revenue:{" "}
-          {data.revenue === 0
-            ? "Revenue information not available."
-            : `$${data.revenue}`}
-        </p>
-      </TabPanel>
-      <TabPanel
-        selectedClassName={styles.tabs__panel}
-        className={styles.tabs__panel_related}
-      >
-        {collection ? (
-          collection.parts.map((item) => (
-            <ProductCard movie={item} key={item.id} />
-          ))
-        ) : (
-          <p>Collection Not found.</p>
+        <p>Movie length: {data.filmLength} minutes</p>
+        {budget?.total && (
+           <>
+               <p>
+               Budget: { budget.items.map((item, index) => {
+                 return item.type === 'BUDGET' && (
+                  <>
+                    {item.amount}{item.symbol}
+                  </>
+                 );
+               })}
+             </p>
+             <p>
+               Revenue: { budget.items.map((item, index) => {
+                 return item.type === 'WORLD' && (
+                  <>
+                    {item.amount}{item.symbol}
+                  </>
+                 );
+               })}
+             </p>
+            </>
         )}
       </TabPanel>
       <TabPanel
         selectedClassName={styles.tabs__panel}
         className={styles.tabs__panel_similar}
       >
-        {similar ? (
-          similar.results.map((item) => (
-            <ProductCard movie={item} key={item.id} />
+        {error && (<p>{getErrorMessage(error)}</p>)}
+        {similar && (similar ? (
+          similar.map((item) => (
+            <ProductCard data={item} key={item.kinopoiskId} />
           ))
-        ) : (
-          <p>Loading related collection...</p>
-        )}
+        ) : '')}
       </TabPanel>
     </Tabs>
   );

@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useMovieStore } from "../../store/popularFilmes.ts";
 
 const Browse = () => {
-  const { films, getFilms } = useMovieStore();
+  const { data, getData } = useMovieStore();
   const [popularDate, setPopularDate] = useState<string>('day');
 
   const popularChangeHandler = () => {
@@ -14,9 +14,10 @@ const Browse = () => {
   }
 
   useEffect(() => {
-    getFilms(popularDate);
-  }, [getFilms, popularDate]);
+    getData();
+  }, []);
 
+  console.log(data)
   return (
     <section className={styles.browse}>
       <div className={styles.browse__content}>
@@ -26,10 +27,10 @@ const Browse = () => {
         </div>
       </div>
       <div className={styles.browse__items}>
-        {films.map((item) => (
+        {data.map((item) => (
           <ProductCard
-            key={item.id}
-            movie={item}
+            key={item.kinopoiskId}
+            data={item}
           />
         ))}
       </div>
