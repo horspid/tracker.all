@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { options } from "@config/config";
-import { Movie, MoviePreview, Movies } from "@interfaces/movies";
+import { MoviePreview, Movies } from "@interfaces/movies";
 
 interface MovieStore{
   data: [] | MoviePreview[];
