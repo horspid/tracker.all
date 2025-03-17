@@ -10,7 +10,7 @@ const Slider = ({ data }: SliderProps) => {
   return (
     <div className={styles.slider}>
       {data.map((item: Genre, index) => (
-        <Button name={item.genre} key={index} />
+        <Button name={item.name} key={index} />
       ))}
     </div>
   );

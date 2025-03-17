@@ -43,12 +43,13 @@
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-      max-height: calc(100vh - 160px - 100px - 50px - 30px - 100px);
-      overflow-y: scroll;
 
       article {
         max-width: 200px;
 
+        img {
+          height: 250px;
+        }
       }
     }
 

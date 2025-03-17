@@ -29,7 +29,7 @@ const Browse = () => {
       <div className={styles.browse__items}>
         {data.map((item) => (
           <ProductCard
-            key={item.kinopoiskId}
+            key={item.id}
             data={item}
           />
         ))}

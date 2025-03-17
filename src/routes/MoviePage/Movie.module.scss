@@ -5,6 +5,7 @@
     margin-top: 50px;
     display: flex;
     max-height: calc(100vh - 160px - 100px - 50px);
+    overflow: scroll;
   }
 
   &__content {

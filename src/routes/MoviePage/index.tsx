@@ -6,21 +6,31 @@ import { Movie } from "@interfaces/movies";
 import Bookmark from "@components/ui/Bookmark";
 import MovieTabs from "@components/layout/MovieTabs";
 
-interface Images {
-    total: number;
-    totalPages: number;
-    items: Image[];
+interface Image {
+  movieId: number
+  type: string
+  url: string
+  previewUrl: string
+  height: number
+  width: number
+  createdAt: string
+  updatedAt: string
+  id: string
 }
 
-interface Image {
-    imageUrl: string;
-    previewUrl: string;
+interface Images {
+  docs: Image[];
+  total: number,
+  limit: number,
+  page: number,
+  pages: number
 }
 
 interface MovieData {
-    movie: Movie;
-    images: Images;
+  movie: Movie;
+  images: Images;
 }
+
 
 const MoviePage = () => {
   const { id } = useParams<string>();
@@ -28,53 +38,52 @@ const MoviePage = () => {
 
   const fetchMovieDetails = async () => {
     try {
+      const movieUrl = `https://api.kinopoisk.dev/v1.4/movie/${id}`;
+      const imagesUrl = `https://api.kinopoisk.dev/v1.4/image?movieId=${id}&limit=2`;
+
       const [movieResponse, imagesResponse] = await Promise.all([
-        fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/${id}`, options),
-        fetch(`https://kinopoiskapiunofficial.tech/api/v2.2/films/${id}/images`, options),
+        fetch(movieUrl, options),
+        fetch(imagesUrl, options),
       ]);
-      
+
+      const movieData = await movieResponse.json();
+      const imagesData = await imagesResponse.json();
+  
+      setData({movie: movieData, images: imagesData});
 
       if (!movieResponse.ok || !imagesResponse.ok) {
-        throw new Error(
-          `Ошибка HTTP: ${movieResponse.status}, ${imagesResponse.status}`,
-        );
+        throw new Error(`Ошибка HTTP: ${movieResponse.status, imagesResponse.status }`);
       }
-
-      const [movie, images] = await Promise.all([
-        movieResponse.json(),
-        imagesResponse.json(),
-      ]);
-
-      setData({ movie, images });
     } catch (error) {
       console.error(error);
     }
-  };
+  } 
 
   useEffect(() => {
     fetchMovieDetails();
   }, [id]);
-
-  const lastestBackdrops = data?.images.items.slice(0, 2);
+  
+  const lastestBackdrops = data?.images.docs;
 
   return (
     <section className={styles.movie}>
       {data && (
         <>
           <h1 className={styles.movie__heading}>          
-            {data.movie.nameOriginal === null ? data.movie.nameRu : data.movie.nameOriginal}          
+            {data.movie.name || data.movie.alternativeName}          
           </h1>
           <div className={styles.movie__container}>
             <div className={styles.movie__images}>
               <img
-                src={data.movie.posterUrl}
+                src={data.movie.poster.url}
                 alt="poster"
               />
               <div className={styles.movie__images_backdrop}>
-                {lastestBackdrops && lastestBackdrops.map((backdrop) => (
+                {lastestBackdrops && lastestBackdrops.map((backdrop, index) => (
                   <img
-                    src={backdrop.imageUrl}
+                    src={backdrop.url}
                     alt="backdrop"
+                    key={index}
                   />
                 ))}
               </div>

@@ -12,7 +12,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
   let navigate = useNavigate();
 
   const navigateHandle = () => {
-    navigate(`/movies/${data.kinopoiskId}`)
+    navigate(`/movies/${data.id}`)
   }
   
 
@@ -20,19 +20,19 @@ const ProductCard = ({ data }: ProductCardProps) => {
     <article className={styles.product_card} onClick={navigateHandle}>
       <div className={styles.product_card__image}>
         <img
-          src={data.posterUrlPreview}
+          src={data.poster.previewUrl}
           alt="card"
           className={styles.product_card__img}
         />
-          {data.ratingKinopoisk && (
+          {data.rating && (
             <div className={styles.product_card__rate}>
-              <span>{data.ratingKinopoisk}</span>
+              <span>{data.rating?.imdb}</span>
             </div>
           )}
       </div>
       <div className={styles.product_card__stats}>
         <h2 className={styles.product_card__title}>
-          {data.nameOriginal === null ? data.nameRu : data.nameOriginal}
+          {data.name || data.alternativeName}
         </h2>
         <UserRating />
       </div>
