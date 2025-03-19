@@ -2,35 +2,23 @@ import { options } from "@config/config";
 import styles from "./Movie.module.scss";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { Movie } from "@interfaces/movies";
 import Bookmark from "@components/ui/Bookmark";
 import MovieTabs from "@components/layout/MovieTabs";
+import { cardDetails } from "@interfaces/index.ts";
 
 interface Image {
-  movieId: number
-  type: string
-  url: string
-  previewUrl: string
-  height: number
-  width: number
-  createdAt: string
-  updatedAt: string
-  id: string
+  url: string | null;
+  previewUrl: string | null;
 }
 
 interface Images {
   docs: Image[];
-  total: number,
-  limit: number,
-  page: number,
-  pages: number
 }
 
 interface MovieData {
-  movie: Movie;
+  movie: cardDetails;
   images: Images;
 }
-
 
 const MoviePage = () => {
   const { id } = useParams<string>();
@@ -48,44 +36,44 @@ const MoviePage = () => {
 
       const movieData = await movieResponse.json();
       const imagesData = await imagesResponse.json();
-  
-      setData({movie: movieData, images: imagesData});
+
+      setData({ movie: movieData, images: imagesData });
 
       if (!movieResponse.ok || !imagesResponse.ok) {
-        throw new Error(`Ошибка HTTP: ${movieResponse.status, imagesResponse.status }`);
+        throw new Error(
+          `Ошибка HTTP: ${(movieResponse.status, imagesResponse.status)}`,
+        );
       }
     } catch (error) {
       console.error(error);
     }
-  } 
+  };
 
   useEffect(() => {
     fetchMovieDetails();
   }, [id]);
-  
+
   const lastestBackdrops = data?.images.docs;
 
   return (
     <section className={styles.movie}>
       {data && (
         <>
-          <h1 className={styles.movie__heading}>          
-            {data.movie.name || data.movie.alternativeName}          
+          <h1 className={styles.movie__heading}>
+            {data.movie.name || data.movie.alternativeName}
           </h1>
           <div className={styles.movie__container}>
             <div className={styles.movie__images}>
-              <img
-                src={data.movie.poster.url}
-                alt="poster"
-              />
+              <img src={data.movie.poster.url ?? undefined} alt="poster" />
               <div className={styles.movie__images_backdrop}>
-                {lastestBackdrops && lastestBackdrops.map((backdrop, index) => (
-                  <img
-                    src={backdrop.url}
-                    alt="backdrop"
-                    key={index}
-                  />
-                ))}
+                {lastestBackdrops &&
+                  lastestBackdrops.map((backdrop, index) => (
+                    <img
+                      src={backdrop.url ?? undefined}
+                      alt="backdrop"
+                      key={index}
+                    />
+                  ))}
               </div>
             </div>
             <div className={styles.movie__content}>
