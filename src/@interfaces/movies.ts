@@ -34,7 +34,7 @@ interface FeesWorld {
   value?: number;
 }
 
-interface Genre {
+export interface Genre {
   name: string;
 }
 

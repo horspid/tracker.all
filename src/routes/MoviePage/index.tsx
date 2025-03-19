@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Bookmark from "@components/ui/Bookmark";
 import MovieTabs from "@components/layout/MovieTabs";
-import { cardDetails } from "@interfaces/index.ts";
+import { cardDetails } from "@interfaces/movies.ts";
 
 interface Image {
   url: string | null;
