@@ -12,22 +12,28 @@ const Categories = () => {
   const movies = [
     {
       name: "films",
+      nameUrl: "movie",
       src: filmImage,
     },
     {
       name: "tv shows",
+      nameUrl: "tv-series",
       src: serialImage,
     },
     {
       name: "anime",
+      nameUrl: "anime",
       src: animeImage,
     },
     {
       name: "cartoon",
+      nameUrl: "cartoon",
+
       src: cartoonImage,
     },
     {
       name: "animated series",
+      nameUrl: "animated-series",
       src: animatedSeriesImage,
     },
   ];
