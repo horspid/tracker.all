@@ -18,7 +18,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
     <article className={styles.product_card} onClick={navigateHandle}>
       <div className={styles.product_card__image}>
         <img
-          src={data.poster.previewUrl ?? undefined}
+          src={data.poster?.previewUrl || ''}
           alt="card"
           className={styles.product_card__img}
         />

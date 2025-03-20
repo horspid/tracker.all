@@ -11,6 +11,7 @@ export interface cardPreview {
   alternativeName: string | null;
   rating?: Rating | null;
   poster: Poster;
+  type: MovieType;
 }
 
 export interface cardDetails extends cardPreview {

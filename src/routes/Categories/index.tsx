@@ -16,7 +16,7 @@ const Categories = () => {
       src: filmImage,
     },
     {
-      name: "tv shows",
+      name: "tv series",
       nameUrl: "tv-series",
       src: serialImage,
     },

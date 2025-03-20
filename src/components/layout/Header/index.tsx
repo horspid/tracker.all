@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.navigation_control}>
-        <Search />
+        <Search name={'Search everything...'}/>
       </div>
       <ControlPanel />
     </header>

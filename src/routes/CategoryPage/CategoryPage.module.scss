@@ -8,6 +8,12 @@
     align-items: center;
   }
 
+  &__heading {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+  }
+
   &__title {
     margin-left: 10px;
 
