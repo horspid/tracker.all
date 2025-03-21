@@ -5,12 +5,19 @@
     margin-top: 50px;
     display: flex;
     max-height: calc(100vh - 160px - 100px - 50px);
-    overflow: scroll;
+    overflow-y: scroll;
   }
 
   &__content {
     margin-left: 30px;
     width: 100%;
+  }
+
+  &__skeleton {
+    height: 400px;
+    min-width: 300px;
+    border-radius: 20px;
+    background-color: $text-secondary;
   }
 
 

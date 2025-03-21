@@ -55,6 +55,20 @@ const MoviePage = () => {
 
   const lastestBackdrops = data?.images.docs;
 
+  const viewImage = () => {
+    if (data) {
+      if (data.movie.poster?.previewUrl) {
+        return (
+          <img
+            src={data.movie.poster?.previewUrl || ""}
+            alt="poster"
+            className={styles.movie__img}
+          />
+        );
+      } else return <div className={styles.movie__skeleton}></div>;
+    }
+  };
+
   return (
     <section className={styles.movie}>
       {data && (
@@ -64,7 +78,7 @@ const MoviePage = () => {
           </h1>
           <div className={styles.movie__container}>
             <div className={styles.movie__images}>
-              <img src={data.movie.poster.url ?? undefined} alt="poster" />
+              {viewImage()}
               <div className={styles.movie__images_backdrop}>
                 {lastestBackdrops &&
                   lastestBackdrops.map((backdrop, index) => (

@@ -14,17 +14,29 @@ const ProductCard = ({ data }: ProductCardProps) => {
     navigate(`/movies/${data.id}`);
   };
 
-  return (
-    <article className={styles.product_card} onClick={navigateHandle}>
-      <div className={styles.product_card__image}>
+  const parsedRatingKp = data.rating && data.rating.kp?.toFixed(1);
+
+  const viewImage = () => {
+    if (data.poster?.previewUrl) {
+      return (
         <img
-          src={data.poster?.previewUrl || ''}
+          src={data.poster?.previewUrl || ""}
           alt="card"
           className={styles.product_card__img}
         />
+      );
+    } else return <div className={styles.product_card__skeleton}></div>;
+  };
+
+  return (
+    <article className={styles.product_card} onClick={navigateHandle}>
+      <div className={styles.product_card__image}>
+        {viewImage()}
         {data.rating && (
           <div className={styles.product_card__rate}>
-            <span>{data.rating.imdb}</span>
+            <span>
+              {data.rating.imdb !== 0 ? data.rating.imdb : parsedRatingKp}
+            </span>
           </div>
         )}
       </div>
