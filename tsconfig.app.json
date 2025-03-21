@@ -13,6 +13,7 @@
       "@layouts/*": ["layouts/*"],
       "@interfaces/*": ["@interfaces/*"],
       "@config/*": ["config/*"],
+      "@assets/*": ["assets/*"],
 
     },
     "types": ["vite-plugin-svgr/client"],

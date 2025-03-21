@@ -21,6 +21,7 @@ const popularFilms = async () => {
     if (!response.ok) {
       throw new Error(`Ошибка HTTP: ${response.status}`);
     }
+
     const data: MovieResponse = await response.json();
     return data.docs;
   } catch (error) {

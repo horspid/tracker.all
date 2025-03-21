@@ -6,6 +6,8 @@ import Watchlist from "@routes/Watchlist";
 import Soon from "@routes/Soon";
 import Ratings from "@routes/Ratings";
 import MoviePage from "@routes/MoviePage";
+import CategoryPage from "@routes/CategoryPage";
+import Profile from "@routes/Profile";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
           <Route path="ratings" element={<Soon />} />
           <Route path="soon" element={<Ratings />} />
           <Route path="movies/:id" element={<MoviePage />} />
+          <Route path="categories/:name" element={<CategoryPage />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
       </Routes>
     </BrowserRouter>
