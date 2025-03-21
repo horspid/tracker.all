@@ -1,8 +1,7 @@
-import styles from './Profile.module.scss'
+import styles from "./Profile.module.scss";
 
 const Profile = () => {
-    return ()
-}
+  return <section className={styles.profile}></section>;
+};
 
-
-export default Profile
+export default Profile;
