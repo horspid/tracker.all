@@ -8,6 +8,8 @@ import Ratings from "@routes/Ratings";
 import MoviePage from "@routes/MoviePage";
 import CategoryPage from "@routes/CategoryPage";
 import Profile from "@routes/Profile";
+import Login from "@routes/Authorization/Login";
+import Index from "@routes/Authorization/Register";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
           <Route path="movies/:id" element={<MoviePage />} />
           <Route path="categories/:name" element={<CategoryPage />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="login" element={<Login />} />
+          <Route path="registration" element={<Index />} />
         </Route>
       </Routes>
     </BrowserRouter>

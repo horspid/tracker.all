@@ -8,11 +8,11 @@ import FacebookICO from "@assets/images/icons/facebook.svg?react";
 import AppleICO from "@assets/images/icons/apple.svg?react";
 import GoogleICO from "@assets/images/icons/google.svg?react";
 
-const Register = () => {
+const Index = () => {
   return (
     <section className={styles.registration}>
       <form>
-        <h1>Sign in</h1>
+        <h1>Registration</h1>
         <div className={styles.registration__inputs}>
           <Input Icon={UserICO} placeholder="Login / Email" />
           <Input Icon={PasswordICO} placeholder="Password" type={"password"} />
@@ -26,12 +26,12 @@ const Register = () => {
         <Input
           type="button"
           className={styles.registration__button}
-          value="Login"
+          value="Register"
         />
         <p className={styles.registration__login}>
-          Don't have an account yet?{" "}
+          Already have account?{" "}
           <span>
-            <Link to={"/registration"}>Registration</Link>
+            <Link to={"/login"}>Login</Link>
           </span>
         </p>
       </form>
@@ -39,4 +39,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Index;
