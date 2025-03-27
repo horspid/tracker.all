@@ -1,4 +1,4 @@
-import styles from "./Login.module.scss";
+import styles from "./Register.module.scss";
 import Input from "@components/ui/Input";
 import UserICO from "@assets/images/icons/user.svg?react";
 import PasswordICO from "@assets/images/icons/password.svg?react";
@@ -6,16 +6,19 @@ import VkICO from "@assets/images/icons/vk.svg?react";
 import FacebookICO from "@assets/images/icons/facebook.svg?react";
 import AppleICO from "@assets/images/icons/apple.svg?react";
 import GoogleICO from "@assets/images/icons/google.svg?react";
-import { Link, useNavigate } from "react-router";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { signIn } from "@services/userAuth";
-import { DatabaseUser } from "@interfaces/user";
-import { useUserStore } from "@store/userStore";
 
-const Login = () => {
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { signUp } from "@services/userAuth";
+import { useUserStore } from "@store/userStore";
+import { DatabaseUser } from "@interfaces/user";
+
+const Registration = () => {
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [login, setLogin] = useState<string>("");
+
 
   const navigate = useNavigate();
   const user: DatabaseUser = useUserStore((state) => state.user);
@@ -27,19 +30,20 @@ const Login = () => {
 
     if (name === 'email') setEmail(value)
     if (name === 'password') setPassword(value)
+    if (name === 'login') setLogin(value)
   }
 
   const onSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await signIn(email, password);
+      await signUp(email, password, login);
 
       if (user) {
         navigate(`/profile/${user.login}`);
       }
 
     } catch (error: any) {
-        console.error("Ошибка при авторизации", error.message);
+        console.error("Ошибка при регистрации", error.message);
       }
   }
 
@@ -48,26 +52,31 @@ const Login = () => {
       navigate(`/profile/${user.login}`);
     }
   }, [user]);
-
+  
   return (
-    <section className={styles.login}>
+    <section className={styles.registration}>
       <form onSubmit={onSubmitHandler}>
-        <h1>Sign in</h1>
-        <div className={styles.login__inputs}>
+        <h1>Registration</h1>
+        <div className={styles.registration__inputs}>
           <Input Icon={UserICO} placeholder="Email" type='email' value={email} name='email' onChange={(event) => onChangeHandler(event)}/>
           <Input Icon={PasswordICO} placeholder="Password" type="password" value={password} name='password' onChange={(event) => onChangeHandler(event)} />
+          <Input Icon={PasswordICO} placeholder="Login" type="text" value={login} name='login' onChange={(event) => onChangeHandler(event)} />
         </div>
-        <div className={styles.login__oauth}>
+        <div className={styles.registration__oauth}>
           <VkICO />
           <FacebookICO />
           <AppleICO />
           <GoogleICO />
         </div>
-        <Input type="submit" className={styles.login__button} value="Sign in" />
-        <p className={styles.login__registration}>
-          Don't have an account yet?{" "}
+        <Input
+          type="submit"
+          className={styles.registration__button}
+          value="Sign up"
+        />
+        <p className={styles.registration__login}>
+          Already have account?{" "}
           <span>
-            <Link to={"/registration"}>Registration</Link>
+            <Link to={"/login"}>Login</Link>
           </span>
         </p>
       </form>
@@ -75,4 +84,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Registration;

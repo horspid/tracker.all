@@ -8,8 +8,17 @@ import Ratings from "@routes/Ratings";
 import MoviePage from "@routes/MoviePage";
 import CategoryPage from "@routes/CategoryPage";
 import Profile from "@routes/Profile";
+import Login from "@routes/Authorization/Login";
+import Index from "@routes/Authorization/Register";
+import { useEffect } from "react";
+import { checkSession } from "@services/userAuth";
 
 function App() {
+
+  useEffect(() => {
+    checkSession();
+  }, [])
+
   return (
     <BrowserRouter>
       <Routes>
@@ -21,7 +30,9 @@ function App() {
           <Route path="soon" element={<Ratings />} />
           <Route path="movies/:id" element={<MoviePage />} />
           <Route path="categories/:name" element={<CategoryPage />} />
-          <Route path="profile" element={<Profile />} />
+          <Route path="profile/:id" element={<Profile />} />
+          <Route path="login" element={<Login />} />
+          <Route path="registration" element={<Index />} />
         </Route>
       </Routes>
     </BrowserRouter>
