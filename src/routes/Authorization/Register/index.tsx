@@ -1,6 +1,5 @@
 import styles from "./Register.module.scss";
 import Input from "@components/ui/Input";
-import { Link } from "react-router";
 import UserICO from "@assets/images/icons/user.svg?react";
 import PasswordICO from "@assets/images/icons/password.svg?react";
 import VkICO from "@assets/images/icons/vk.svg?react";
@@ -8,14 +7,60 @@ import FacebookICO from "@assets/images/icons/facebook.svg?react";
 import AppleICO from "@assets/images/icons/apple.svg?react";
 import GoogleICO from "@assets/images/icons/google.svg?react";
 
-const Index = () => {
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { signUp } from "@services/userAuth";
+import { useUserStore } from "@store/userStore";
+import { DatabaseUser } from "@interfaces/user";
+
+const Registration = () => {
+
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [login, setLogin] = useState<string>("");
+
+
+  const navigate = useNavigate();
+  const user: DatabaseUser = useUserStore((state) => state.user);
+
+
+  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  
+    const { name, value } = event.target;
+
+    if (name === 'email') setEmail(value)
+    if (name === 'password') setPassword(value)
+    if (name === 'login') setLogin(value)
+  }
+
+  const onSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      await signUp(email, password, login);
+
+      if (user) {
+        navigate(`/profile/${user.login}`);
+      }
+
+    } catch (error: any) {
+        console.error("Ошибка при регистрации", error.message);
+      }
+  }
+
+  useEffect(() => {
+    if (user) {
+      navigate(`/profile/${user.login}`);
+    }
+  }, [user]);
+  
   return (
     <section className={styles.registration}>
-      <form>
+      <form onSubmit={onSubmitHandler}>
         <h1>Registration</h1>
         <div className={styles.registration__inputs}>
-          <Input Icon={UserICO} placeholder="Login / Email" />
-          <Input Icon={PasswordICO} placeholder="Password" type={"password"} />
+          <Input Icon={UserICO} placeholder="Email" type='email' value={email} name='email' onChange={(event) => onChangeHandler(event)}/>
+          <Input Icon={PasswordICO} placeholder="Password" type="password" value={password} name='password' onChange={(event) => onChangeHandler(event)} />
+          <Input Icon={PasswordICO} placeholder="Login" type="text" value={login} name='login' onChange={(event) => onChangeHandler(event)} />
         </div>
         <div className={styles.registration__oauth}>
           <VkICO />
@@ -24,9 +69,9 @@ const Index = () => {
           <GoogleICO />
         </div>
         <Input
-          type="button"
+          type="submit"
           className={styles.registration__button}
-          value="Register"
+          value="Sign up"
         />
         <p className={styles.registration__login}>
           Already have account?{" "}
@@ -39,4 +84,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Registration;

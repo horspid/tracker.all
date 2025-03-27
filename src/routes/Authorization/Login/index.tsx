@@ -6,16 +6,56 @@ import VkICO from "@assets/images/icons/vk.svg?react";
 import FacebookICO from "@assets/images/icons/facebook.svg?react";
 import AppleICO from "@assets/images/icons/apple.svg?react";
 import GoogleICO from "@assets/images/icons/google.svg?react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { signIn } from "@services/userAuth";
+import { DatabaseUser } from "@interfaces/user";
+import { useUserStore } from "@store/userStore";
 
 const Login = () => {
+
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
+  const navigate = useNavigate();
+  const user: DatabaseUser = useUserStore((state) => state.user);
+
+
+  const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  
+    const { name, value } = event.target;
+
+    if (name === 'email') setEmail(value)
+    if (name === 'password') setPassword(value)
+  }
+
+  const onSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      await signIn(email, password);
+
+      if (user) {
+        navigate(`/profile/${user.login}`);
+      }
+
+    } catch (error: any) {
+        console.error("Ошибка при авторизации", error.message);
+      }
+  }
+
+  useEffect(() => {
+    if (user) {
+      navigate(`/profile/${user.login}`);
+    }
+  }, [user]);
+
   return (
     <section className={styles.login}>
-      <form>
+      <form onSubmit={onSubmitHandler}>
         <h1>Sign in</h1>
         <div className={styles.login__inputs}>
-          <Input Icon={UserICO} placeholder="Login / Email" />
-          <Input Icon={PasswordICO} placeholder="Password" type={"password"} />
+          <Input Icon={UserICO} placeholder="Email" type='email' value={email} name='email' onChange={(event) => onChangeHandler(event)}/>
+          <Input Icon={PasswordICO} placeholder="Password" type="password" value={password} name='password' onChange={(event) => onChangeHandler(event)} />
         </div>
         <div className={styles.login__oauth}>
           <VkICO />
@@ -23,7 +63,7 @@ const Login = () => {
           <AppleICO />
           <GoogleICO />
         </div>
-        <Input type="button" className={styles.login__button} value="Login" />
+        <Input type="submit" className={styles.login__button} value="Sign in" />
         <p className={styles.login__registration}>
           Don't have an account yet?{" "}
           <span>
