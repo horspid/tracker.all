@@ -10,14 +10,24 @@ import CategoryPage from "@routes/CategoryPage";
 import Profile from "@routes/Profile";
 import Login from "@routes/Authorization/Login";
 import Index from "@routes/Authorization/Register";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { checkSession } from "@services/userAuth";
 
 function App() {
 
+  const [loading, setLoading] = useState(true)
+
   useEffect(() => {
-    checkSession();
-  }, [])
+    const init = async () => {
+      await checkSession();
+      setLoading(false);
+    };
+
+    init();
+  }, []);
+
+
+  if (loading) return <p>Загрузка...</p>;
 
   return (
     <BrowserRouter>

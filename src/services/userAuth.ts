@@ -81,6 +81,7 @@ export const logout = async () => {
 
 
 export const checkSession = async () => {
+
   const { setUser, setSession } = useUserStore.getState();
   const { data, error } = await supabase.auth.getSession();
 
@@ -99,4 +100,76 @@ export const checkSession = async () => {
   setSession(data.session);
 
   return data.session;
+};
+
+export const isUserProfile = async (userLogin: string) => {
+  const { user, setOtherUser } = useUserStore.getState();
+
+  try {
+    if (userLogin !== user.id) {
+      const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("login", userLogin)
+        .limit(1)
+        .single<DatabaseUser>();
+
+      if (error || !data) {
+        console.error("Ошибка при поиске пользователя:", error?.message || "Пользователь не найден");
+        return;
+      }
+
+      return setOtherUser(data);
+    }
+  } catch (error) {
+    console.error("Ошибка при выполнении запроса:", error);
+  }
+};
+
+export const changeUserField = async (fields: { [key: string]: any }) => {
+  // Получаем текущую сессию пользователя
+  const { data, error: sessionError } = await supabase.auth.getSession();
+
+  if (sessionError) {
+    console.error("Error fetching session:", sessionError.message);
+    return null;
+  }
+
+  if (!data.session) {
+    console.error("No active session found.");
+    return null;
+  }
+
+  // Получаем ID пользователя
+  const userId = data.session.user.id;
+
+  // Проверяем, есть ли что-то для обновления
+  if (!fields || Object.keys(fields).length === 0) {
+    console.error("No fields to update.");
+    return null;
+  }
+
+  // Логируем переданные поля и userId
+  console.log("Fields to update:", fields);
+  console.log("User ID:", userId);
+
+  // Выполняем обновление
+  try {
+    const { data: updatedData, error } = await supabase
+      .from('users') // указываем имя таблицы
+      .update(fields) // передаем объект с полями для обновления
+      .eq('user_id', userId) // обновляем пользователя по его ID
+      .select();
+
+    if (error) {
+      console.error("Error updating user fields:", error.message);
+      return null;
+    }
+
+    console.log("User fields updated successfully:", updatedData);
+    return updatedData; // Возвращаем обновленные данные, чтобы их увидеть
+  } catch (err) {
+    console.error("Unexpected error:", err);
+    return null;
+  }
 };
