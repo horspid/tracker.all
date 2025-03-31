@@ -26,7 +26,6 @@ function App() {
     init();
   }, []);
 
-
   if (loading) return <p>Загрузка...</p>;
 
   return (

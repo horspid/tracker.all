@@ -9,7 +9,6 @@ import GoogleICO from "@assets/images/icons/google.svg?react";
 import { Link, useNavigate } from "react-router";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { signIn } from "@services/userAuth";
-import { DatabaseUser } from "@interfaces/user";
 import { useUserStore } from "@store/userStore";
 
 const Login = () => {
@@ -18,7 +17,7 @@ const Login = () => {
   const [password, setPassword] = useState<string>("");
 
   const navigate = useNavigate();
-  const user: DatabaseUser = useUserStore((state) => state.user);
+  const user = useUserStore((state) => state.user);
 
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -34,10 +33,6 @@ const Login = () => {
     try {
       await signIn(email, password);
 
-      if (user) {
-        navigate(`/profile/${user.login}`);
-      }
-
     } catch (error: any) {
         console.error("Ошибка при авторизации", error.message);
       }
@@ -45,9 +40,9 @@ const Login = () => {
 
   useEffect(() => {
     if (user) {
-      navigate(`/profile/${user.login}`);
+      navigate(`/profile/${user.user_metadata.login}`);
     }
-  }, [user]);
+  }, [user, navigate]);
 
   return (
     <section className={styles.login}>

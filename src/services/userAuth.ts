@@ -2,67 +2,114 @@ import { supabase } from "@config/database";
 import { DatabaseUser } from "@interfaces/user";
 import { useUserStore } from "@store/userStore";
 
-const findUserInDatabase = async (id: string) => {
-  const { setUser } = useUserStore.getState();
+const insertUserToDatabase = async (data: DatabaseUser) => {
+  try {
+    const { error } = await supabase.from("users").insert(data);
 
-  const { data, error } = await supabase
-    .from('users')
-    .select('*')
-    .eq('user_id', id)
-    .limit(1)
-    .single<DatabaseUser>(); 
+    if (error) {
+      console.error("Ошибка при добавлении пользователя в БД:", error.message);
+      throw new Error("Ошибка при добавлении пользователя в БД");
+    }
 
-  if (error) {
-    throw new Error(`Error fetching user from 'users' table: ${error.message}`);
+  } catch (err) {
+    console.error("Ошибка в insertUserToDatabase:", err);
   }
+}
 
-  if (!data) {
-    console.error('Пользователь не найден')
+export const isUserPage = async (login: string) => {
+  const { data } = await supabase.auth.getUser();
+
+  if (data.user) {
+    return data.user.user_metadata.login === login ? true : false;
   }
+}
 
-  setUser(data);
+export const findUserInDatabase = async (login: string) => {
+
+  try {
+    const isUserProfile = await isUserPage(login);
+  
+    if (isUserProfile) {
+      const { data } = await supabase
+        .from('users')
+        .select('*')
+        .eq('login', login)
+        .single<DatabaseUser>(); 
+  
+      if (data) return data
+      
+    } else {
+      const { data } = await supabase
+        .from('users')
+        .select('login, avatar_url, total_movies, total_serials')
+        .eq('login', login)
+        .single<DatabaseUser>(); 
+  
+        if (data) return data
+      }
+  } catch (error) {
+    console.log('Пользователь не найден', error)
+    throw new Error(`Error fetching user from 'users' table: ${error}`);
+  }
 }
 
 
 export const signUp = async (email: string, password: string, login: string) => {
-  const { setSession } = useUserStore.getState();
 
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-  });
+  const { setUser, setSession, setUserProfile } = useUserStore.getState();
 
-  if (error) throw new Error(error.message);
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          login: login,
+        }
+      }
+    });
 
-  if (data.user) {
+    if (error) throw new Error(error.message);
 
-    const { error } = await supabase.from("users").insert([
-        { user_id: data.user.id, login, email }
-    ]);
+    if (data.user && data.session) {
 
-    if (error) {
-        throw new Error(`Error inserting into 'users' table: ${error.message}`);
+      await insertUserToDatabase({ user_id: data.user.id, login, email });
+
+      setUser(data.user);
+      setSession(data.session)
+
+      const result = await findUserInDatabase(login);
+
+      if (result) {
+        setUserProfile(result)
+      }
     }
-
-    await findUserInDatabase(data.user.id)
-    setSession(data.session);
+    
+  } catch (dbError) {
+    await logout()
+    console.error("Ошибка при работе с БД:", dbError);
   }
 };
 
 export const signIn = async (email: string, password: string) => {
-  const { setSession } = useUserStore.getState();
+  const { setSession, setUser, setUserProfile } = useUserStore.getState();
 
   const loginData = { email, password };
 
   const { data, error } = await supabase.auth.signInWithPassword(loginData);
 
   if (error) {
+    await logout()
     throw new Error(`Error during login: ${error.message}`);
   }
 
-  if (data.user) {
-    await findUserInDatabase(data.user.id)
-    setSession(data.session);
+  setUser(data.user)
+  setSession(data.session);
+    
+  const result = await findUserInDatabase(data.user.user_metadata.login)
+
+  if (result) {
+    setUserProfile(result)
   }
 };
 
@@ -82,52 +129,29 @@ export const logout = async () => {
 
 export const checkSession = async () => {
 
-  const { setUser, setSession } = useUserStore.getState();
+  const { setUser, setSession, setUserProfile } = useUserStore.getState();
   const { data, error } = await supabase.auth.getSession();
 
   if (error) {
-    console.error("Error fetching session:", error.message);
-    return null;
-  }
-
-  if (!data.session) {
     setUser(null);
     setSession(null);
-    return null;
+    console.error("Error fetching session:", error.message);
   }
 
-  await findUserInDatabase(data.session.user.id);
-  setSession(data.session);
+  if (data.session) {
+    setUser(data.session.user);
+    setSession(data.session);
 
-  return data.session;
-};
-
-export const isUserProfile = async (userLogin: string) => {
-  const { user, setOtherUser } = useUserStore.getState();
-
-  try {
-    if (userLogin !== user.id) {
-      const { data, error } = await supabase
-        .from("users")
-        .select("*")
-        .eq("login", userLogin)
-        .limit(1)
-        .single<DatabaseUser>();
-
-      if (error || !data) {
-        console.error("Ошибка при поиске пользователя:", error?.message || "Пользователь не найден");
-        return;
-      }
-
-      return setOtherUser(data);
+    const result = await findUserInDatabase(data.session.user.user_metadata.login);
+    if (result) {
+      setUserProfile(result)
     }
-  } catch (error) {
-    console.error("Ошибка при выполнении запроса:", error);
+
   }
 };
 
 export const changeUserField = async (fields: { [key: string]: any }) => {
-  // Получаем текущую сессию пользователя
+
   const { data, error: sessionError } = await supabase.auth.getSession();
 
   if (sessionError) {

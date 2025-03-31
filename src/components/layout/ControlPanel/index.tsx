@@ -2,18 +2,17 @@ import styles from "./ControlPanel.module.scss";
 import BookmarkICO from "@assets/images/icons/bookmark.svg?react";
 import NotificationICO from "@assets/images/icons/notification.svg?react";
 import ProfileICO from "@assets/images/icons/profile.svg?react";
-import { DatabaseUser } from "@interfaces/user";
 import { useUserStore } from "@store/userStore";
 import { useNavigate } from "react-router";
 
 const ControlPanel = () => {
   const navigate = useNavigate();
 
-  const user: DatabaseUser = useUserStore((state) => state.user);
+  const user = useUserStore((state) => state.user);
 
   const onProfileClick = () => {
     if (user) {
-      navigate(`/profile/${user.login}`);
+      navigate(`/profile/${user.user_metadata.login}`);
     } else {
       navigate(`/login`);
     }

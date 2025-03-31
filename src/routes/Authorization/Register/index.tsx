@@ -21,7 +21,7 @@ const Registration = () => {
 
 
   const navigate = useNavigate();
-  const user: DatabaseUser = useUserStore((state) => state.user);
+  const user = useUserStore((state) => state.user);
 
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -36,11 +36,8 @@ const Registration = () => {
   const onSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
+      
       await signUp(email, password, login);
-
-      if (user) {
-        navigate(`/profile/${user.login}`);
-      }
 
     } catch (error: any) {
         console.error("Ошибка при регистрации", error.message);
@@ -49,9 +46,9 @@ const Registration = () => {
 
   useEffect(() => {
     if (user) {
-      navigate(`/profile/${user.login}`);
+      navigate(`/profile/${user.user_metadata.login}`);
     }
-  }, [user]);
+  }, [user, navigate]);
   
   return (
     <section className={styles.registration}>

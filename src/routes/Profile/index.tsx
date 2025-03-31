@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import styles from "./Profile.module.scss";
-import { isUserProfile } from "@services/userAuth";
-import { useEffect, useState } from "react";
+import { findUserInDatabase } from "@services/userAuth";
+import { useEffect } from "react";
 import { useUserStore } from "@store/userStore";
 import ProfileAvatar from "@components/ui/ProfileAvatar";
 
@@ -9,22 +9,26 @@ import ProfileAvatar from "@components/ui/ProfileAvatar";
 const Profile = () => {
 
   const { id } = useParams<string>()
-  const otherUser = useUserStore((state) => state.otherUser);
-  const user = useUserStore((state) => state.user);
+
+  const userProfile = useUserStore((state) => state.userProfile);
+  const setUserProfile = useUserStore((state) => state.setUserProfile);
+
 
 
   useEffect(() => {
     if (!id) return;
-    isUserProfile(id);
+
+    const findUser = async () => {
+      const result = await findUserInDatabase(id);
+      if (result) return setUserProfile(result)
+    }
+
+    findUser()
   }, [id]);
 
   const renderAvatar = () => {
-    if (otherUser && otherUser.avatar_url) {
-      return <ProfileAvatar avatarUrl={otherUser.avatar_url} />;
-    }
-
-    if (user && user.avatar_url) {
-      return <ProfileAvatar avatarUrl={user.avatar_url} />;
+    if (userProfile) {
+      return <ProfileAvatar avatarUrl={userProfile.avatar_url} />;
     }
 
     return <ProfileAvatar />;
@@ -32,7 +36,7 @@ const Profile = () => {
 
   return (
     <section className={styles.profile}>
-      <h1 className={styles.profile__title}>{otherUser ? otherUser.login : user.login}</h1>
+      <h1 className={styles.profile__title}>{userProfile && userProfile.login}</h1>
       <div className={styles.profile__info}>
         <div className={styles.profile__avatar}>
           {renderAvatar()}
