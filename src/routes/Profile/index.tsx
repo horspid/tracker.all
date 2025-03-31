@@ -5,34 +5,40 @@ import { useEffect, useState } from "react";
 import { useUserStore } from "@store/userStore";
 import ProfileAvatar from "@components/ui/ProfileAvatar";
 
-
 const Profile = () => {
-
-  const { login } = useParams<string>()
+  const { login } = useParams<string>();
 
   const userProfile = useUserStore((state) => state.userProfile);
   const setUserProfile = useUserStore((state) => state.setUserProfile);
 
-  const [isCurrentUser, setIsCurrentUser] = useState<boolean>(true)
-  
+  const [isCurrentUser, setIsCurrentUser] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
   useEffect(() => {
     if (!login) return;
 
-    const findUser = async () => {
-      const result = await findUserInDatabase(login);
-      if (result) return setUserProfile(result);
-    }
+    const fetchUserData = async () => {
+      try {
+        setIsLoading(true);
 
+        const [profile, isUser] = await Promise.all([
+          findUserInDatabase(login),
+          isUserPage(login),
+        ]);
 
-    const checkUser = async () => {
-      const result = await isUserPage(login)
-      result ? setIsCurrentUser(result) : setIsCurrentUser(false)
-    }
+        if (profile) {
+          setUserProfile(profile);
+        }
+        setIsCurrentUser(isUser);
+      } catch (error) {
+        console.error("Пользователь не найден", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-    findUser()
-    checkUser()
-
-  }, [login]);
+    fetchUserData();
+  }, [login, setUserProfile]);
 
   const renderAvatar = () => {
     if (userProfile) {
@@ -42,18 +48,20 @@ const Profile = () => {
     return <ProfileAvatar />;
   };
 
-  console.log(isCurrentUser)
+  if (isLoading) {
+    return <div className={styles.profile}>Loading...</div>;
+  }
 
   return (
     <section className={styles.profile}>
-      <h1 className={styles.profile__title}>{userProfile && userProfile.login}</h1>
+      <h1 className={styles.profile__title}>
+        {userProfile && userProfile.login}
+      </h1>
       <div className={styles.profile__info}>
-        <div className={styles.profile__avatar}>
-          {renderAvatar()}
-        </div>
+        <div className={styles.profile__avatar}>{renderAvatar()}</div>
       </div>
     </section>
-  )
+  );
 };
 
 export default Profile;
