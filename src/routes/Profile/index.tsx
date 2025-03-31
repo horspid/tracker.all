@@ -1,30 +1,38 @@
 import { useParams } from "react-router";
 import styles from "./Profile.module.scss";
-import { findUserInDatabase } from "@services/userAuth";
-import { useEffect } from "react";
+import { findUserInDatabase, isUserPage } from "@services/userAuth";
+import { useEffect, useState } from "react";
 import { useUserStore } from "@store/userStore";
 import ProfileAvatar from "@components/ui/ProfileAvatar";
 
 
 const Profile = () => {
 
-  const { id } = useParams<string>()
+  const { login } = useParams<string>()
 
   const userProfile = useUserStore((state) => state.userProfile);
   const setUserProfile = useUserStore((state) => state.setUserProfile);
 
-
-
+  const [isCurrentUser, setIsCurrentUser] = useState<boolean>(true)
+  
   useEffect(() => {
-    if (!id) return;
+    if (!login) return;
 
     const findUser = async () => {
-      const result = await findUserInDatabase(id);
-      if (result) return setUserProfile(result)
+      const result = await findUserInDatabase(login);
+      if (result) return setUserProfile(result);
+    }
+
+
+    const checkUser = async () => {
+      const result = await isUserPage(login)
+      result ? setIsCurrentUser(result) : setIsCurrentUser(false)
     }
 
     findUser()
-  }, [id]);
+    checkUser()
+
+  }, [login]);
 
   const renderAvatar = () => {
     if (userProfile) {
@@ -33,6 +41,8 @@ const Profile = () => {
 
     return <ProfileAvatar />;
   };
+
+  console.log(isCurrentUser)
 
   return (
     <section className={styles.profile}>

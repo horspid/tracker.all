@@ -1,6 +1,6 @@
 import SignICO from '@assets/images/icons/sign.svg?react'
 import styles from './Sign.module.scss'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { logout } from '@services/userAuth'
 
 interface SignProps{
@@ -9,11 +9,15 @@ interface SignProps{
     isLoggedIn: boolean
 }
 
+
 const Sign = ({ className, name, isLoggedIn }: SignProps) => {
+
+    const navigate = useNavigate();
 
     const onClickHandler = async () => {
         if (isLoggedIn) {
             await logout();
+            navigate(`/login`);
         }
     }
 

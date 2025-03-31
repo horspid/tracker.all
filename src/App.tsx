@@ -39,7 +39,7 @@ function App() {
           <Route path="soon" element={<Ratings />} />
           <Route path="movies/:id" element={<MoviePage />} />
           <Route path="categories/:name" element={<CategoryPage />} />
-          <Route path="profile/:id" element={<Profile />} />
+          <Route path="profile/:login" element={<Profile />} />
           <Route path="login" element={<Login />} />
           <Route path="registration" element={<Index />} />
         </Route>

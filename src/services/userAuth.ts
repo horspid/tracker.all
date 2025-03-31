@@ -143,10 +143,10 @@ export const checkSession = async () => {
     setSession(data.session);
 
     const result = await findUserInDatabase(data.session.user.user_metadata.login);
+
     if (result) {
       setUserProfile(result)
     }
-
   }
 };
 
