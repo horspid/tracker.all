@@ -17,10 +17,10 @@ const ProductCard = ({ data }: ProductCardProps) => {
   const parsedRatingKp = data.rating && data.rating.kp?.toFixed(1);
 
   const viewImage = () => {
-    if (data.poster?.previewUrl) {
+    if (data.poster.previewUrl) {
       return (
         <img
-          src={data.poster?.previewUrl || ""}
+          src={data.poster.previewUrl || ""}
           alt="card"
           className={styles.product_card__img}
         />
@@ -44,7 +44,6 @@ const ProductCard = ({ data }: ProductCardProps) => {
         <h2 className={styles.product_card__title}>
           {data.name || data.alternativeName}
         </h2>
-        <UserRating />
       </div>
     </article>
   );

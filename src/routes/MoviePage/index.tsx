@@ -57,10 +57,10 @@ const MoviePage = () => {
 
   const viewImage = () => {
     if (data) {
-      if (data.movie.poster?.previewUrl) {
+      if (data.movie.poster.previewUrl) {
         return (
           <img
-            src={data.movie.poster?.previewUrl || ""}
+            src={data.movie.poster.previewUrl || ""}
             alt="poster"
             className={styles.movie__img}
           />
@@ -91,7 +91,7 @@ const MoviePage = () => {
               </div>
             </div>
             <div className={styles.movie__content}>
-              <Bookmark />
+              <Bookmark id = {id ?? ''}/>
               <MovieTabs data={data.movie} />
             </div>
           </div>

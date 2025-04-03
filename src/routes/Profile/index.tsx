@@ -40,26 +40,34 @@ const Profile = () => {
     fetchUserData();
   }, [login, setUserProfile]);
 
-  const renderAvatar = () => {
-    if (userProfile) {
-      return <ProfileAvatar avatarUrl={userProfile.avatar_url} />;
-    }
-
-    return <ProfileAvatar />;
-  };
-
   if (isLoading) {
     return <div className={styles.profile}>Loading...</div>;
   }
 
   return (
     <section className={styles.profile}>
-      <h1 className={styles.profile__title}>
-        {userProfile && userProfile.login}
-      </h1>
-      <div className={styles.profile__info}>
-        <div className={styles.profile__avatar}>{renderAvatar()}</div>
-      </div>
+      {userProfile && (
+        <>
+          <h1 className={styles.profile__title}>
+            {userProfile.login}
+          </h1>
+          <div className={styles.profile__info}>
+            <div className={styles.profile__avatar}>
+              <ProfileAvatar avatarUrl={userProfile.avatar_url} isCurrentUser={isCurrentUser}/>
+            </div>
+            <div className={styles.profile__watched}>
+              <div className={styles.profile__watched_item}>
+                <button className={styles.profile__button}>films</button>
+                <p className={styles.profile__count}>{userProfile.total_movies}</p>
+              </div>
+              <div className={styles.profile__watched_item}>
+                <button className={styles.profile__button}>serials</button>
+                <p className={styles.profile__count}>{userProfile.total_serials}</p>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </section>
   );
 };

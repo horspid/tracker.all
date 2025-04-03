@@ -70,7 +70,7 @@ export const signUp = async (
     if (error) throw new Error(error.message);
 
     if (data.user && data.session) {
-      await insertUserToDatabase({ user_id: data.user.id, login, email });
+      await insertUserToDatabase({ user_id: data.user.id, login, email, total_movies: 0, total_serials: 0 });
 
       setUser(data.user);
       setSession(data.session);
@@ -146,37 +146,25 @@ export const checkSession = async () => {
 };
 
 export const changeUserField = async (fields: { [key: string]: any }) => {
-  const { data, error: sessionError } = await supabase.auth.getSession();
+  const { data, error: sessionError } = await supabase.auth.getUser();
 
   if (sessionError) {
-    console.error("Error fetching session:", sessionError.message);
+    console.error("Пользователь не авторизован", sessionError.message);
     return null;
   }
 
-  if (!data.session) {
-    console.error("No active session found.");
-    return null;
-  }
+  const login = data.user.user_metadata.login;
 
-  // Получаем ID пользователя
-  const userId = data.session.user.id;
-
-  // Проверяем, есть ли что-то для обновления
   if (!fields || Object.keys(fields).length === 0) {
     console.error("No fields to update.");
     return null;
   }
 
-  // Логируем переданные поля и userId
-  console.log("Fields to update:", fields);
-  console.log("User ID:", userId);
-
-  // Выполняем обновление
   try {
-    const { data: updatedData, error } = await supabase
-      .from("users") // указываем имя таблицы
-      .update(fields) // передаем объект с полями для обновления
-      .eq("user_id", userId) // обновляем пользователя по его ID
+    const { error } = await supabase
+      .from("users")
+      .update(fields) 
+      .eq("login", login)
       .select();
 
     if (error) {
@@ -184,8 +172,6 @@ export const changeUserField = async (fields: { [key: string]: any }) => {
       return null;
     }
 
-    console.log("User fields updated successfully:", updatedData);
-    return updatedData; // Возвращаем обновленные данные, чтобы их увидеть
   } catch (err) {
     console.error("Unexpected error:", err);
     return null;

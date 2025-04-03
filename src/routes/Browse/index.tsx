@@ -17,7 +17,6 @@ const Browse = () => {
     getData();
   }, []);
 
-  console.log(data)
   return (
     <section className={styles.browse}>
       <div className={styles.browse__content}>

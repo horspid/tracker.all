@@ -4,9 +4,10 @@ import { changeUserField } from "@services/userAuth";
 
 interface ProfileAvatarProps {
   avatarUrl?: string;
+  isCurrentUser: boolean;
 }
 
-const ProfileAvatar = ({ avatarUrl }: ProfileAvatarProps) => {
+const ProfileAvatar = ({ avatarUrl, isCurrentUser }: ProfileAvatarProps) => {
   const [showInput, setShowInput] = useState<boolean>(false);
   const [url, setUrl] = useState<string>(avatarUrl || "");
   const [inputValue, setInputValue] = useState<string>(avatarUrl || "");
@@ -46,20 +47,17 @@ const ProfileAvatar = ({ avatarUrl }: ProfileAvatarProps) => {
   useEffect(() => {
     setUrl(avatarUrl || "");
     setInputValue(avatarUrl || "");
-  }, [avatarUrl]);
+  }, [avatarUrl, isCurrentUser]);
 
   return (
     <div className={styles.avatar}>
-        {url ? (
-            <div className={styles.avatar__block} onClick={handleAvatarClick} style={{ backgroundImage: `url(${url})`}}>
-                <div className={styles.avatar__plus}>+</div>
-            </div>
-        ) : (
-            <div className={styles.avatar__block} onClick={handleAvatarClick}>
-                <div className={styles.avatar__plus}>+</div>
-            </div>
-        )}
-
+      <div
+        className={styles.avatar__block}
+        onClick={() => isCurrentUser && handleAvatarClick()}
+        style={url ? { backgroundImage: `url(${url})` } : {}}
+      >
+        {isCurrentUser && <div className={styles.avatar__plus}>+</div>}
+      </div>
         {showInput && (
         <div className={styles.avatar__form}>
             {error && <p className={styles.avatar__error}>{error}</p>}
