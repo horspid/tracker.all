@@ -1,5 +1,4 @@
 import styles from "./ProductCard.module.scss";
-import UserRating from "@components/ui/UserRating";
 import { useNavigate } from "react-router";
 import { cardPreview } from "@interfaces/movies.ts";
 

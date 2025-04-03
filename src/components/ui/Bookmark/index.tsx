@@ -37,6 +37,8 @@ const Bookmark = ({ id }: BookmarkProps) => {
 
       if (result) {
         setActive(true);
+      } else {
+        setActive(false);
       }
     };
 
