@@ -11,56 +11,67 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { signUp } from "@services/userAuth";
 import { useUserStore } from "@store/userStore";
-import { DatabaseUser } from "@interfaces/user";
 
 const Registration = () => {
-
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [login, setLogin] = useState<string>("");
 
-
   const navigate = useNavigate();
-  const user: DatabaseUser = useUserStore((state) => state.user);
-
+  const user = useUserStore((state) => state.user);
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
-  
     const { name, value } = event.target;
 
-    if (name === 'email') setEmail(value)
-    if (name === 'password') setPassword(value)
-    if (name === 'login') setLogin(value)
-  }
+    if (name === "email") setEmail(value);
+    if (name === "password") setPassword(value);
+    if (name === "login") setLogin(value);
+  };
 
   const onSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       await signUp(email, password, login);
-
-      if (user) {
-        navigate(`/profile/${user.login}`);
-      }
-
     } catch (error: any) {
-        console.error("Ошибка при регистрации", error.message);
-      }
-  }
+      console.error("Ошибка при регистрации", error.message);
+    }
+  };
 
   useEffect(() => {
     if (user) {
-      navigate(`/profile/${user.login}`);
+      navigate(`/profile/${user.user_metadata.login}`);
     }
-  }, [user]);
-  
+  }, [user, navigate]);
+
   return (
     <section className={styles.registration}>
       <form onSubmit={onSubmitHandler}>
         <h1>Registration</h1>
         <div className={styles.registration__inputs}>
-          <Input Icon={UserICO} placeholder="Email" type='email' value={email} name='email' onChange={(event) => onChangeHandler(event)}/>
-          <Input Icon={PasswordICO} placeholder="Password" type="password" value={password} name='password' onChange={(event) => onChangeHandler(event)} />
-          <Input Icon={PasswordICO} placeholder="Login" type="text" value={login} name='login' onChange={(event) => onChangeHandler(event)} />
+          <Input
+            Icon={UserICO}
+            placeholder="Email"
+            type="email"
+            value={email}
+            name="email"
+            onChange={(event) => onChangeHandler(event)}
+          />
+          <Input
+            Icon={PasswordICO}
+            placeholder="Password"
+            type="password"
+            value={password}
+            name="password"
+            onChange={(event) => onChangeHandler(event)}
+          />
+          <Input
+            Icon={PasswordICO}
+            placeholder="Login"
+            type="text"
+            value={login}
+            name="login"
+            onChange={(event) => onChangeHandler(event)}
+          />
         </div>
         <div className={styles.registration__oauth}>
           <VkICO />

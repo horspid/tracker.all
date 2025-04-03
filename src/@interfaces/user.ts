@@ -4,5 +4,5 @@ export interface DatabaseUser {
     login: string;
     avatar_url?: string;
     total_movies?: number;
-    total_series?: number;
+    total_serials?: number;
 } 
