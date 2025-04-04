@@ -1,4 +1,11 @@
 import { supabase } from "@config/database";
+import { cardPreview } from "@interfaces/movies";
+import { WatchlistDatabase } from "@interfaces/wathlist";
+import { options } from "@config/config";
+
+interface MovieResponse {
+  docs: cardPreview[];
+}
 
 export const addToWatchlist = async (movieId: string) => {
   const { data: userData, error: userError } = await supabase.auth.getUser();
@@ -35,7 +42,7 @@ export const deleteFromWatchlist = async (movieId: string) => {
   }
 };
 
-export const fetchMovie = async (movieId: string) => {
+export const isMovieInDatabase = async (movieId: string) => {
   const { data: userData, error: userError } = await supabase.auth.getUser();
   if (userError || !userData.user) {
     console.log("Пользователь не авторизован");
@@ -55,3 +62,52 @@ export const fetchMovie = async (movieId: string) => {
   }
   return !!data;
 };
+
+export const fetchMovie = async () => {
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+
+  if (userError || !userData.user) {
+    console.log("Пользователь не авторизован");
+  }
+
+  if (userData.user) {
+    const { data: movieData, error } = await supabase
+      .from("watchlist")
+      .select<'*', WatchlistDatabase>()
+      .eq("user_id", userData.user.id)
+
+    if (error) {
+      console.log("Ошибка при получении фильма:", error.message);
+    }
+
+    if (movieData) {
+      const result = movieData.map((item) => item.movie_id)
+      
+      const fetchedMovies = await fetchMovieFromIds(result)
+      return fetchedMovies;
+
+    } else return [];
+  }
+}
+
+const fetchMovieFromIds = async (arr: number[]) => {
+  try {
+    const url = new URL(
+      `https://api.kinopoisk.dev/v1.4/movie`,
+    );
+
+    arr.forEach(id => url.searchParams.append('id', id.toString()));
+
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+      throw new Error(`Ошибка HTTP: ${response.status}`);
+    }
+
+    const data: MovieResponse = await response.json();
+    return data.docs;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
