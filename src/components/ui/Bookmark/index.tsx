@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Bookmark2ICO from "@assets/images/icons/bookmark2.svg?react";
 import styles from "./Bookmark.module.scss";
 import { useUserStore } from "@store/userStore";
-import { addToWatchlist, deleteFromWatchlist, fetchMovie } from "@services/userFavorites";
+import { addToWatchlist, deleteFromWatchlist, isMovieInDatabase } from "@services/userFavorites";
 
 interface BookmarkProps {
   id: string;
@@ -33,7 +33,7 @@ const Bookmark = ({ id }: BookmarkProps) => {
 
   useEffect(() => {
     const checkIfMovieInWatchlist = async () => {
-      const result = await fetchMovie(id);
+      const result = await isMovieInDatabase(id);
 
       if (result) {
         setActive(true);
