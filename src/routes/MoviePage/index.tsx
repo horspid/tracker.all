@@ -5,6 +5,8 @@ import { useParams } from "react-router";
 import Bookmark from "@components/ui/Bookmark";
 import MovieTabs from "@components/layout/MovieTabs";
 import { cardDetails } from "@interfaces/movies.ts";
+import UserRating from "@components/ui/UserRating";
+import { useUserStore } from "@store/userStore";
 
 interface Image {
   url: string | null;
@@ -69,13 +71,18 @@ const MoviePage = () => {
     }
   };
 
+
+
   return (
     <section className={styles.movie}>
       {data && (
         <>
-          <h1 className={styles.movie__heading}>
-            {data.movie.name || data.movie.alternativeName}
-          </h1>
+          <div className={styles.movie__heading}>
+            <h1 className={styles.movie__title}>
+              {data.movie.name || data.movie.alternativeName}
+            </h1>
+            <UserRating movieId={data.movie.id}/>
+          </div>
           <div className={styles.movie__container}>
             <div className={styles.movie__images}>
               {viewImage()}

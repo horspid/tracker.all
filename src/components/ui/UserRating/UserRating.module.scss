@@ -1,17 +1,23 @@
-.user_rating {
+.rating {
   display: flex;
   align-items: center;
+  cursor: pointer;
   background-color: $text-tertiary;
   border-radius: 20px;
-  padding: 5px 10px;
+  padding: 10px 15px;
+  gap: 20px;
 
-  &__label {
+  &__rate {
+    font-size: $fz-medium;
+    color: $text-secondary;
+  }
+  &__value {
     margin-left: 5px;
-    font-size: 16px;
+    font-size: $fz-medium;
     color: $text-primary;
   }
 
-  &__ico_active path{
+  &__ico path{
     fill: $color-primary;
     stroke: $color-primary;
   }

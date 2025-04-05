@@ -90,7 +90,7 @@ export const fetchMovie = async () => {
   }
 }
 
-const fetchMovieFromIds = async (arr: number[]) => {
+export const fetchMovieFromIds = async (arr: number[]) => {
   try {
     const url = new URL(
       `https://api.kinopoisk.dev/v1.4/movie`,

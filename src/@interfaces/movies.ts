@@ -26,6 +26,13 @@ export interface cardDetails extends cardPreview {
   similarMovies: cardPreview[];
 }
 
+export interface UserRatings {
+  id: number;
+  movie_id: number;
+  user_id: string;
+  user_rating: number;
+}
+
 interface Fees {
   world: FeesWorld;
 }
@@ -57,3 +64,4 @@ interface Rating {
   imdb: number | null;
   kp: number | null;
 }
+
