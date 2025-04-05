@@ -12,6 +12,7 @@ import Login from "@routes/Authorization/Login";
 import Index from "@routes/Authorization/Register";
 import { useEffect, useState } from "react";
 import { checkSession } from "@services/userAuth";
+import { fetchUserRatings } from "@services/userRatings";
 
 function App() {
 
@@ -20,6 +21,8 @@ function App() {
   useEffect(() => {
     const init = async () => {
       await checkSession();
+      await fetchUserRatings();
+
       setLoading(false);
     };
 
@@ -35,8 +38,8 @@ function App() {
           <Route index element={<Browse />} />
           <Route path="categories" element={<Categories />} />
           <Route path="watchlist" element={<Watchlist />} />
-          <Route path="ratings" element={<Soon />} />
-          <Route path="soon" element={<Ratings />} />
+          <Route path="ratings" element={<Ratings />} />
+          <Route path="soon" element={<Soon />} />
           <Route path="movies/:id" element={<MoviePage />} />
           <Route path="categories/:name" element={<CategoryPage />} />
           <Route path="profile/:login" element={<Profile />} />

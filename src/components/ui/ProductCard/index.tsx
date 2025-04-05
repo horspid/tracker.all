@@ -1,17 +1,21 @@
 import styles from "./ProductCard.module.scss";
 import { useNavigate } from "react-router";
 import { cardPreview } from "@interfaces/movies.ts";
+import { useUserStore } from "@store/userStore";
 
 interface ProductCardProps {
   data: cardPreview;
 }
 
 const ProductCard = ({ data }: ProductCardProps) => {
+  const ratings = useUserStore((state) => state.userRatings);
   const navigate = useNavigate();
 
   const navigateHandle = () => {
     navigate(`/movies/${data.id}`);
   };
+
+  const userRate = ratings.find((item) => item.movie_id === data.id)
 
   const parsedRatingKp = data.rating && data.rating.kp?.toFixed(1);
 
@@ -33,9 +37,11 @@ const ProductCard = ({ data }: ProductCardProps) => {
         {viewImage()}
         {data.rating && (
           <div className={styles.product_card__rate}>
-            <span>
-              {data.rating.imdb !== 0 ? data.rating.imdb : parsedRatingKp}
-            </span>
+            {userRate && userRate.user_rating ? <span>{userRate.user_rating}</span> : (
+               <span>
+               {data.rating.imdb !== 0 ? data.rating.imdb : parsedRatingKp}
+             </span>
+            )}
           </div>
         )}
       </div>
