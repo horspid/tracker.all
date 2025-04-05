@@ -6,7 +6,6 @@ import Bookmark from "@components/ui/Bookmark";
 import MovieTabs from "@components/layout/MovieTabs";
 import { cardDetails } from "@interfaces/movies.ts";
 import UserRating from "@components/ui/UserRating";
-import { useUserStore } from "@store/userStore";
 
 interface Image {
   url: string | null;

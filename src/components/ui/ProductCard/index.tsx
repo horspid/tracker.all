@@ -2,7 +2,6 @@ import styles from "./ProductCard.module.scss";
 import { useNavigate } from "react-router";
 import { cardPreview } from "@interfaces/movies.ts";
 import { useUserStore } from "@store/userStore";
-import UserRating from "../UserRating";
 
 interface ProductCardProps {
   data: cardPreview;
