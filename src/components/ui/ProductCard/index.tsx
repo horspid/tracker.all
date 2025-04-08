@@ -31,21 +31,31 @@ const ProductCard = ({ data }: ProductCardProps) => {
     } else return <div className={styles.product_card__skeleton}></div>;
   };
 
+  const checkRating = () => {
+    if (userRate && userRate.user_rating) {
+      return (
+        <div className={styles.product_card__rate}>
+          <span>{userRate.user_rating}</span>
+        </div>
+      );
+    } else if (data.rating) {      
+      if (data.rating.kp !== 0 || data.rating.imdb !== 0) {
+        return (
+          <div className={styles.product_card__rate}>
+            <span>{data.rating.kp && data.rating.kp.toFixed(1) || data.rating.imdb}</span>
+          </div>
+        );
+      }
+    }
+    
+    return null;
+  };
+
   return (
     <article className={styles.product_card} onClick={navigateHandle}>
       <div className={styles.product_card__image}>
         {viewImage()}
-        {data.rating && (
-          <div className={styles.product_card__rate}>
-            {userRate && userRate.user_rating ? (
-              <span>{userRate.user_rating}</span>
-            ) : (
-              <span>
-                {data.rating.imdb !== 0 ? data.rating.imdb : parsedRatingKp}
-              </span>
-            )}
-          </div>
-        )}
+        {checkRating()}
       </div>
       <div className={styles.product_card__stats}>
         <h2 className={styles.product_card__title}>

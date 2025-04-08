@@ -17,7 +17,7 @@ export const fetchMoviesByMonth = async (month: number) => {
             "https://api.kinopoisk.dev/v1.4/movie",
         );
 
-        url.searchParams.append('premiere.world', `${firstDay}-${lastDay}`)
+        url.searchParams.append('premiere.russia', `${firstDay}-${lastDay}`)
         url.searchParams.append('limit', '20')
 
         const response = await fetch(url, options);
