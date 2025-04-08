@@ -29,7 +29,8 @@ const Ratings = () => {
   }
 
   if (userRatings === null) {
-    return navigate(`/login`)
+    navigate(`/login`)
+    return null
   }
 
   if (userRatings.length === 0) {

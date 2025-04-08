@@ -9,7 +9,7 @@ import { useNavigate } from "react-router";
 
 const Watchlist = () => {
   const [loading, setLoading] = useState(true);
-  const [watchlist, setWatchlist] = useState<cardPreview[] | null>([]);
+  const [watchlist, setWatchlist] = useState<cardPreview[] | null | []>([]);
 
   const navigate = useNavigate();
 
@@ -27,7 +27,8 @@ const Watchlist = () => {
   if (loading) return <p>Загрузка...</p>;
 
   if (watchlist === null) {
-    return navigate(`/login`)
+    navigate(`/login`)
+    return null
   }
 
   if (watchlist.length === 0) {
