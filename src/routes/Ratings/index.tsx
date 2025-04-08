@@ -5,11 +5,14 @@ import ProductCard from "@components/ui/ProductCard";
 import { fetchUserRatings } from "@services/userRatings";
 import { cardPreview } from "@interfaces/movies";
 import { useUserStore } from "@store/userStore.ts";
+import { useNavigate } from "react-router";
 
 const Ratings = () => {
   const [loading, setLoading] = useState(true);
   const [userRated, setUserRated] = useState<cardPreview[] | null>([]);
   const { userRatings } = useUserStore.getState();
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const init = async () => {
@@ -26,13 +29,7 @@ const Ratings = () => {
   }
 
   if (userRatings === null) {
-    return (
-      <section className={styles.ratings_error}>
-        <h1 className={styles.ratings_error__title}>
-          Что-бы смотреть ratings, необходимо авторизоваться :)
-        </h1>
-      </section>
-    );
+    return navigate(`/login`)
   }
 
   if (userRatings.length === 0) {

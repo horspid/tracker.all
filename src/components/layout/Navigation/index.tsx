@@ -5,6 +5,7 @@ import CalendarICO from "@assets/images/icons/calendar.svg?react";
 import CategoryICO from "@assets/images/icons/category.svg?react";
 import FavoriteICO from "@assets/images/icons/favorite.svg?react";
 import RatingICO from "@assets/images/icons/rating.svg?react";
+import { useUserStore } from "@store/userStore";
 import { NavLink } from "react-router";
 
 const menuItems = [
@@ -41,22 +42,31 @@ const menuItems = [
 ];
 
 const Navigation = () => {
+  const user = useUserStore((state) => state.user);
+
   return (
     <nav className={styles.menu}>
       <ul>
-        {menuItems.map(({ link, name, iconClassName, Icon }, index) => (
-          <li className={styles.menu__item} key={index}>
-            <NavLink
-              to={link}
-              className={({ isActive }) =>
-                isActive ? styles.menu__item_active : ""
-              }
-            >
-              <Icon className={iconClassName} />
-              <span>{name}</span>
-            </NavLink>
-          </li>
-        ))}
+        {menuItems.map(({ link, name, iconClassName, Icon }, index) => {
+          
+          if (!user && (link === "/watchlist" || link === "/ratings")) {
+            return null;
+          }
+
+          return (
+            <li className={styles.menu__item} key={index}>
+              <NavLink
+                to={link}
+                className={({ isActive }) =>
+                  isActive ? styles.menu__item_active : ""
+                }
+              >
+                <Icon className={iconClassName} />
+                <span>{name}</span>
+              </NavLink>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );

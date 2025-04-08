@@ -60,7 +60,7 @@ const MoviePage = () => {
 
   const viewImage = () => {
     if (data) {
-      if (data.movie.poster.previewUrl) {
+      if (data.movie.poster && data.movie.poster.previewUrl) {
         return (
           <img
             src={data.movie.poster.previewUrl || ""}

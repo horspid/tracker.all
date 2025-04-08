@@ -20,7 +20,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
   const parsedRatingKp = data.rating && data.rating.kp?.toFixed(1);
 
   const viewImage = () => {
-    if (data.poster.previewUrl) {
+    if (data.poster && data.poster.previewUrl) {
       return (
         <img
           src={data.poster.previewUrl || ""}

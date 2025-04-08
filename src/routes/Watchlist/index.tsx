@@ -5,10 +5,13 @@ import WatchlistICO from "@assets/images/icons/favorite.svg?react";
 import { cardPreview } from "@interfaces/movies";
 import { fetchMovie } from "@services/userFavorites";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 const Watchlist = () => {
   const [loading, setLoading] = useState(true);
   const [watchlist, setWatchlist] = useState<cardPreview[] | null>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const init = async () => {
@@ -24,13 +27,7 @@ const Watchlist = () => {
   if (loading) return <p>Загрузка...</p>;
 
   if (watchlist === null) {
-    return (
-      <section className={styles.ratings_error}>
-        <h1 className={styles.ratings_error__title}>
-          Что-бы смотреть watchlist, необходимо авторизоваться :)
-        </h1>
-      </section>
-    );
+    return navigate(`/login`)
   }
 
   if (watchlist.length === 0) {

@@ -12,6 +12,7 @@ export interface cardPreview {
   rating?: Rating | null;
   poster: Poster;
   type: MovieType;
+  backdrop: Poster;
 }
 
 export interface cardDetails extends cardPreview {
