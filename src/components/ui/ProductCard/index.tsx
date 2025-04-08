@@ -17,8 +17,6 @@ const ProductCard = ({ data }: ProductCardProps) => {
 
   const userRate = ratings && ratings.find((item) => item.movie_id === data.id);
 
-  const parsedRatingKp = data.rating && data.rating.kp?.toFixed(1);
-
   const viewImage = () => {
     if (data.poster && data.poster.previewUrl) {
       return (
