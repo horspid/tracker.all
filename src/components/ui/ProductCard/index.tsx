@@ -15,7 +15,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
     navigate(`/movies/${data.id}`);
   };
 
-  const userRate = ratings.find((item) => item.movie_id === data.id)
+  const userRate = ratings && ratings.find((item) => item.movie_id === data.id);
 
   const parsedRatingKp = data.rating && data.rating.kp?.toFixed(1);
 
@@ -37,10 +37,12 @@ const ProductCard = ({ data }: ProductCardProps) => {
         {viewImage()}
         {data.rating && (
           <div className={styles.product_card__rate}>
-            {userRate && userRate.user_rating ? <span>{userRate.user_rating}</span> : (
-               <span>
-               {data.rating.imdb !== 0 ? data.rating.imdb : parsedRatingKp}
-             </span>
+            {userRate && userRate.user_rating ? (
+              <span>{userRate.user_rating}</span>
+            ) : (
+              <span>
+                {data.rating.imdb !== 0 ? data.rating.imdb : parsedRatingKp}
+              </span>
             )}
           </div>
         )}

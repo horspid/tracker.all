@@ -11,15 +11,14 @@ const insertUserToDatabase = async (data: DatabaseUser): Promise<void> => {
 };
 
 export const isUserPage = async (login: string): Promise<boolean> => {
-  const { data, error } = await supabase.auth.getUser();
+  const { user } = useUserStore.getState();
 
-  if (error) {
+  if (!user) {
+    console.log("Пользователь не авторизован");
     return false;
   }
 
-  if (data) {
-    return data.user?.user_metadata.login === login;
-  } else return false;
+  return user.user_metadata.login === login;
 };
 
 export const findUserInDatabase = async (login: string) => {
@@ -45,7 +44,7 @@ export const findUserInDatabase = async (login: string) => {
     }
   } catch (error) {
     console.log("Пользователь не найден", error);
-    throw new Error(`Error fetching user from 'users' table: ${error}`);
+    throw new Error(`Пользователь не найден: ${error}`);
   }
 };
 
@@ -70,7 +69,13 @@ export const signUp = async (
     if (error) throw new Error(error.message);
 
     if (data.user && data.session) {
-      await insertUserToDatabase({ user_id: data.user.id, login, email, total_movies: 0, total_serials: 0 });
+      await insertUserToDatabase({
+        user_id: data.user.id,
+        login,
+        email,
+        total_movies: 0,
+        total_serials: 0,
+      });
 
       setUser(data.user);
       setSession(data.session);
@@ -146,14 +151,14 @@ export const checkSession = async () => {
 };
 
 export const changeUserField = async (fields: { [key: string]: any }) => {
-  const { data, error: sessionError } = await supabase.auth.getUser();
+  const { user } = useUserStore.getState();
 
-  if (sessionError) {
-    console.error("Пользователь не авторизован", sessionError.message);
-    return null;
+  if (!user) {
+    console.log("Пользователь не авторизован");
+    return;
   }
 
-  const login = data.user.user_metadata.login;
+  const login = user.user_metadata.login;
 
   if (!fields || Object.keys(fields).length === 0) {
     console.error("No fields to update.");
@@ -163,7 +168,7 @@ export const changeUserField = async (fields: { [key: string]: any }) => {
   try {
     const { error } = await supabase
       .from("users")
-      .update(fields) 
+      .update(fields)
       .eq("login", login)
       .select();
 
@@ -171,7 +176,6 @@ export const changeUserField = async (fields: { [key: string]: any }) => {
       console.error("Error updating user fields:", error.message);
       return null;
     }
-
   } catch (err) {
     console.error("Unexpected error:", err);
     return null;

@@ -6,6 +6,7 @@ import Bookmark from "@components/ui/Bookmark";
 import MovieTabs from "@components/layout/MovieTabs";
 import { cardDetails } from "@interfaces/movies.ts";
 import UserRating from "@components/ui/UserRating";
+import { useUserStore } from "@store/userStore.ts";
 
 interface Image {
   url: string | null;
@@ -24,6 +25,7 @@ interface MovieData {
 const MoviePage = () => {
   const { id } = useParams<string>();
   const [data, setData] = useState<MovieData>();
+  const user = useUserStore((state) => state.user);
 
   const fetchMovieDetails = async () => {
     try {
@@ -70,8 +72,6 @@ const MoviePage = () => {
     }
   };
 
-
-
   return (
     <section className={styles.movie}>
       {data && (
@@ -80,7 +80,7 @@ const MoviePage = () => {
             <h1 className={styles.movie__title}>
               {data.movie.name || data.movie.alternativeName}
             </h1>
-            <UserRating movieId={data.movie.id}/>
+            {user && <UserRating movieId={data.movie.id} />}
           </div>
           <div className={styles.movie__container}>
             <div className={styles.movie__images}>
@@ -97,7 +97,7 @@ const MoviePage = () => {
               </div>
             </div>
             <div className={styles.movie__content}>
-              <Bookmark id = {id ?? ''}/>
+              <Bookmark id={id ?? ""} />
               <MovieTabs data={data.movie} />
             </div>
           </div>

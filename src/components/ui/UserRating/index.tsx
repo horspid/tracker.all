@@ -5,60 +5,87 @@ import { fetchUserRatings, insertRatedMovie } from "@services/userRatings";
 import { useUserStore } from "@store/userStore";
 import { UserRatings } from "@interfaces/movies";
 
-const user_rating = [1,2,3,4,5,6,7,8,9,10]
+const user_rating = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 interface UserRatingProps {
   movieId: number;
 }
 
 const UserRating = ({ movieId }: UserRatingProps) => {
+  const [active, setActive] = useState<boolean>(false);
+  const [userRating, setUserRating] = useState<UserRatings>();
 
-  const [active, setActive] = useState<boolean>(false)
-  const [isUserHaveRate, setIsUserHaveRate] = useState<boolean>(false)
-  const [userRating, setUserRating] = useState<UserRatings>()
-
-  const ratings = useUserStore((state) => state.userRatings);
+  const userRatings = useUserStore((state) => state.userRatings);
 
   const onClickHandler = () => {
-    setActive(!active)
-    console.log(active)
-  }
+    setActive(!active);
+    console.log(active);
+  };
 
   const onClickRateHandler = async (rate: number, movieId: number) => {
     try {
       if (active) {
-
-        await insertRatedMovie(rate, movieId)
+        await insertRatedMovie(rate, movieId);
         await fetchUserRatings();
 
-        setActive(false)
+        setActive(false);
       }
     } catch (error) {
-      console.log(error)
-      setIsUserHaveRate(false)
+      console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
-    const userRate = ratings.find((item) => item.movie_id === movieId)
-    if (userRate){ 
-      setUserRating(userRate)
-      setIsUserHaveRate(true)
-    }
-  }, [ratings, movieId])
+    const userRate =
+      userRatings && userRatings.find((item) => item.movie_id === movieId);
 
-  return (
-    <div className={styles.rating} onClick={onClickHandler}>
-      {isUserHaveRate ? (
-        userRating &&      
+    if (userRate) {
+      setUserRating(userRate);
+    }
+  }, [userRatings, movieId]);
+
+  if (userRatings === null) {
+    return <></>;
+  }
+
+  if (!userRating) {
+    return (
+      <div className={styles.rating} onClick={onClickHandler}>
+        <RatingICO />
+        {active &&
+          user_rating.map((item, index) => (
+            <p
+              key={index}
+              className={styles.rating__rate}
+              onClick={() => onClickRateHandler(item, movieId)}
+            >
+              {item}
+            </p>
+          ))}
+      </div>
+    );
+  }
+
+  if (userRating) {
+    return (
+      <div className={styles.rating} onClick={onClickHandler}>
         <>
           <span className={styles.rating__value}>{userRating.user_rating}</span>
-          <RatingICO className={styles.rating__ico}/>
+          <RatingICO className={styles.rating__ico} />
         </>
-      ) : <RatingICO />}
-      {active && user_rating.map((item, index) => <p key={index} className={styles.rating__rate} onClick={() => onClickRateHandler(item, movieId)}>{item}</p>)}
-    </div>
-  );
+        {active &&
+          user_rating.map((item, index) => (
+            <p
+              key={index}
+              className={styles.rating__rate}
+              onClick={() => onClickRateHandler(item, movieId)}
+            >
+              {item}
+            </p>
+          ))}
+      </div>
+    );
+  }
 };
 
 export default UserRating;

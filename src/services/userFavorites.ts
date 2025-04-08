@@ -2,21 +2,23 @@ import { supabase } from "@config/database";
 import { cardPreview } from "@interfaces/movies";
 import { WatchlistDatabase } from "@interfaces/wathlist";
 import { options } from "@config/config";
+import { useUserStore } from "@store/userStore.ts";
 
 interface MovieResponse {
   docs: cardPreview[];
 }
 
 export const addToWatchlist = async (movieId: string) => {
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-  if (userError || !userData.user) {
+  const { user } = useUserStore.getState();
+
+  if (!user) {
     console.log("Пользователь не авторизован");
     return;
   }
 
   const { error } = await supabase
     .from("watchlist")
-    .insert({ movie_id: movieId, user_id: userData.user.id });
+    .insert({ movie_id: movieId, user_id: user.id });
 
   if (error) {
     throw new Error(`Ошибка при добавлении в список: ${error.message}`);
@@ -24,8 +26,9 @@ export const addToWatchlist = async (movieId: string) => {
 };
 
 export const deleteFromWatchlist = async (movieId: string) => {
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-  if (userError || !userData.user) {
+  const { user } = useUserStore.getState();
+
+  if (!user) {
     console.log("Пользователь не авторизован");
     return;
   }
@@ -34,7 +37,7 @@ export const deleteFromWatchlist = async (movieId: string) => {
     .from("watchlist")
     .delete()
     .eq("movie_id", movieId)
-    .eq("user_id", userData.user.id)
+    .eq("user_id", user.id)
     .single();
 
   if (error) {
@@ -43,17 +46,18 @@ export const deleteFromWatchlist = async (movieId: string) => {
 };
 
 export const isMovieInDatabase = async (movieId: string) => {
-  const { data: userData, error: userError } = await supabase.auth.getUser();
-  if (userError || !userData.user) {
+  const { user } = useUserStore.getState();
+
+  if (!user) {
     console.log("Пользователь не авторизован");
-    return false;
+    return;
   }
 
   const { data, error } = await supabase
     .from("watchlist")
     .select("*")
     .eq("movie_id", movieId)
-    .eq("user_id", userData.user.id)
+    .eq("user_id", user.id)
     .maybeSingle();
 
   if (error) {
@@ -64,39 +68,38 @@ export const isMovieInDatabase = async (movieId: string) => {
 };
 
 export const fetchMovie = async () => {
-  const { data: userData, error: userError } = await supabase.auth.getUser();
+  const { user } = useUserStore.getState();
 
-  if (userError || !userData.user) {
+  if (!user) {
     console.log("Пользователь не авторизован");
+    return null;
   }
 
-  if (userData.user) {
-    const { data: movieData, error } = await supabase
-      .from("watchlist")
-      .select<'*', WatchlistDatabase>()
-      .eq("user_id", userData.user.id)
+  const { data, error } = await supabase
+    .from("watchlist")
+    .select<"*", WatchlistDatabase>()
+    .eq("user_id", user.id);
 
-    if (error) {
-      console.log("Ошибка при получении фильма:", error.message);
-    }
-
-    if (movieData) {
-      const result = movieData.map((item) => item.movie_id)
-      
-      const fetchedMovies = await fetchMovieFromIds(result)
-      return fetchedMovies;
-
-    } else return [];
+  if (error) {
+    console.error("Ошибка при загрузке рейтингов:", error);
+    return [];
   }
-}
+
+  if (!data || data.length === 0) {
+    return [];
+  }
+
+  const result = data.map((item) => item.movie_id);
+  const fetchedMovies = await fetchMovieFromIds(result);
+
+  return fetchedMovies;
+};
 
 export const fetchMovieFromIds = async (arr: number[]) => {
   try {
-    const url = new URL(
-      `https://api.kinopoisk.dev/v1.4/movie`,
-    );
+    const url = new URL(`https://api.kinopoisk.dev/v1.4/movie`);
 
-    arr.forEach(id => url.searchParams.append('id', id.toString()));
+    arr.forEach((id) => url.searchParams.append("id", id.toString()));
 
     const response = await fetch(url, options);
 
@@ -110,4 +113,4 @@ export const fetchMovieFromIds = async (arr: number[]) => {
     console.log(error);
     return [];
   }
-}
+};

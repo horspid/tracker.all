@@ -28,10 +28,21 @@
         display: flex;
         flex-wrap: wrap;
         gap: 20px;
-        overflow-y: scroll;
-        max-height: calc(100vh - 160px - 100px - 50px);
         overflow-x: hidden;
         padding-right: 20px;
     }
     
+}
+
+.ratings_error {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  height: calc(100vh - 160px - 100px);
+
+  &__title {
+    text-align: center;
+    margin: 0;
+  }
 }
