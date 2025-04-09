@@ -110,7 +110,7 @@ export const fetchMovieFromIds = async (arr: number[]) => {
     const data: MovieResponse = await response.json();
     return data.docs;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return [];
   }
 };

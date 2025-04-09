@@ -4,6 +4,7 @@ import SoonICO from '@assets/images/icons/calendar.svg?react'
 import { fetchMoviesByMonth } from '@services/Soon';
 import { cardPreview } from '@interfaces/movies';
 import ProductCard from '@components/ui/ProductCard';
+import SkeletonCard from '@components/ui/SkeletonCard';
 
 type Months = 'January' | 'February' | 'March' | 'April' | 'May' | 'June' | 'July' | 'August' | 'September' | 'October' | 'November' | 'December';
 
@@ -15,8 +16,6 @@ const Soon = () => {
   const [currentMonthIndex, setCurrentMonthIndex] = useState(date.getMonth());
   const [data, setData] = useState<cardPreview[]>([]);
 
-
-  
   const onClickHandler = async () => {
     const nextMonthIndex = (currentMonthIndex + 1) % months.length;
     setCurrentMonthIndex(nextMonthIndex);
@@ -31,8 +30,6 @@ const Soon = () => {
     fetchMovies();
   }, [currentMonthIndex]);
 
-  console.log(data)
-
   return (
     <section className={styles.soon}>
     <div className={styles.soon__content}>
@@ -44,6 +41,7 @@ const Soon = () => {
       </div>
     </div>
     <div className={styles.soon__items}>
+      {!data.length && <SkeletonCard listToRender={10}/>}
       {data.map((item) => (
         <ProductCard key={item.id} data={item} />
       ))}

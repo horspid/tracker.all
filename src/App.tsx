@@ -14,6 +14,7 @@ import { checkSession } from "@services/userAuth";
 import { fetchUserRatings } from "@services/userRatings";
 import Registration from "@routes/Authorization/Register";
 import GlobalSearch from "@routes/GlobalSearch";
+import Loading from "@components/ui/Loading";
 
 function App() {
 
@@ -30,7 +31,7 @@ function App() {
     init();
   }, []);
 
-  if (loading) return <p>Загрузка...</p>;
+  if (loading) return <Loading />;
 
   return (
     <BrowserRouter>

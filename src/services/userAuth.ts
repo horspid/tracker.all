@@ -154,7 +154,7 @@ export const changeUserField = async (fields: { [key: string]: any }) => {
   const { user } = useUserStore.getState();
 
   if (!user) {
-    console.log("Пользователь не авторизован");
+    console.error("Пользователь не авторизован");
     return;
   }
 

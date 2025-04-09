@@ -6,6 +6,7 @@ import { cardPreview } from "@interfaces/movies";
 import { fetchMovie } from "@services/userFavorites";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import SkeletonCard from "@components/ui/SkeletonCard";
 
 const Watchlist = () => {
   const [loading, setLoading] = useState(true);
@@ -24,7 +25,16 @@ const Watchlist = () => {
     init();
   }, []);
 
-  if (loading) return <p>Загрузка...</p>;
+  
+  if (loading) {
+    return (
+      <div className={styles.ratings}>
+        <div className={styles.ratings__items}>
+          <SkeletonCard listToRender={4}/> 
+        </div>
+      </div>
+    )
+  }
 
   if (watchlist === null) {
     navigate(`/login`)

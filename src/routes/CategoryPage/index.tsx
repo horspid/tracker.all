@@ -7,6 +7,8 @@ import { cardPreview } from "@interfaces/movies.ts";
 import ProductCard from "@components/ui/ProductCard";
 import Search from "@components/ui/Search";
 import { useDebouncedCallback } from "use-debounce";
+import Loading from "@components/ui/Loading";
+import SkeletonCard from "@components/ui/SkeletonCard";
 
 interface MovieResponse {
   docs: cardPreview[];
@@ -94,6 +96,7 @@ const CategoryPage = () => {
         </form>
       </div>
       <div className={styles.category__items}>
+        {!data && <SkeletonCard listToRender={10}/>}
         {data && data.map((item) => <ProductCard key={item.id} data={item} />)}
       </div>
     </section>

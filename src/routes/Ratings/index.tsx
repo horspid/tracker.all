@@ -6,6 +6,7 @@ import { fetchUserRatings } from "@services/userRatings";
 import { cardPreview } from "@interfaces/movies";
 import { useUserStore } from "@store/userStore.ts";
 import { useNavigate } from "react-router";
+import SkeletonCard from "@components/ui/SkeletonCard";
 
 const Ratings = () => {
   const [loading, setLoading] = useState(true);
@@ -25,7 +26,13 @@ const Ratings = () => {
   }, []);
 
   if (loading) {
-    return <div className={styles.profile}>Загрузка...</div>;
+    return (
+      <div className={styles.ratings}>
+        <div className={styles.ratings__items}>
+          <SkeletonCard listToRender={4}/> 
+        </div>
+      </div>
+    )
   }
 
   if (userRatings === null) {
