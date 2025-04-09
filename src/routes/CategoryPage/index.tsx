@@ -7,7 +7,6 @@ import { cardPreview } from "@interfaces/movies.ts";
 import ProductCard from "@components/ui/ProductCard";
 import Search from "@components/ui/Search";
 import { useDebouncedCallback } from "use-debounce";
-import Loading from "@components/ui/Loading";
 import SkeletonCard from "@components/ui/SkeletonCard";
 
 interface MovieResponse {
@@ -19,8 +18,8 @@ const CategoryPage = () => {
 
   const [data, setData] = useState<cardPreview[]>();
   const [parsedName, setParsedName] = useState(name);
-  const [inputValue, setInputValue] = useState('');
-  const nameUrl = name && name.replace('-', ' ');
+  const [inputValue, setInputValue] = useState("");
+  const nameUrl = name && name.replace("-", " ");
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -44,43 +43,43 @@ const CategoryPage = () => {
   }, [name]);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(event.target.value)  
+    setInputValue(event.target.value);
     updateRequestAPI();
-  }
+  };
 
   const updateRequestAPI = useDebouncedCallback(async () => {
-      try {
-        if (!inputValue.trim()) {
-          fetchCategories()
-          return;
-        }
-        const url = new URL(
-          `https://api.kinopoisk.dev/v1.4/movie/search?type=${name}&limit=20&query=${inputValue}`,
-        );
-  
-        const response = await fetch(url, options);
-  
-        if (!response.ok) {
-          throw new Error(`Ошибка HTTP: ${response.status}`);
-        }
-  
-        const data: MovieResponse = await response.json();
-
-        const result = data.docs.filter((movie) => movie.type === name)
-
-        setData(result);
-        return data.docs;
-      } catch (error) {
-        console.log(error);
-        return [];
+    try {
+      if (!inputValue.trim()) {
+        fetchCategories();
+        return;
       }
-  }, 250)
+      const url = new URL(
+        `https://api.kinopoisk.dev/v1.4/movie/search?type=${name}&limit=20&query=${inputValue}`,
+      );
+
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        throw new Error(`Ошибка HTTP: ${response.status}`);
+      }
+
+      const data: MovieResponse = await response.json();
+
+      const result = data.docs.filter((movie) => movie.type === name);
+
+      setData(result);
+      return data.docs;
+    } catch (error) {
+      console.log(error);
+      return [];
+    }
+  }, 250);
 
   useEffect(() => {
     fetchCategories();
-    setParsedName(nameUrl)
+    setParsedName(nameUrl);
   }, [name]);
-  
+
   return (
     <section className={styles.category}>
       <div className={styles.category__heading}>
@@ -88,15 +87,21 @@ const CategoryPage = () => {
           <CategoryICO className={styles.ico__category} />
           <h1 className={styles.category__title}>
             Categories:{" "}
-            <span>{parsedName && parsedName[0].toUpperCase() + parsedName.slice(1)}</span>
+            <span>
+              {parsedName && parsedName[0].toUpperCase() + parsedName.slice(1)}
+            </span>
           </h1>
         </div>
         <form className={styles.category__search}>
-          <Search name={'Search in category...'} onChange={onChangeHandler} value={inputValue}/>
+          <Search
+            name={"Search in category..."}
+            onChange={onChangeHandler}
+            value={inputValue}
+          />
         </form>
       </div>
       <div className={styles.category__items}>
-        {!data && <SkeletonCard listToRender={10}/>}
+        {!data && <SkeletonCard listToRender={10} />}
         {data && data.map((item) => <ProductCard key={item.id} data={item} />)}
       </div>
     </section>
