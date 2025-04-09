@@ -9,10 +9,11 @@ import MoviePage from "@routes/MoviePage";
 import CategoryPage from "@routes/CategoryPage";
 import Profile from "@routes/Profile";
 import Login from "@routes/Authorization/Login";
-import Index from "@routes/Authorization/Register";
 import { useEffect, useState } from "react";
 import { checkSession } from "@services/userAuth";
 import { fetchUserRatings } from "@services/userRatings";
+import Registration from "@routes/Authorization/Register";
+import GlobalSearch from "@routes/GlobalSearch";
 
 function App() {
 
@@ -44,7 +45,8 @@ function App() {
           <Route path="categories/:name" element={<CategoryPage />} />
           <Route path="profile/:login" element={<Profile />} />
           <Route path="login" element={<Login />} />
-          <Route path="registration" element={<Index />} />
+          <Route path="registration" element={<Registration />} />
+          <Route path="search" element={<GlobalSearch />} />
         </Route>
       </Routes>
     </BrowserRouter>
