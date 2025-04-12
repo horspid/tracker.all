@@ -35,6 +35,7 @@ const MovieTabs = ({ data }: MovieTabsProps) => {
     setError(null);
   }, [data.id]);
 
+
   return (
     <Tabs
       className={styles.tabs}
@@ -68,7 +69,7 @@ const MovieTabs = ({ data }: MovieTabsProps) => {
         <p>Movie length: {data.movieLength ? `${data.movieLength} minutes` : 'Unknown'} </p>
         {data.fees && (
           <p>
-            Fees: {data.fees.world.value} {data.fees.world.currency}
+            Fees: {data.fees[0].name.value} {data.fees[0].name.currency}
           </p>
         )}
       </TabPanel>

@@ -15,21 +15,30 @@ import { fetchUserRatings } from "@services/userRatings";
 import Registration from "@routes/Authorization/Register";
 import GlobalSearch from "@routes/GlobalSearch";
 import Loading from "@components/ui/Loading";
+import { useUserStore } from "@store/userStore";
 
 function App() {
-
+  const user = useUserStore((state) => state.user)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const init = async () => {
       await checkSession();
-      await fetchUserRatings();
-
       setLoading(false);
     };
 
     init();
   }, []);
+
+  useEffect(() => {
+    const init = async () => {
+      if (user) {
+        await fetchUserRatings();
+      }
+    };
+
+    init();
+  }, [user])
 
   if (loading) return <Loading />;
 

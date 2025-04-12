@@ -32,7 +32,7 @@ const ControlPanel = () => {
       }
     }
     parseAvatar();
-  }, [findUserInDatabase])
+  }, [user])
 
 
   return (

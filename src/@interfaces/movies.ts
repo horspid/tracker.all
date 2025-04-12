@@ -22,9 +22,18 @@ export interface cardDetails extends cardPreview {
   genres: Genre[];
   description: string | null;
   movieLength: number | null;
-  fees: Fees;
+  fees: Fees[] | [];
   sequelsAndPrequels: cardPreview[];
   similarMovies: cardPreview[];
+}
+
+export interface Fees {
+  name: FeesWorld;
+}
+
+export interface FeesWorld {
+  currency: string;
+  value: number;
 }
 
 export interface UserRatings {
@@ -34,14 +43,6 @@ export interface UserRatings {
   user_rating: number;
 }
 
-interface Fees {
-  world: FeesWorld;
-}
-
-interface FeesWorld {
-  currency?: string;
-  value?: number;
-}
 
 export interface Genre {
   name: string;

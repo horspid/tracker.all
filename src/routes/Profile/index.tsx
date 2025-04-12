@@ -4,6 +4,7 @@ import { findUserInDatabase, isUserPage } from "@services/userAuth";
 import { useEffect, useState } from "react";
 import { useUserStore } from "@store/userStore";
 import ProfileAvatar from "@components/ui/ProfileAvatar";
+import Loading from "@components/ui/Loading";
 
 const Profile = () => {
   const { login } = useParams<string>();
@@ -26,7 +27,9 @@ const Profile = () => {
           isUserPage(login),
         ]);
 
+
         if (profile) {
+          console.log(profile)
           setUserProfile(profile);
         }
         setIsCurrentUser(isUser);
@@ -41,7 +44,7 @@ const Profile = () => {
   }, [login, setUserProfile]);
 
   if (isLoading) {
-    return <div className={styles.profile}>Loading...</div>;
+    return <div className={styles.profile}><Loading /></div>;
   }
 
   return (
@@ -57,12 +60,8 @@ const Profile = () => {
             </div>
             <div className={styles.profile__watched}>
               <div className={styles.profile__watched_item}>
-                <button className={styles.profile__button}>films</button>
+                <button className={styles.profile__button}>Watched</button>
                 <p className={styles.profile__count}>{userProfile.total_movies}</p>
-              </div>
-              <div className={styles.profile__watched_item}>
-                <button className={styles.profile__button}>serials</button>
-                <p className={styles.profile__count}>{userProfile.total_serials}</p>
               </div>
             </div>
           </div>

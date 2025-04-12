@@ -35,6 +35,7 @@ const UserRating = ({ movieId }: UserRatingProps) => {
     }
   };
 
+
   useEffect(() => {
     const userRate =
       userRatings && userRatings.find((item) => item.movie_id === movieId);
