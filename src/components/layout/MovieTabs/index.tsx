@@ -35,6 +35,32 @@ const MovieTabs = ({ data }: MovieTabsProps) => {
     setError(null);
   }, [data.id]);
 
+  console.log(data);
+
+  const renderFees = () => {
+    if (
+      !data.fees ||
+      (data.fees.russia === undefined && data.fees.world === undefined)
+    ) {
+      return <></>;
+    }
+
+    if (data.fees.russia) {
+      return (
+        <p>
+          Fees: {data.fees.russia.value} {data.fees.russia.currency}
+        </p>
+      );
+    }
+
+    if (data.fees.world) {
+      return (
+        <p>
+          Fees: {data.fees.world.value} {data.fees.world.currency}
+        </p>
+      );
+    }
+  };
 
   return (
     <Tabs
@@ -53,7 +79,7 @@ const MovieTabs = ({ data }: MovieTabsProps) => {
       <TabPanel selectedClassName={styles.tabs__panel}>
         <p>Total Votes: {data.votes.kp}</p>
         <p>Rating: {data.rating && (data.rating.imdb || data.rating.kp)}</p>
-        <p>Countries: {data.countries ? data.countries[0].name : 'Unknown'}</p>
+        <p>Countries: {data.countries ? data.countries[0].name : "Unknown"}</p>
         <p>Release Year: {data.year}</p>
         <div className={styles.tabs__panel_slider}>
           Genres: <Slider data={data.genres} />
@@ -61,17 +87,17 @@ const MovieTabs = ({ data }: MovieTabsProps) => {
         <p className={styles.tabs__panel_description}>{data.description}</p>
       </TabPanel>
       <TabPanel selectedClassName={styles.tabs__panel}>
-        <p>Countries: {data.countries ? data.countries[0].name : 'Unknown'}</p>
+        <p>Countries: {data.countries ? data.countries[0].name : "Unknown"}</p>
         <p>Release Year: {data.year}</p>
         <div className={styles.tabs__panel_slider}>
           Genres: <Slider data={data.genres} />
         </div>
-        <p>Movie length: {data.movieLength ? `${data.movieLength} minutes` : 'Unknown'} </p>
-        {data.fees && (
-          <p>
-            Fees: {data.fees[0].name.value} {data.fees[0].name.currency}
-          </p>
-        )}
+        <p>
+          Movie length:{" "}
+          {data.movieLength ? `${data.movieLength} minutes` : "Unknown"}{" "}
+        </p>
+
+        {renderFees()}
       </TabPanel>
       <TabPanel
         selectedClassName={styles.tabs__panel}
