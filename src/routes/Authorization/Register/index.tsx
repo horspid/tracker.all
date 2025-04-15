@@ -31,9 +31,17 @@ const Registration = () => {
   const onSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await signUp(email, password, login);
-    } catch (error: any) {
-      console.error("Ошибка при регистрации", error.message);
+      const { setUser, setSession } = useUserStore.getState();
+      const result = await signUp(email, password, login);
+
+      if (result) {
+        setSession(result.session);
+        setUser(result.user);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(`Ошибка при регистрации: ${error.message}`);
+      }
     }
   };
 

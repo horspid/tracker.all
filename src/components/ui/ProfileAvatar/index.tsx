@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import styles from "./ProfileAvatar.module.scss";
 import { changeUserField } from "@services/userAuth";
 
@@ -17,17 +17,17 @@ const ProfileAvatar = ({ avatarUrl, isCurrentUser }: ProfileAvatarProps) => {
     setShowInput(true);
   };
 
-  const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUrlChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
     setError("");
   };
 
   const validateImageUrl = (imageUrl: string) => {
     return new Promise<boolean>((resolve) => {
-        const img = new Image();
-        img.src = imageUrl;
-        img.onload = () => resolve(true);
-        img.onerror = () => resolve(false);
+      const img = new Image();
+      img.src = imageUrl;
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
     });
   };
 
@@ -36,11 +36,11 @@ const ProfileAvatar = ({ avatarUrl, isCurrentUser }: ProfileAvatarProps) => {
     const isValid = await validateImageUrl(inputValue);
 
     if (isValid) {
-        setUrl(inputValue);
-        changeUserField({ avatar_url: inputValue})
-        setShowInput(false);
+      setUrl(inputValue);
+      await changeUserField({ avatar_url: inputValue });
+      setShowInput(false);
     } else {
-        setError("Ошибка: изображение недоступно.");
+      setError("Ошибка: изображение недоступно.");
     }
   };
 
@@ -58,20 +58,20 @@ const ProfileAvatar = ({ avatarUrl, isCurrentUser }: ProfileAvatarProps) => {
       >
         {isCurrentUser && <div className={styles.avatar__plus}>+</div>}
       </div>
-        {showInput && (
+      {showInput && (
         <div className={styles.avatar__form}>
-            {error && <p className={styles.avatar__error}>{error}</p>}
-            <input
-                type="url"
-                value={inputValue}
-                onChange={handleUrlChange}
-                placeholder="Введите URL"
-                className={styles.avatar__input}
-            />
+          {error && <p className={styles.avatar__error}>{error}</p>}
+          <input
+            type="url"
+            value={inputValue}
+            onChange={handleUrlChange}
+            placeholder="Введите URL"
+            className={styles.avatar__input}
+          />
 
-            <button onClick={handleUrlSubmit}>Добавить URL</button>
+          <button onClick={handleUrlSubmit}>Добавить URL</button>
         </div>
-        )}
+      )}
     </div>
   );
 };

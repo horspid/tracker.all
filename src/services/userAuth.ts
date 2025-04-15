@@ -2,19 +2,20 @@ import { supabase } from "@config/database";
 import { DatabaseUser } from "@interfaces/user";
 import { useUserStore } from "@store/userStore";
 
-const insertUserToDatabase = async (data: DatabaseUser): Promise<void> => {
+const insertUserToDatabase = async (data: DatabaseUser): Promise<boolean> => {
   const { error } = await supabase.from("users").insert(data);
 
   if (error) {
-    throw new Error(`Failed to insert user into database: ${error.message}`);
+    throw new Error(`Ошибка в занесении данных в database: ${error.message}`);
   }
+
+  return true;
 };
 
-export const isUserPage = async (login: string): Promise<boolean> => {
+const isUserPage = (login: string): boolean => {
   const { user } = useUserStore.getState();
 
   if (!user) {
-    console.log("Пользователь не авторизован");
     return false;
   }
 
@@ -22,30 +23,22 @@ export const isUserPage = async (login: string): Promise<boolean> => {
 };
 
 export const findUserInDatabase = async (login: string) => {
-  try {
-    const isUserProfile = await isUserPage(login);
+  const isUserProfile = isUserPage(login);
+  const selectFields = isUserProfile
+    ? "*"
+    : "login, avatar_url, total_movies, total_serials";
 
-    if (isUserProfile) {
-      const { data } = await supabase
-        .from("users")
-        .select("*")
-        .eq("login", login)
-        .single<DatabaseUser>();
+  const { data, error } = await supabase
+    .from("users")
+    .select(selectFields)
+    .eq("login", login)
+    .single<DatabaseUser>();
 
-      if (data) return data;
-    } else {
-      const { data } = await supabase
-        .from("users")
-        .select("login, avatar_url, total_movies, total_serials")
-        .eq("login", login)
-        .single<DatabaseUser>();
-
-      if (data) return data;
-    }
-  } catch (error) {
-    console.log("Пользователь не найден", error);
-    throw new Error(`Пользователь не найден: ${error}`);
+  if (error) {
+    throw new Error(`Ошибка при запросе пользователя: ${error.message}`);
   }
+
+  return { isUserPage: isUserProfile, user: data };
 };
 
 export const signUp = async (
@@ -53,65 +46,53 @@ export const signUp = async (
   password: string,
   login: string,
 ) => {
-  const { setUser, setSession, setUserProfile } = useUserStore.getState();
-
-  try {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          login: login,
-        },
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        login: login,
       },
-    });
-
-    if (error) throw new Error(error.message);
-
-    if (data.user && data.session) {
-      await insertUserToDatabase({
-        user_id: data.user.id,
-        login,
-        email,
-        total_movies: 0,
-        total_serials: 0,
-      });
-
-      setUser(data.user);
-      setSession(data.session);
-
-      const result = await findUserInDatabase(login);
-
-      if (result) {
-        setUserProfile(result);
-      }
-    }
-  } catch (dbError) {
-    await logout();
-    console.error("Ошибка при работе с БД:", dbError);
-  }
-};
-
-export const signIn = async (email: string, password: string) => {
-  const { setSession, setUser, setUserProfile } = useUserStore.getState();
-
-  const loginData = { email, password };
-
-  const { data, error } = await supabase.auth.signInWithPassword(loginData);
+    },
+  });
 
   if (error) {
     await logout();
-    throw new Error(`Error during login: ${error.message}`);
+    throw new Error(`Ошибка при регистрации пользователя: ${error.message}`);
   }
 
-  setUser(data.user);
-  setSession(data.session);
-
-  const result = await findUserInDatabase(data.user.user_metadata.login);
-
-  if (result) {
-    setUserProfile(result);
+  if (!data.user || !data.session) {
+    throw new Error("Ошибка при получении данных пользователя или сессии.");
   }
+
+  const insertResult = await insertUserToDatabase({
+    user_id: data.user.id,
+    login,
+    email,
+    total_movies: 0,
+    total_serials: 0,
+  });
+
+  if (!insertResult) {
+    await logout();
+    throw new Error(`Ошибка в занесении в базу данных`);
+  }
+
+  return data;
+};
+
+export const signIn = async (email: string, password: string) => {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  });
+
+  if (error) {
+    await logout();
+    throw new Error(`Ошибка в логине или пароле: ${error.message}`);
+  }
+
+  return data;
 };
 
 export const logout = async () => {
@@ -127,27 +108,12 @@ export const logout = async () => {
 };
 
 export const checkSession = async () => {
-  const { setUser, setSession, setUserProfile } = useUserStore.getState();
   const { data, error } = await supabase.auth.getSession();
 
   if (error) {
-    setUser(null);
-    setSession(null);
-    console.error("Error fetching session:", error.message);
+    throw new Error("Ошибка в запросе к сессии");
   }
-
-  if (data.session) {
-    setUser(data.session.user);
-    setSession(data.session);
-
-    const result = await findUserInDatabase(
-      data.session.user.user_metadata.login,
-    );
-
-    if (result) {
-      setUserProfile(result);
-    }
-  }
+  return data;
 };
 
 export const changeUserField = async (fields: { [key: string]: any }) => {

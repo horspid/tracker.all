@@ -1,6 +1,6 @@
 import { useParams } from "react-router";
 import styles from "./Profile.module.scss";
-import { findUserInDatabase, isUserPage } from "@services/userAuth";
+import { findUserInDatabase } from "@services/userAuth";
 import { useEffect, useState } from "react";
 import { useUserStore } from "@store/userStore";
 import ProfileAvatar from "@components/ui/ProfileAvatar";
@@ -22,19 +22,14 @@ const Profile = () => {
       try {
         setIsLoading(true);
 
-        const [profile, isUser] = await Promise.all([
-          findUserInDatabase(login),
-          isUserPage(login),
-        ]);
+        const result = await findUserInDatabase(login);
 
-
-        if (profile) {
-          console.log(profile)
-          setUserProfile(profile);
+        if (result) {
+          setUserProfile(result.user);
+          setIsCurrentUser(result.isUserPage);
         }
-        setIsCurrentUser(isUser);
       } catch (error) {
-        console.error("Пользователь не найден", error);
+        throw new Error("Ошибка при обработке профиля пользователя" + error);
       } finally {
         setIsLoading(false);
       }
@@ -44,24 +39,31 @@ const Profile = () => {
   }, [login, setUserProfile]);
 
   if (isLoading) {
-    return <div className={styles.profile}><Loading /></div>;
+    return (
+      <div className={styles.profile}>
+        <Loading />
+      </div>
+    );
   }
 
   return (
     <section className={styles.profile}>
       {userProfile && (
         <>
-          <h1 className={styles.profile__title}>
-            {userProfile.login}
-          </h1>
+          <h1 className={styles.profile__title}>{userProfile.login}</h1>
           <div className={styles.profile__info}>
             <div className={styles.profile__avatar}>
-              <ProfileAvatar avatarUrl={userProfile.avatar_url} isCurrentUser={isCurrentUser}/>
+              <ProfileAvatar
+                avatarUrl={userProfile.avatar_url}
+                isCurrentUser={isCurrentUser}
+              />
             </div>
             <div className={styles.profile__watched}>
               <div className={styles.profile__watched_item}>
                 <button className={styles.profile__button}>Watched</button>
-                <p className={styles.profile__count}>{userProfile.total_movies}</p>
+                <p className={styles.profile__count}>
+                  {userProfile.total_movies}
+                </p>
               </div>
             </div>
           </div>

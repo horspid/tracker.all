@@ -12,7 +12,6 @@ const ControlPanel = () => {
   const user = useUserStore((state) => state.user);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
-
   const onProfileClick = () => {
     if (user) {
       navigate(`/profile/${user.user_metadata.login}`);
@@ -24,16 +23,15 @@ const ControlPanel = () => {
   useEffect(() => {
     const parseAvatar = async () => {
       if (user) {
-        const result = await findUserInDatabase(user?.user_metadata.login);
-  
-        if (result && result.avatar_url) {
-          setAvatarUrl(result.avatar_url)
+        const result = await findUserInDatabase(user.user_metadata.login);
+
+        if (result && result.user.avatar_url) {
+          setAvatarUrl(result.user.avatar_url);
         }
       }
-    }
+    };
     parseAvatar();
-  }, [user])
-
+  }, [user]);
 
   return (
     <section className={styles.user_control}>
@@ -47,11 +45,13 @@ const ControlPanel = () => {
         className={styles.user_control__item}
         onClick={() => onProfileClick()}
       >
-          {avatarUrl ? (
-            <div className={styles.user__avatar}>
-              <img src={avatarUrl} alt="user" />
-            </div>
-          ) : <ProfileICO />}
+        {avatarUrl ? (
+          <div className={styles.user__avatar}>
+            <img src={avatarUrl} alt="user" />
+          </div>
+        ) : (
+          <ProfileICO />
+        )}
       </button>
     </section>
   );

@@ -18,27 +18,40 @@ import Loading from "@components/ui/Loading";
 import { useUserStore } from "@store/userStore";
 
 function App() {
-  const user = useUserStore((state) => state.user)
-  const [loading, setLoading] = useState(true)
+  const user = useUserStore((state) => state.user);
+  const [loading, setLoading] = useState(true);
+
+  const initSession = async () => {
+    const { setUser, setSession } = useUserStore.getState();
+
+    const result = await checkSession();
+
+    if (!result) {
+      setUser(null);
+      setSession(null);
+    }
+
+    if (result && result.session) {
+      setUser(result.session.user);
+      setSession(result.session);
+    }
+
+    setLoading(false);
+  };
+
+  const initRatings = async () => {
+    if (user) {
+      await fetchUserRatings();
+    }
+  };
 
   useEffect(() => {
-    const init = async () => {
-      await checkSession();
-      setLoading(false);
-    };
-
-    init();
+    initSession();
   }, []);
 
   useEffect(() => {
-    const init = async () => {
-      if (user) {
-        await fetchUserRatings();
-      }
-    };
-
-    init();
-  }, [user])
+    initRatings();
+  }, [user]);
 
   if (loading) return <Loading />;
 
