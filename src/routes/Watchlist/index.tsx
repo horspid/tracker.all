@@ -1,7 +1,6 @@
 import ProductCard from "@components/ui/ProductCard";
 import styles from "./Watchlist.module.scss";
 import WatchlistICO from "@assets/images/icons/favorite.svg?react";
-
 import { cardPreview } from "@interfaces/movies";
 import { fetchMovie } from "@services/userFavorites";
 import { useEffect, useState } from "react";

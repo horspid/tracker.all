@@ -9,11 +9,9 @@ interface SignProps{
     isLoggedIn: boolean
 }
 
-
 const Sign = ({ className, name, isLoggedIn }: SignProps) => {
-
     const navigate = useNavigate();
-
+    
     const onClickHandler = async () => {
         if (isLoggedIn) {
             await logout();

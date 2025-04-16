@@ -6,7 +6,6 @@ import VkICO from "@assets/images/icons/vk.svg?react";
 import FacebookICO from "@assets/images/icons/facebook.svg?react";
 import AppleICO from "@assets/images/icons/apple.svg?react";
 import GoogleICO from "@assets/images/icons/google.svg?react";
-
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { signUp } from "@services/userAuth";

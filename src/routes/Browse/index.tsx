@@ -1,17 +1,32 @@
 import styles from "./Browse.module.scss";
 import Movie from "@assets/images/icons/movie.svg?react";
 import ProductCard from "@components/ui/ProductCard";
-import { useEffect } from "react";
-
-import { useMovieStore } from "@store/popularFilmes.ts";
+import { useEffect, useState } from "react";
 import SkeletonCard from "@components/ui/SkeletonCard";
+import { popularFilms } from "@services/Browse";
+import { cardPreview } from "@interfaces/movies";
 
 const Browse = () => {
-  const { data, getData } = useMovieStore();
+  const [loading, setLoading] = useState<boolean>(true)
+  const [data, setData] = useState<cardPreview[]>([])
+
+  const initialBrowse = async () => {
+    try {
+      const result = await popularFilms();
+
+      if (!result) return;
+      setData(result);
+
+    } catch (error) {
+      console.error("Ошибка в initialBrowse:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    getData();
-  }, []);
+    initialBrowse();
+  }, [])
 
   return (
     <section className={styles.browse}>
@@ -24,7 +39,7 @@ const Browse = () => {
         </div>
       </div>
       <div className={styles.browse__items}>
-        {!data.length && <SkeletonCard listToRender={10} />}
+        {loading && <SkeletonCard listToRender={10} />}
         {data.map((item) => (
           <ProductCard key={item.id} data={item} />
         ))}
@@ -32,5 +47,4 @@ const Browse = () => {
     </section>
   );
 };
-
 export default Browse;

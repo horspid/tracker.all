@@ -35,8 +35,6 @@ const MovieTabs = ({ data }: MovieTabsProps) => {
     setError(null);
   }, [data.id]);
 
-  console.log(data);
-
   const renderFees = () => {
     if (
       !data.fees ||

@@ -1,6 +1,6 @@
 import { supabase } from "@config/database";
 import { cardPreview } from "@interfaces/movies";
-import { WatchlistDatabase } from "@interfaces/wathlist";
+import { DatabaseWatchlist } from "@interfaces/database";
 import { options } from "@config/config";
 import { useUserStore } from "@store/userStore.ts";
 
@@ -12,7 +12,7 @@ export const addToWatchlist = async (movieId: string) => {
   const { user } = useUserStore.getState();
 
   if (!user) {
-    console.log("Пользователь не авторизован");
+    console.error("Пользователь не авторизован");
     return;
   }
 
@@ -49,7 +49,7 @@ export const isMovieInDatabase = async (movieId: string) => {
   const { user } = useUserStore.getState();
 
   if (!user) {
-    console.log("Пользователь не авторизован");
+    console.error("Пользователь не авторизован");
     return;
   }
 
@@ -61,7 +61,7 @@ export const isMovieInDatabase = async (movieId: string) => {
     .maybeSingle();
 
   if (error) {
-    console.log("Ошибка при получении фильма:", error.message);
+    console.error("Ошибка при получении фильма:", error.message);
     return false;
   }
   return !!data;
@@ -77,7 +77,7 @@ export const fetchMovie = async () => {
 
   const { data, error } = await supabase
     .from("watchlist")
-    .select<"*", WatchlistDatabase>()
+    .select<"*", DatabaseWatchlist>()
     .eq("user_id", user.id);
 
   if (error) {

@@ -1,5 +1,4 @@
 import styles from "./MainLayout.module.scss";
-
 import Sidebar from "@components/layout/Sidebar";
 import Header from "@components/layout/Header";
 import { Outlet } from "react-router";

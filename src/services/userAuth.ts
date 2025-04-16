@@ -1,5 +1,5 @@
 import { supabase } from "@config/database";
-import { DatabaseUser } from "@interfaces/user";
+import { DatabaseUser } from "@interfaces/database";
 import { useUserStore } from "@store/userStore";
 
 const insertUserToDatabase = async (data: DatabaseUser): Promise<boolean> => {

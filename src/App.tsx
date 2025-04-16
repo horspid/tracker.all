@@ -21,7 +21,7 @@ function App() {
   const user = useUserStore((state) => state.user);
   const [loading, setLoading] = useState(true);
 
-  const initSession = async () => {
+  const initialSession = async () => {
     const { setUser, setSession } = useUserStore.getState();
 
     const result = await checkSession();
@@ -39,18 +39,24 @@ function App() {
     setLoading(false);
   };
 
-  const initRatings = async () => {
+  const initialRatings = async () => {
+    const { setUserRatings } = useUserStore.getState();
+
     if (user) {
-      await fetchUserRatings();
+      const result = await fetchUserRatings();
+
+      if (!result) return setUserRatings([]);
+
+      setUserRatings(result.rated);
     }
   };
 
   useEffect(() => {
-    initSession();
+    initialSession();
   }, []);
 
   useEffect(() => {
-    initRatings();
+    initialRatings();
   }, [user]);
 
   if (loading) return <Loading />;

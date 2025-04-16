@@ -1,5 +1,4 @@
 import styles from "./Navigation.module.scss";
-
 import BrowseICO from "@assets/images/icons/browse.svg?react";
 import CalendarICO from "@assets/images/icons/calendar.svg?react";
 import CategoryICO from "@assets/images/icons/category.svg?react";

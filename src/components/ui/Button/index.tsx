@@ -5,6 +5,7 @@ interface ButtonProps {
 }
 
 const Button = ({ name }: ButtonProps) => {
+  
   return (
     <button disabled className={styles.button}>
       {name}

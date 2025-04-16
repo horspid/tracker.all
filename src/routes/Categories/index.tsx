@@ -1,7 +1,6 @@
 import styles from "@routes/Categories/Categories.module.scss";
 import CategoryICO from "@assets/images/icons/category.svg?react";
 import CategoryCard from "@components/ui/CategoryCard";
-
 import filmImage from "@assets/images/films.jpg";
 import serialImage from "@assets/images/serials.jpg";
 import animeImage from "@assets/images/anime.jpg";

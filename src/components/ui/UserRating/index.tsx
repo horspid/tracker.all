@@ -16,22 +16,27 @@ const UserRating = ({ movieId }: UserRatingProps) => {
   const [userRating, setUserRating] = useState<UserRatings>();
 
   const userRatings = useUserStore((state) => state.userRatings);
+  const setUserRatings = useUserStore((state) => state.setUserRatings);
+
 
   const onClickHandler = () => {
     setActive(!active);
-    console.log(active);
   };
 
   const onClickRateHandler = async (rate: number, movieId: number) => {
     try {
       if (active) {
         await insertRatedMovie(rate, movieId);
-        await fetchUserRatings();
+        const result = await fetchUserRatings(); 
 
+        if (!result) return setUserRatings([])
+        
+        setUserRatings(result.rated)
         setActive(false);
       }
     } catch (error) {
-      console.log(error);
+      setUserRatings(null)
+      console.error(error);
     }
   };
 

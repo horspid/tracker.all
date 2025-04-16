@@ -1,12 +1,13 @@
 import { supabase } from "@config/database";
 import { useUserStore } from "@store/userStore";
 import { fetchMovieFromIds } from "./userFavorites";
+import { UserRatings } from "@interfaces/movies";
 
 export const insertRatedMovie = async (rating: number, movieId: number) => {
   const { user } = useUserStore.getState();
 
   if (!user) {
-    console.log("Пользователь не авторизован");
+    console.error("Пользователь не авторизован");
     return;
   }
 
@@ -52,32 +53,28 @@ export const insertRatedMovie = async (rating: number, movieId: number) => {
 
 export const fetchUserRatings = async () => {
   const { user } = useUserStore.getState();
-  const { setUserRatings } = useUserStore.getState();
 
   if (!user) {
-    setUserRatings(null);
-    return null;
+    return { fetchedMovies: null, rated: null};
   }
 
   const { data, error } = await supabase
     .from("ratings")
-    .select("*")
+    .select<"*", UserRatings>()
     .eq("user_id", user.id);
 
   if (error) {
     console.error("Ошибка при загрузке рейтингов:", error);
-    setUserRatings([]);
-    return [];
+    return { fetchedMovies: [], rated: []};
   }
 
   if (!data || data.length === 0) {
-    setUserRatings([]);
-    return [];
+    return {fetchedMovies: [], rated: []};
   }
-  setUserRatings(data);
+  
   const result = data.map((item) => item.movie_id);
   const fetchedMovies = await fetchMovieFromIds(result);
 
-  return fetchedMovies;
+  return {fetchedMovies, rated: data};
 };
 

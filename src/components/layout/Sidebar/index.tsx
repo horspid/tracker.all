@@ -7,14 +7,14 @@ import { useUserStore } from "@store/userStore";
 
 const Sidebar = () => {
 
-  const session = useUserStore((state) => state.session)
+  const user = useUserStore((state) => state.user)
 
   return (
     <aside className={styles.sidebar}>
       <Logo />
       <Navigation />
-      {session && <Sign className={'out'} name="Sign out" isLoggedIn={true}/>}
-      {!session && <Sign className={'in'} name="Sign in" isLoggedIn={false}/>}
+      {user && <Sign className={'out'} name="Sign out" isLoggedIn={true}/>}
+      {!user && <Sign className={'in'} name="Sign in" isLoggedIn={false}/>}
     </aside>
   );
 };

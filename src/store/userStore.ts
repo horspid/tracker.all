@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { UserRatings } from "@interfaces/movies";
-import { DatabaseUser } from "@interfaces/user";
+import { DatabaseUser } from "@interfaces/database";
 import { Session, User } from "@supabase/supabase-js";
 
 interface UserState {
