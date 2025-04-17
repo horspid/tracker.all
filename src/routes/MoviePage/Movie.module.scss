@@ -30,10 +30,12 @@
   &__images {
     max-width: 300px;
     width: 100%;
-    > img {
+
+    >img {
       width: 100%;
       display: block;
     }
+
     img {
       border-radius: 20px;
     }
@@ -45,7 +47,8 @@
       gap: 10px;
 
       img {
-        max-width: calc(150px - 10px);
+        width: calc(50% - 5px);
+        height: 100px;
       }
 
     }

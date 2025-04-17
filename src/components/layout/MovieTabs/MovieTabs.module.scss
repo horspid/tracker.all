@@ -13,6 +13,12 @@
     color: $text-primary;
   }
 
+  &__rating {
+    background-color: $color-primary;
+    border-radius: 10px;
+    padding: 5px 10px;
+  }
+
   &__container {
     display: flex;
     gap: 40px;
@@ -23,23 +29,28 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+
     p {
       line-height: 1.6;
     }
+
     * {
       color: $text-primary;
       font-size: 18px;
       font-family: 'Inter-Regular', sans-serif;
       font-weight: 400;
       letter-spacing: 0.05em;
-    };
+    }
+
+    ;
 
     &__description {
       margin-top: 20px;
     }
 
 
-    &_related, &_similar {
+    &_related,
+    &_similar {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;

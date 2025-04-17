@@ -76,7 +76,12 @@ const MovieTabs = ({ data }: MovieTabsProps) => {
 
       <TabPanel selectedClassName={styles.tabs__panel}>
         <p>Total Votes: {data.votes.kp}</p>
-        <p>Rating: {data.rating && (data.rating.imdb || data.rating.kp)}</p>
+        <p>
+          Rating:{" "}
+          <span className={styles.tabs__rating}>
+            {data.rating && (data.rating.imdb || data.rating.kp)}
+          </span>
+        </p>
         <p>Countries: {data.countries ? data.countries[0].name : "Unknown"}</p>
         <p>Release Year: {data.year}</p>
         <div className={styles.tabs__panel_slider}>

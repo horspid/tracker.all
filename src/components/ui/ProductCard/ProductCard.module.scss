@@ -16,9 +16,22 @@
     display: flex;
     align-items: center;
     color: $text-primary;
-    background-color: $color-primary;
+    background-color: $text-tertiary;
     border-radius: 10px;
-    padding: 5px 10px;
+    height: 34px;
+    padding: 0 10px;
+    width: max-content;
+    gap: 5px;
+
+    &_white {
+      color: $text-primary;
+      background-color: $color-primary;
+
+      * path {
+        stroke: $text-primary;
+        fill: $text-primary;
+      }
+    }
   }
 
   &__img {

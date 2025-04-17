@@ -24,26 +24,25 @@ const Watchlist = () => {
     init();
   }, []);
 
-  
   if (loading) {
     return (
-      <div className={styles.ratings}>
-        <div className={styles.ratings__items}>
-          <SkeletonCard listToRender={4}/> 
+      <div className={styles.watchlist}>
+        <div className={styles.watchlist__items}>
+          <SkeletonCard listToRender={4} />
         </div>
       </div>
-    )
+    );
   }
 
   if (watchlist === null) {
-    navigate(`/login`)
-    return null
+    navigate(`/login`);
+    return null;
   }
 
   if (watchlist.length === 0) {
     return (
-      <section className={styles.ratings_error}>
-        <h1 className={styles.ratings_error__title}>
+      <section className={styles.watchlist_error}>
+        <h1 className={styles.watchlist_error__title}>
           Пока-что вы не добавили ни один фильм / сериал :)
         </h1>
       </section>

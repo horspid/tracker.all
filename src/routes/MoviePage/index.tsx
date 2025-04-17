@@ -44,7 +44,7 @@ const MoviePage = () => {
 
       if (!movieResponse.ok || !imagesResponse.ok) {
         throw new Error(
-          `Ошибка HTTP: ${(movieResponse.status, imagesResponse.status)}`,
+          `Ошибка HTTP: ${(movieResponse.status, imagesResponse.status)}`
         );
       }
     } catch (error) {
