@@ -1,20 +1,21 @@
-import logo from '@assets/images/logo.svg'
-import styles from './Logo.module.scss'
-import { useNavigate } from 'react-router'
+// import logo from "@assets/images/logo.svg";
+import { useNavigate } from "react-router";
 
 const Logo = () => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate()
-
-    return (
-        <div className={styles.logo} onClick={() => navigate(`/`)}>
-            <img className={styles.logo__img} src={logo} alt="logo" />
-            <div className={styles.logo__text}>
-                <span>tracker</span>
-                <span>.all</span>
-            </div>
-        </div>
-    )
-}
+  return (
+    <div
+      className="flex items-center cursor-pointer"
+      onClick={() => navigate(`/`)}
+    >
+      {/* <img className="logo__img" src={logo} alt="logo" /> */}
+      <div className="text-3xl">
+        <span className="font-bold text-red">tracker</span>
+        <span className="font-medium text-white">.all</span>
+      </div>
+    </div>
+  );
+};
 
 export default Logo;

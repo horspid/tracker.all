@@ -1,0 +1,24 @@
+@reference '../../../styles/style.css';
+
+.ico__active .ico__browse path:nth-child(2) {
+  @apply stroke-white;
+}
+.ico__active .ico__browse path:nth-child(3) {
+  @apply fill-white;
+}
+.ico__active .ico__browse path:nth-child(1) {
+  @apply fill-red stroke-red;
+}
+.ico__active .ico__category path:nth-child(1),
+.ico__active .ico__category path:nth-child(3) {
+  @apply fill-red;
+}
+
+.ico__active .ico__favorite path,
+.ico__active .ico__rating path {
+  @apply fill-red stroke-red;
+}
+
+.ico__acive .ico__calendar path {
+  @apply stroke-white;
+}

@@ -1,32 +1,31 @@
-import SignICO from '@assets/images/icons/sign.svg?react'
-import styles from './Sign.module.scss'
-import { Link, useNavigate } from 'react-router'
-import { logout } from '@services/userAuth'
+import SignICO from "@assets/images/icons/sign.svg?react";
+import { Link, useNavigate } from "react-router";
+import { logout } from "@services/userAuth";
 
-interface SignProps{
-    className: string,
-    name: string,
-    isLoggedIn: boolean
+interface SignProps {
+  className: string;
+  name: string;
+  isLoggedIn: boolean;
 }
 
 const Sign = ({ className, name, isLoggedIn }: SignProps) => {
-    const navigate = useNavigate();
-    
-    const onClickHandler = async () => {
-        if (isLoggedIn) {
-            await logout();
-            navigate(`/login`);
-        }
+  const navigate = useNavigate();
+
+  const onClickHandler = async () => {
+    if (isLoggedIn) {
+      await logout();
+      navigate(`/login`);
     }
+  };
 
-    return (
-        <Link to={`/login`} onClick={onClickHandler}>
-            <div className={styles.sign}>
-                <SignICO className={styles[`sign__` + className]}/>
-                <span className={styles.sign__name}>{name}</span>
-            </div>
-        </Link>
-    )
-}
+  return (
+    <Link to={`/login`} onClick={onClickHandler}>
+      <div className="flex gap-10 items-center bottom-20 px-30 ">
+        {className === "in" ? <SignICO /> : <SignICO className="rotate-180" />}
+        <span className="text-xl text-grey font-semibold">{name}</span>
+      </div>
+    </Link>
+  );
+};
 
-export default Sign
+export default Sign;

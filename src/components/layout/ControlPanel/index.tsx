@@ -1,4 +1,3 @@
-import styles from "./ControlPanel.module.scss";
 import BookmarkICO from "@assets/images/icons/bookmark.svg?react";
 import NotificationICO from "@assets/images/icons/notification.svg?react";
 import ProfileICO from "@assets/images/icons/profile.svg?react";
@@ -6,6 +5,8 @@ import { findUserInDatabase } from "@services/userAuth";
 import { useUserStore } from "@store/userStore";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+
+import "./ControlPanel.css";
 
 const ControlPanel = () => {
   const navigate = useNavigate();
@@ -34,23 +35,25 @@ const ControlPanel = () => {
   }, [user]);
 
   return (
-    <section className={styles.user_control}>
-      <button className={styles.user_control__item}>
-        <BookmarkICO />
+    <section className="flex items-center gap-30">
+      <button className="cursor-pointer p-15 rounded-full bg-lightdark">
+        <BookmarkICO className="w-30 h-30" />
       </button>
-      <button className={styles.user_control__item}>
-        <NotificationICO />
+      <button className="cursor-pointer p-15 rounded-full bg-lightdark">
+        <NotificationICO className="w-30 h-30" />
       </button>
-      <button
-        className={styles.user_control__item}
-        onClick={() => onProfileClick()}
-      >
+      <button className="cursor-pointer" onClick={() => onProfileClick()}>
         {avatarUrl ? (
-          <div className={styles.user__avatar}>
+          <div className="cursor-pointer">
             <img src={avatarUrl} alt="user" />
           </div>
         ) : (
-          <ProfileICO />
+          <div className="flex items-center cursor-pointer bg-lightdark rounded-profile rounded-r-2xl">
+            <ProfileICO className="w-60 h-60" />
+            <span className="px-20 text-white font-semibold overflow-ellipsis overflow-hidden max-w-200">
+              horspid
+            </span>
+          </div>
         )}
       </button>
     </section>
