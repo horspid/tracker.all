@@ -1,13 +1,12 @@
-import styles from "./MainLayout.module.scss";
 import Sidebar from "@components/layout/Sidebar";
 import Header from "@components/layout/Header";
 import { Outlet } from "react-router";
 
 const MainLayout = () => {
   return (
-    <div className={styles.container}>
+    <div className="flex gap-40 bg-dark p-40 h-screen font-sans">
       <Sidebar />
-      <div className={styles.container__content}>
+      <div className="w-full">
         <Header />
         <Outlet />
       </div>
