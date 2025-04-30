@@ -27,11 +27,12 @@ const Browse = () => {
   }, []);
 
   return (
-    <section className="mt-40 section-container">
+    <section className="section-container px-40">
+      <h1 className="text-4xl text-white font-semibold">🔥 Популярное</h1>
       <div className="card-container">
         {loading && <SkeletonCard listToRender={10} />}
-        {data.map((item, index) => (
-          <ProductCard key={item.id} data={item} cardIndex={index} />
+        {data.map((item) => (
+          <ProductCard key={item.id} data={item} />
         ))}
       </div>
     </section>

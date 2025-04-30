@@ -11,15 +11,17 @@ const SkeletonCard = ({ listToRender }: SkeletonCardProps) => {
     <>
       {skeletons.map((_, index) => (
         <article
-          className={`product-card ${index === 0 ? "skeleton__first" : ""}`}
+          className="product-card__film rounded-2xl shadow-lg shadow-grey/10"
           key={index}
         >
-          <div className="relative">
-            <div className={`w-full ${index === 0 ? "h-450" : "h-360"}`}></div>
+          <div className="w-full h-420 rounded-t-2xl bg-grey/20"></div>
+          <div className="p-20">
+            <h2 className=" font-semibold text-xl truncate bg-grey/20 rounded-md h-28"></h2>
+            <div className="flex items-center gap-10 mt-10  font-medium">
+              <p className="px-10 bg-grey/20 rounded-md text-white w-40 h-22"></p>
+            </div>
+            <p className="mt-10 bg-grey/20 font-medium line-clamp-2 rounded-md h-50"></p>
           </div>
-          {/* <div className="skeleton_card__stats">
-            <h2 className="bg-lightestdark w-160 rounded-md h-25"></h2>
-          </div> */}
         </article>
       ))}
     </>

@@ -49,7 +49,7 @@ const Header = () => {
   };
 
   return (
-    <header className="flex-5/6 flex justify-between">
+    <header className="px-40 flex-5/6 flex justify-between">
       <Search
         name={"Что хотите найти?"}
         onChange={onChangeHandler}

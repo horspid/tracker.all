@@ -13,6 +13,7 @@ export interface cardPreview {
   poster: Poster;
   type: MovieType;
   backdrop: Poster;
+  shortDescription: string;
 }
 
 export interface cardDetails extends cardPreview {
