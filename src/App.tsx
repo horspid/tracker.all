@@ -65,7 +65,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainLayout />}>
-          {/* <Route index element={<Browse />} />
+          <Route index element={<Browse />} />
           <Route path="categories" element={<Categories />} />
           <Route path="watchlist" element={<Watchlist />} />
           <Route path="ratings" element={<Ratings />} />
@@ -75,7 +75,7 @@ function App() {
           <Route path="profile/:login" element={<Profile />} />
           <Route path="login" element={<Login />} />
           <Route path="registration" element={<Registration />} />
-          <Route path="search" element={<GlobalSearch />} /> */}
+          <Route path="search" element={<GlobalSearch />} />
         </Route>
       </Routes>
     </BrowserRouter>

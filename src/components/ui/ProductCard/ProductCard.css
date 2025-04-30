@@ -1,0 +1,5 @@
+@reference '../../../styles/style.css';
+
+.product-card__glass {
+  @apply bg-grey/40 backdrop-contrast-50 rounded-xl;
+}
