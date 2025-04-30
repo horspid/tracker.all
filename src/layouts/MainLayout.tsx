@@ -4,9 +4,9 @@ import { Outlet } from "react-router";
 
 const MainLayout = () => {
   return (
-    <div className="flex gap-40 bg-dark p-40 h-screen font-sans">
+    <div className="flex bg-dark pl-40 py-40 h-screen font-sans">
       <Sidebar />
-      <div className="w-full">
+      <div className="w-full overflow-y-scroll">
         <Header />
         <Outlet />
       </div>
