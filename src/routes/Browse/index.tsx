@@ -1,4 +1,3 @@
-import Movie from "@assets/images/icons/movie.svg?react";
 import ProductCard from "@components/ui/ProductCard";
 import { useEffect, useState } from "react";
 import SkeletonCard from "@components/ui/SkeletonCard";
@@ -27,7 +26,7 @@ const Browse = () => {
   }, []);
 
   return (
-    <section className="section-container px-40">
+    <section className="section-container">
       <h1 className="text-4xl text-white font-semibold">🔥 Популярное</h1>
       <div className="card-container">
         {loading && <SkeletonCard listToRender={10} />}

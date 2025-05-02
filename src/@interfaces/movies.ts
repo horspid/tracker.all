@@ -21,11 +21,19 @@ export interface cardDetails extends cardPreview {
   countries: Country[] | [];
   year: number;
   genres: Genre[];
+  persons: Person[];
   description: string | null;
   movieLength: number | null;
   fees: Fees;
   sequelsAndPrequels: cardPreview[];
   similarMovies: cardPreview[];
+}
+
+export interface Person {
+  id: number;
+  photo: string;
+  name: string;
+  profession: string;
 }
 
 export interface Fees {
