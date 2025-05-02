@@ -23,7 +23,7 @@ const menuItems = [
   },
   {
     link: "/watchlist",
-    name: "Буду смотреть",
+    name: "Избранное",
     iconClassName: "ico__favorite",
     Icon: FavoriteICO,
   },
@@ -58,8 +58,8 @@ const Navigation = () => {
                 to={link}
                 className={({ isActive }) =>
                   isActive
-                    ? "flex items-start gap-10 text-white ico__active"
-                    : "flex items-start gap-10 text-grey"
+                    ? "flex items-center gap-10 text-white ico__active"
+                    : "flex items-center gap-10 text-grey"
                 }
               >
                 <Icon className={iconClassName} />

@@ -1,5 +1,5 @@
 // import Sign from "@components/ui/Sign";
-import Navigation from "../Navigation";
+import Navigation from "./Navigation";
 
 import Logo from "@components/ui/Logo";
 // import { useUserStore } from "@store/userStore";

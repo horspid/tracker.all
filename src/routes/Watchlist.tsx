@@ -1,6 +1,4 @@
 import ProductCard from "@components/ui/ProductCard";
-import styles from "./Watchlist.module.scss";
-import WatchlistICO from "@assets/images/icons/favorite.svg?react";
 import { cardPreview } from "@interfaces/movies";
 import { fetchMovie } from "@services/userFavorites";
 import { useEffect, useState } from "react";
@@ -26,9 +24,10 @@ const Watchlist = () => {
 
   if (loading) {
     return (
-      <div className={styles.watchlist}>
-        <div className={styles.watchlist__items}>
-          <SkeletonCard listToRender={4} />
+      <div className="section-container">
+        <h1 className="w-500 h-60 bg-lightdark rounded-2xl"></h1>
+        <div className="card-container">
+          <SkeletonCard listToRender={8} />
         </div>
       </div>
     );
@@ -41,8 +40,8 @@ const Watchlist = () => {
 
   if (watchlist.length === 0) {
     return (
-      <section className={styles.watchlist_error}>
-        <h1 className={styles.watchlist_error__title}>
+      <section className="section-container">
+        <h1 className="text-center text-4xl text-white font-bold mt-160">
           Пока-что вы не добавили ни один фильм / сериал :)
         </h1>
       </section>
@@ -50,19 +49,14 @@ const Watchlist = () => {
   }
 
   return (
-    <section className={styles.watchlist}>
-      <div className={styles.watchlist__content}>
-        <div className={styles.watchlist__entry}>
-          <WatchlistICO className={styles.ico__watchlist} />
-          <h1 className={styles.watchlist__title}>Watchlist</h1>
-        </div>
-      </div>
-      <div className={styles.watchlist__items}>
-        {watchlist && watchlist.length > 0 ? (
-          watchlist.map((item) => <ProductCard key={item.id} data={item} />)
-        ) : (
-          <p>Нет добавленных фильмов в списке.</p>
-        )}
+    <section className="section-container">
+      <h1 className="flex gap-20 items-center rounded-2xl font-semibold text-white text-4xl">
+        ♥️ Избранное
+      </h1>
+      <div className="card-container">
+        {watchlist.map((item) => (
+          <ProductCard key={item.id} data={item} />
+        ))}
       </div>
     </section>
   );

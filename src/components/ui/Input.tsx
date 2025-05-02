@@ -1,4 +1,3 @@
-import styles from "./Input.module.scss";
 import { ChangeEventHandler, FunctionComponent, SVGProps } from "react";
 
 interface InputProps {
@@ -6,23 +5,32 @@ interface InputProps {
   placeholder?: string;
   Icon?: FunctionComponent<SVGProps<SVGSVGElement>>;
   type?: string;
-  name?: string
+  name?: string;
   value?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
-const Input = ({ Icon, placeholder, type, value, className, name, onChange}: InputProps) => {
+const Input = ({
+  Icon,
+  placeholder,
+  type,
+  value,
+  name,
+  onChange,
+}: InputProps) => {
   return (
-    <div className={styles.input}>
+    <div className="relative">
       <input
         type={type}
-        className={className || styles.input__field}
+        className="w-400 pl-67 h-60 bg-lightdark rounded-2xl outline-none font-bold"
         placeholder={placeholder}
         value={value}
         onChange={onChange}
         name={name}
       />
-      {Icon && <Icon className={styles.input__img} />}
+      {Icon && (
+        <Icon className="absolute left-20 top-1/2 transform -translate-y-1/2 translate-x-4" />
+      )}
     </div>
   );
 };

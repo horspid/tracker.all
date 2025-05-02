@@ -37,9 +37,10 @@ const Ratings = () => {
 
   if (loading) {
     return (
-      <div className={styles.ratings}>
-        <div className={styles.ratings__items}>
-          <SkeletonCard listToRender={4} />
+      <div className="section-container">
+        <h1 className="w-500 h-60 bg-lightdark rounded-2xl"></h1>
+        <div className="card-container">
+          <SkeletonCard listToRender={8} />
         </div>
       </div>
     );
@@ -47,13 +48,13 @@ const Ratings = () => {
 
   if (userRatings === null) {
     navigate(`/login`);
-    return <></>;
+    return null;
   }
 
   if (userRatings.length === 0) {
     return (
-      <section className={styles.ratings_error}>
-        <h1 className={styles.ratings_error__title}>
+      <section className="section-container">
+        <h1 className="text-center text-4xl text-white font-bold mt-160">
           Пока-что вы не оценили ни один фильм / сериал :)
         </h1>
       </section>
@@ -61,14 +62,11 @@ const Ratings = () => {
   }
 
   return (
-    <section className={styles.ratings}>
-      <div className={styles.ratings__heading}>
-        <div className={styles.ratings__entry}>
-          <RatingsICO className={styles.ico__ratings} />
-          <h1 className={styles.ratings__title}>Ratings</h1>
-        </div>
-      </div>
-      <div className={styles.ratings__items}>
+    <section className="section-container">
+      <h1 className="flex gap-20 items-center rounded-2xl font-semibold text-white text-4xl">
+        ♥️ Оценки
+      </h1>
+      <div className="card-container">
         {userRated &&
           userRated.map((item) => <ProductCard key={item.id} data={item} />)}
       </div>
