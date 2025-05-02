@@ -1,4 +1,3 @@
-import styles from "./Register.module.scss";
 import Input from "@components/ui/Input";
 import UserICO from "@assets/images/icons/user.svg?react";
 import PasswordICO from "@assets/images/icons/password.svg?react";
@@ -6,15 +5,14 @@ import VkICO from "@assets/images/icons/vk.svg?react";
 import FacebookICO from "@assets/images/icons/facebook.svg?react";
 import AppleICO from "@assets/images/icons/apple.svg?react";
 import GoogleICO from "@assets/images/icons/google.svg?react";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { signUp } from "@services/userAuth";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { signIn } from "@services/userAuth";
 import { useUserStore } from "@store/userStore";
 
-const Registration = () => {
+const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [login, setLogin] = useState<string>("");
 
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
@@ -24,22 +22,21 @@ const Registration = () => {
 
     if (name === "email") setEmail(value);
     if (name === "password") setPassword(value);
-    if (name === "login") setLogin(value);
   };
 
   const onSubmitHandler = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const { setUser, setSession } = useUserStore.getState();
-      const result = await signUp(email, password, login);
+      const { setSession, setUser } = useUserStore.getState();
+      const result = await signIn(email, password);
 
       if (result) {
-        setSession(result.session);
         setUser(result.user);
+        setSession(result.session);
       }
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error(`Ошибка при регистрации: ${error.message}`);
+        throw new Error(`Ошибка при авторизации: ${error.message}`);
       }
     }
   };
@@ -51,10 +48,13 @@ const Registration = () => {
   }, [user, navigate]);
 
   return (
-    <section className={styles.registration}>
-      <form onSubmit={onSubmitHandler}>
-        <h1>Registration</h1>
-        <div className={styles.registration__inputs}>
+    <section className="section-container">
+      <form
+        onSubmit={onSubmitHandler}
+        className=" w-max m-auto text-white p-40 text-center"
+      >
+        <h1 className="text-4xl font-bold">Авторизация</h1>
+        <div className="flex flex-col gap-20 mt-40">
           <Input
             Icon={UserICO}
             placeholder="Email"
@@ -71,30 +71,22 @@ const Registration = () => {
             name="password"
             onChange={(event) => onChangeHandler(event)}
           />
-          <Input
-            Icon={PasswordICO}
-            placeholder="Login"
-            type="text"
-            value={login}
-            name="login"
-            onChange={(event) => onChangeHandler(event)}
-          />
         </div>
-        <div className={styles.registration__oauth}>
+        <div className="flex gap-20 justify-center mt-40">
           <VkICO />
           <FacebookICO />
           <AppleICO />
           <GoogleICO />
         </div>
-        <Input
+        <input
           type="submit"
-          className={styles.registration__button}
-          value="Sign up"
+          className="w-full py-20 bg-red rounded-2xl mt-40 cursor-pointer font-bold text-lg"
+          value="Вход"
         />
-        <p className={styles.registration__login}>
-          Already have account?{" "}
-          <span>
-            <Link to={"/login"}>Login</Link>
+        <p className="mt-40">
+          <span className="text-grey">Еще не зарегистрированы?</span>
+          <span className="ml-10">
+            <Link to={"/registration"}>Регистрация</Link>
           </span>
         </p>
       </form>
@@ -102,4 +94,4 @@ const Registration = () => {
   );
 };
 
-export default Registration;
+export default Login;

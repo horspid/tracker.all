@@ -1,25 +1,10 @@
 import { useEffect, useState } from "react";
-import SoonICO from "@assets/images/icons/calendar.svg?react";
 import { fetchMoviesByMonth } from "@services/Soon";
 import { cardPreview } from "@interfaces/movies";
 import ProductCard from "@components/ui/ProductCard";
 import SkeletonCard from "@components/ui/SkeletonCard";
 
-type Months =
-  | "Январь"
-  | "Февраль"
-  | "Март"
-  | "Апрель"
-  | "Май"
-  | "Июнь"
-  | "Июль"
-  | "Август"
-  | "Сентябрь"
-  | "Октябрь"
-  | "Ноябрь"
-  | "Декабрь";
-
-const months: Months[] = [
+const months = [
   "Январь",
   "Февраль",
   "Март",
@@ -32,7 +17,7 @@ const months: Months[] = [
   "Октябрь",
   "Ноябрь",
   "Декабрь",
-];
+] as const;
 
 const Soon = () => {
   const date = new Date();
@@ -48,11 +33,10 @@ const Soon = () => {
     fetchMovies();
   }, [currentMonthIndex]);
 
-  console.log(data);
   return (
     <section className="section-container">
       <h1 className="flex gap-20 items-center rounded-2xl font-semibold text-white text-4xl">
-        <span>⏰ Дата выхода</span>
+        ⏰ Дата выхода
       </h1>
       <div className="flex gap-20 flex-wrap mt-40">
         {months.map((month, index) => {
