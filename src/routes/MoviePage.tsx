@@ -158,7 +158,7 @@ const MoviePage = () => {
           )}
         </div>
       </div>
-      {data.movie.sequelsAndPrequels && (
+      {data.movie.sequelsAndPrequels.length && (
         <div className="mt-40">
           <h2 className="text-2xl rounded-xl font-semibold text-white">
             Сиквелы и приквелы
