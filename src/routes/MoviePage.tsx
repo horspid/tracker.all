@@ -2,12 +2,10 @@ import { options } from "@config/config";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Bookmark from "@components/ui/Bookmark";
-import MovieTabs from "@components/layout/MovieTabs";
 import { cardDetails } from "@interfaces/movies.ts";
 import UserRating from "@components/ui/UserRating";
 import { useUserStore } from "@store/userStore.ts";
 
-import SkeletonCard from "@components/ui/SkeletonCard";
 import SkeletonMoviePage from "@components/ui/SkeletonMoviePage";
 import ProductCard from "@components/ui/ProductCard";
 
@@ -62,6 +60,7 @@ const MoviePage = () => {
     fetchMovieDetails();
   }, [id]);
 
+  if (!id) return "Фильм не найден"; // СТРАНИЦА 404;
   if (!data) return <SkeletonMoviePage />;
 
   const ratingKp = data.movie.rating?.kp;
@@ -83,6 +82,11 @@ const MoviePage = () => {
           <h1 className="text-3xl rounded-xl font-semibold">
             {data.movie.name}
           </h1>
+          {user && (
+            <div className="flex gap-20">
+              <Bookmark id={id} />
+            </div>
+          )}
           <p className="p-20 bg-lightdark rounded-2xl max-w-700 shadow-lg shadow-grey/10">
             {data.movie.description}
           </p>
@@ -168,40 +172,6 @@ const MoviePage = () => {
       )}
     </section>
   );
-
-  // return (
-  //   <section className="section-container">
-  //     {data && (
-  //       <>
-  //         <div className="movie__heading">
-  //           <h1 className="movie__title">
-  //             {data.movie.name || data.movie.alternativeName}
-  //           </h1>
-  //           {user && <UserRating movieId={data.movie.id} />}
-  //         </div>
-  //         <div className="movie__container">
-  //           <div className="movie__images">
-  //             {viewImage()}
-  //             <div className="movie__images_backdrop">
-  //               {lastestBackdrops &&
-  //                 lastestBackdrops.map((backdrop, index) => (
-  //                   <img
-  //                     src={backdrop.url ?? undefined}
-  //                     alt="backdrop"
-  //                     key={index}
-  //                   />
-  //                 ))}
-  //             </div>
-  //           </div>
-  //           <div className="movie__content">
-  //             <Bookmark id={id ?? ""} />
-  //             <MovieTabs data={data.movie} />
-  //           </div>
-  //         </div>
-  //       </>
-  //     )}
-  //   </section>
-  // );
 };
 
 export default MoviePage;
