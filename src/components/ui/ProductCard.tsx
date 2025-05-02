@@ -1,8 +1,6 @@
 import { useNavigate } from "react-router";
 import { cardPreview } from "@interfaces/movies.ts";
 
-import "./ProductCard.css";
-
 interface ProductCardProps {
   data: cardPreview;
 }

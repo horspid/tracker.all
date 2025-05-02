@@ -13,7 +13,7 @@ const Ratings = () => {
   const [userRated, setUserRated] = useState<cardPreview[] | null>([]);
   const { userRatings, setUserRatings } = useUserStore.getState();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const initialRatings = async () => {
     try {
@@ -21,15 +21,15 @@ const Ratings = () => {
 
       if (result) {
         setUserRated(result.fetchedMovies);
-        setUserRatings(result.rated)
+        setUserRatings(result.rated);
         setLoading(false);
       }
     } catch (error) {
       throw new Error("Ошибка при загрузке оценённых фильмов" + error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     initialRatings();
@@ -39,15 +39,15 @@ const Ratings = () => {
     return (
       <div className={styles.ratings}>
         <div className={styles.ratings__items}>
-          <SkeletonCard listToRender={4}/> 
+          <SkeletonCard listToRender={4} />
         </div>
       </div>
-    )
+    );
   }
 
   if (userRatings === null) {
-    navigate(`/login`)
-    return <></>
+    navigate(`/login`);
+    return <></>;
   }
 
   if (userRatings.length === 0) {
@@ -69,9 +69,8 @@ const Ratings = () => {
         </div>
       </div>
       <div className={styles.ratings__items}>
-        {userRated && (
-          userRated.map((item) => <ProductCard key={item.id} data={item} />)
-        )}
+        {userRated &&
+          userRated.map((item) => <ProductCard key={item.id} data={item} />)}
       </div>
     </section>
   );
