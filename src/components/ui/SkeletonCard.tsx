@@ -1,5 +1,3 @@
-import "./SkeletonCard.css";
-
 interface SkeletonCardProps {
   listToRender: number;
 }

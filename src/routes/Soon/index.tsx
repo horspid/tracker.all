@@ -1,17 +1,41 @@
-import { useEffect, useState } from 'react';
-import styles from './Soon.module.scss'
-import SoonICO from '@assets/images/icons/calendar.svg?react'
-import { fetchMoviesByMonth } from '@services/Soon';
-import { cardPreview } from '@interfaces/movies';
-import ProductCard from '@components/ui/ProductCard';
-import SkeletonCard from '@components/ui/SkeletonCard';
+import { useEffect, useState } from "react";
+import styles from "./Soon.module.scss";
+import SoonICO from "@assets/images/icons/calendar.svg?react";
+import { fetchMoviesByMonth } from "@services/Soon";
+import { cardPreview } from "@interfaces/movies";
+import ProductCard from "@components/ui/ProductCard";
+import SkeletonCard from "@components/ui/SkeletonCard";
 
-type Months = 'January' | 'February' | 'March' | 'April' | 'May' | 'June' | 'July' | 'August' | 'September' | 'October' | 'November' | 'December';
+type Months =
+  | "January"
+  | "February"
+  | "March"
+  | "April"
+  | "May"
+  | "June"
+  | "July"
+  | "August"
+  | "September"
+  | "October"
+  | "November"
+  | "December";
 
-const months: Months[] = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const months: Months[] = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
 const Soon = () => {
-
   const date = new Date();
   const [currentMonthIndex, setCurrentMonthIndex] = useState(date.getMonth());
   const [data, setData] = useState<cardPreview[]>([]);
@@ -32,21 +56,22 @@ const Soon = () => {
 
   return (
     <section className={styles.soon}>
-    <div className={styles.soon__content}>
-      <div className={styles.soon__entry}>
-        <SoonICO className={styles.soon__ico}/>
-        <h1 className={styles.soon__title}>
-          Releasing in <span onClick={onClickHandler}>{months[currentMonthIndex]}</span>
-        </h1>
+      <div className={styles.soon__content}>
+        <div className={styles.soon__entry}>
+          <SoonICO className={styles.soon__ico} />
+          <h1 className={styles.soon__title}>
+            Releasing in{" "}
+            <span onClick={onClickHandler}>{months[currentMonthIndex]}</span>
+          </h1>
+        </div>
       </div>
-    </div>
-    <div className={styles.soon__items}>
-      {!data.length && <SkeletonCard listToRender={10}/>}
-      {data.map((item) => (
-        <ProductCard key={item.id} data={item} />
-      ))}
-    </div>
-  </section>
+      <div className={styles.soon__items}>
+        {!data.length && <SkeletonCard listToRender={10} />}
+        {data.map((item) => (
+          <ProductCard key={item.id} data={item} />
+        ))}
+      </div>
+    </section>
   );
 };
 
