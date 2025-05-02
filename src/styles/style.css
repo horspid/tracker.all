@@ -28,8 +28,15 @@
     gap: 40px;
   }
 
+  .browse-items {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(100px, 1fr));
+    gap: 20px;
+  }
+
   .section-container {
-    margin-top: 80px;
+    padding: 0 40px;
+    margin-top: 40px;
     height: calc(100% - 100px);
     overflow-y: scroll;
     &::-webkit-scrollbar {
@@ -39,6 +46,21 @@
 
   .product-card__film {
     border-radius: var(--radius-2xl);
+    background-color: var(--color-lightdark);
+  }
+
+  .params {
+    padding: 10px 20px;
+    background-color: var(--color-lightdark);
+    border-radius: var(--radius-2xl);
+  }
+  .actors {
+    cursor: pointer;
+    opacity: 0.7;
+    object-fit: cover;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
     background-color: var(--color-lightdark);
   }
 }
