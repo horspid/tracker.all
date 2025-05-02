@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import styles from "./Ratings.module.scss";
-import RatingsICO from "@assets/images/icons/rating.svg?react";
 import ProductCard from "@components/ui/ProductCard";
 import { fetchUserRatings } from "@services/userRatings";
 import { cardPreview } from "@interfaces/movies";
