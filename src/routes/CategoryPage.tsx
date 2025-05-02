@@ -12,13 +12,14 @@ interface MovieResponse {
 const CategoryPage = () => {
   const location = useLocation();
   const name = location.state.name;
+  const nameUrl = location.state.nameUrl;
 
   const [data, setData] = useState<cardPreview[]>();
 
   const fetchCategories = useCallback(async () => {
     try {
       const url = new URL(
-        `https://api.kinopoisk.dev/v1.4/movie?type=${name}&limit=20&sortField=votes.kp&sortType=-1`
+        `https://api.kinopoisk.dev/v1.4/movie?type=${nameUrl}&limit=100&sortField=votes.kp&sortType=-1`
       );
 
       const response = await fetch(url, options);
