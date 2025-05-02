@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import styles from "./Soon.module.scss";
 import SoonICO from "@assets/images/icons/calendar.svg?react";
 import { fetchMoviesByMonth } from "@services/Soon";
 import { cardPreview } from "@interfaces/movies";
@@ -7,43 +6,38 @@ import ProductCard from "@components/ui/ProductCard";
 import SkeletonCard from "@components/ui/SkeletonCard";
 
 type Months =
-  | "January"
-  | "February"
-  | "March"
-  | "April"
-  | "May"
-  | "June"
-  | "July"
-  | "August"
-  | "September"
-  | "October"
-  | "November"
-  | "December";
+  | "Январь"
+  | "Февраль"
+  | "Март"
+  | "Апрель"
+  | "Май"
+  | "Июнь"
+  | "Июль"
+  | "Август"
+  | "Сентябрь"
+  | "Октябрь"
+  | "Ноябрь"
+  | "Декабрь";
 
 const months: Months[] = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
+  "Январь",
+  "Февраль",
+  "Март",
+  "Апрель",
+  "Май",
+  "Июнь",
+  "Июль",
+  "Август",
+  "Сентябрь",
+  "Октябрь",
+  "Ноябрь",
+  "Декабрь",
 ];
 
 const Soon = () => {
   const date = new Date();
   const [currentMonthIndex, setCurrentMonthIndex] = useState(date.getMonth());
   const [data, setData] = useState<cardPreview[]>([]);
-
-  const onClickHandler = async () => {
-    const nextMonthIndex = (currentMonthIndex + 1) % months.length;
-    setCurrentMonthIndex(nextMonthIndex);
-  };
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -54,18 +48,30 @@ const Soon = () => {
     fetchMovies();
   }, [currentMonthIndex]);
 
+  console.log(data);
   return (
-    <section className={styles.soon}>
-      <div className={styles.soon__content}>
-        <div className={styles.soon__entry}>
-          <SoonICO className={styles.soon__ico} />
-          <h1 className={styles.soon__title}>
-            Releasing in{" "}
-            <span onClick={onClickHandler}>{months[currentMonthIndex]}</span>
-          </h1>
-        </div>
+    <section className="section-container">
+      <h1 className="flex gap-20 items-center rounded-2xl font-semibold text-white text-4xl">
+        <span>⏰ Дата выхода</span>
+      </h1>
+      <div className="flex gap-20 flex-wrap mt-40">
+        {months.map((month, index) => {
+          const monthIndex = index + 1;
+
+          return (
+            <button
+              className={`flex-1/7 text-white cursor-pointer px-30 py-10 bg-lightdark rounded-2xl ${
+                currentMonthIndex === monthIndex ? "bg-red text-white" : ""
+              }`}
+              onClick={() => setCurrentMonthIndex(monthIndex)}
+              key={index}
+            >
+              {month}
+            </button>
+          );
+        })}
       </div>
-      <div className={styles.soon__items}>
+      <div className="card-container">
         {!data.length && <SkeletonCard listToRender={10} />}
         {data.map((item) => (
           <ProductCard key={item.id} data={item} />
