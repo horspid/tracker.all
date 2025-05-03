@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router";
 import Browse from "@routes/Browse";
-import MainLayout from "@layouts/MainLayout.tsx";
+import MainLayout from "@layouts/MainLayout";
 import Categories from "@routes/Categories";
 import Watchlist from "@routes/Watchlist";
 import Soon from "@routes/Soon";
@@ -9,17 +9,15 @@ import MoviePage from "@routes/MoviePage";
 import CategoryPage from "@routes/CategoryPage";
 import Profile from "@routes/Profile";
 import Login from "@routes/Login";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { checkSession } from "@services/userAuth";
 import { fetchUserRatings } from "@services/userRatings";
 import Registration from "@routes/Registration";
 import GlobalSearch from "@routes/GlobalSearch";
-import Loading from "@components/ui/Loading";
 import { useUserStore } from "@store/userStore";
 
 function App() {
   const user = useUserStore((state) => state.user);
-  const [loading, setLoading] = useState(true);
 
   const initialSession = async () => {
     const { setUser, setSession } = useUserStore.getState();
@@ -35,8 +33,6 @@ function App() {
       setUser(result.session.user);
       setSession(result.session);
     }
-
-    setLoading(false);
   };
 
   const initialRatings = async () => {
@@ -58,8 +54,6 @@ function App() {
   useEffect(() => {
     initialRatings();
   }, [user]);
-
-  if (loading) return <Loading />;
 
   return (
     <BrowserRouter>
