@@ -9,7 +9,6 @@ const Logo = () => {
       className="flex items-center cursor-pointer"
       onClick={() => navigate(`/`)}
     >
-      {/* <img className="logo__img" src={logo} alt="logo" /> */}
       <div className="text-3xl">
         <span className="font-bold text-red">tracker</span>
         <span className="font-medium text-white">.all</span>

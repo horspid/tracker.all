@@ -53,7 +53,7 @@ const Ratings = () => {
     return (
       <section className="section-container">
         <h1 className="text-center text-4xl text-white font-bold mt-160">
-          Пока-что вы не оценили ни один фильм / сериал :)
+          Пока-что вы не оценили ни один фильм / сериал 🙁
         </h1>
       </section>
     );
