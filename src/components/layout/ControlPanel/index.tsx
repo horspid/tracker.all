@@ -42,17 +42,28 @@ const ControlPanel = () => {
       <button className="cursor-pointer p-15 rounded-full bg-lightdark">
         <NotificationICO className="w-30 h-30" />
       </button>
-      <button className="cursor-pointer" onClick={() => onProfileClick()}>
+      <button className="cursor-pointer" onClick={onProfileClick}>
         {avatarUrl ? (
-          <div className="cursor-pointer">
-            <img src={avatarUrl} alt="user" />
+          <div className="flex items-center cursor-pointer bg-lightdark rounded-profile rounded-r-2xl">
+            <img
+              src={avatarUrl}
+              alt="user"
+              className="w-60 h-60 rounded-full object-cover"
+            />
+            {user && (
+              <span className="px-20 text-white font-semibold overflow-ellipsis overflow-hidden max-w-200">
+                {user.user_metadata.login}
+              </span>
+            )}
           </div>
         ) : (
           <div className="flex items-center cursor-pointer bg-lightdark rounded-profile rounded-r-2xl">
             <ProfileICO className="w-60 h-60" />
-            <span className="px-20 text-white font-semibold overflow-ellipsis overflow-hidden max-w-200">
-              horspid
-            </span>
+            {user && (
+              <span className="px-20 text-white font-semibold overflow-ellipsis overflow-hidden max-w-200">
+                {user.user_metadata.login}
+              </span>
+            )}
           </div>
         )}
       </button>

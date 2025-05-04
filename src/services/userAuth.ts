@@ -12,19 +12,11 @@ const insertUserToDatabase = async (data: DatabaseUser): Promise<boolean> => {
   return true;
 };
 
-const isUserPage = (login: string): boolean => {
-  const { user } = useUserStore.getState();
-
-  if (!user) {
-    return false;
-  }
-
-  return user.user_metadata.login === login;
-};
-
-export const findUserInDatabase = async (login: string) => {
-  const isUserProfile = isUserPage(login);
-  const selectFields = isUserProfile
+export const findUserInDatabase = async (
+  login: string,
+  isCurrentUser: boolean
+) => {
+  const selectFields = isCurrentUser
     ? "*"
     : "login, avatar_url, total_movies, total_serials";
 
@@ -38,13 +30,13 @@ export const findUserInDatabase = async (login: string) => {
     throw new Error(`Ошибка при запросе пользователя: ${error.message}`);
   }
 
-  return { isUserPage: isUserProfile, user: data };
+  return { user: data };
 };
 
 export const signUp = async (
   email: string,
   password: string,
-  login: string,
+  login: string
 ) => {
   const { data, error } = await supabase.auth.signUp({
     email,
