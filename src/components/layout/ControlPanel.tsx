@@ -6,11 +6,10 @@ import { useUserStore } from "@store/userStore";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-import "./ControlPanel.css";
-
 const ControlPanel = () => {
   const navigate = useNavigate();
   const user = useUserStore((state) => state.user);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   const onProfileClick = () => {
@@ -24,10 +23,19 @@ const ControlPanel = () => {
   useEffect(() => {
     const parseAvatar = async () => {
       if (user) {
-        const result = await findUserInDatabase(user.user_metadata.login);
+        try {
+          const result = await findUserInDatabase(
+            user.user_metadata.login,
+            true
+          );
 
-        if (result && result.user.avatar_url) {
-          setAvatarUrl(result.user.avatar_url);
+          if (result && result.user.avatar_url) {
+            setAvatarUrl(result.user.avatar_url);
+          }
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setIsLoading(false);
         }
       }
     };
@@ -43,8 +51,13 @@ const ControlPanel = () => {
         <NotificationICO className="w-30 h-30" />
       </button>
       <button className="cursor-pointer" onClick={onProfileClick}>
-        {avatarUrl ? (
-          <div className="flex items-center cursor-pointer bg-lightdark rounded-profile rounded-r-2xl">
+        {isLoading ? (
+          <div className="flex items-center gap-20 pr-20 cursor-pointer bg-lightdark [border-radius:50px_16px_16px_50px]">
+            <div className="w-60 h-60 rounded-full bg-grey/20 animate-pulse"></div>
+            <div className="px-20 w-150 h-30 bg-grey/20 rounded-md animate-pulse"></div>
+          </div>
+        ) : avatarUrl ? (
+          <div className="flex items-center cursor-pointer bg-lightdark [border-radius:50px_16px_16px_50px]">
             <img
               src={avatarUrl}
               alt="user"
@@ -57,7 +70,7 @@ const ControlPanel = () => {
             )}
           </div>
         ) : (
-          <div className="flex items-center cursor-pointer bg-lightdark rounded-profile rounded-r-2xl">
+          <div className="flex items-center cursor-pointer bg-lightdark [border-radius:50px_16px_16px_50px]">
             <ProfileICO className="w-60 h-60" />
             {user && (
               <span className="px-20 text-white font-semibold overflow-ellipsis overflow-hidden max-w-200">
