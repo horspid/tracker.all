@@ -20,7 +20,7 @@ const Sign = ({ className, name, isLoggedIn }: SignProps) => {
 
   return (
     <Link to={`/login`} onClick={onClickHandler}>
-      <div className="flex gap-10 items-center bottom-20 px-30 ">
+      <div className="flex gap-10 items-center bottom-20">
         {className === "in" ? <SignICO /> : <SignICO className="rotate-180" />}
         <span className="text-xl text-grey font-semibold">{name}</span>
       </div>
