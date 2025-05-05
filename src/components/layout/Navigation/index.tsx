@@ -2,7 +2,7 @@ import BrowseICO from "@assets/images/icons/browse.svg?react";
 import CalendarICO from "@assets/images/icons/calendar.svg?react";
 import CategoryICO from "@assets/images/icons/category.svg?react";
 import FavoriteICO from "@assets/images/icons/favorite.svg?react";
-import RatingICO from "@assets/images/icons/rating.svg?react";
+import StarICO from "@assets/images/icons/star.svg?react";
 import { useUserStore } from "@store/userStore";
 import { NavLink } from "react-router";
 
@@ -31,7 +31,7 @@ const menuItems = [
     link: "/ratings",
     name: "Оценки",
     iconClassName: "ico__rating",
-    Icon: RatingICO,
+    Icon: StarICO,
   },
   {
     link: "/soon",
