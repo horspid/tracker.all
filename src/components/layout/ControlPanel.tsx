@@ -22,21 +22,18 @@ const ControlPanel = () => {
 
   useEffect(() => {
     const parseAvatar = async () => {
-      if (user) {
-        try {
-          const result = await findUserInDatabase(
-            user.user_metadata.login,
-            true
-          );
+      try {
+        if (!user) return;
 
-          if (result && result.user.avatar_url) {
-            setAvatarUrl(result.user.avatar_url);
-          }
-        } catch (error) {
-          console.error(error);
-        } finally {
-          setIsLoading(false);
+        const result = await findUserInDatabase(user.user_metadata.login, true);
+
+        if (result && result.user.avatar_url) {
+          setAvatarUrl(result.user.avatar_url);
         }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     parseAvatar();
