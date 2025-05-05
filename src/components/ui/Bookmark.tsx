@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Bookmark2ICO from "@assets/images/icons/bookmark2.svg?react";
 import { useUserStore } from "@store/userStore";
 import {
@@ -13,23 +13,27 @@ interface BookmarkProps {
 
 const Bookmark = ({ id }: BookmarkProps) => {
   const user = useUserStore((state) => state.user);
+
   const [active, setActive] = useState(false);
 
-  const onClickHandler = async () => {
+  const onClickHandler = useCallback(async () => {
+    if (!user) return;
+
     try {
       if (active) {
         await deleteFromWatchlist(id);
-        setActive(false);
       } else {
         await addToWatchlist(id);
-        setActive(true);
       }
+      setActive((isActive) => !isActive);
     } catch (error) {
       console.error("Ошибка при добавлении/удалении из избранного:", error);
     }
-  };
+  }, [user, active, id]);
 
   useEffect(() => {
+    if (!user) return;
+
     const checkIfMovieInWatchlist = async () => {
       const result = await isMovieInDatabase(id);
 
@@ -41,7 +45,7 @@ const Bookmark = ({ id }: BookmarkProps) => {
     };
 
     checkIfMovieInWatchlist();
-  }, [id]);
+  }, [id, user]);
 
   if (!user) return null;
 

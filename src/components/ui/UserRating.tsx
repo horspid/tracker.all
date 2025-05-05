@@ -40,19 +40,17 @@ const UserRating = ({ movieId }: UserRatingProps) => {
   };
 
   useEffect(() => {
-    if (!userRatings) return;
+    if (!userRatings || !user) return;
 
     const userRate =
       userRatings && userRatings.find((item) => item.movie_id === movieId);
 
-    if (userRate) {
-      setUserRating(userRate);
-    }
-  }, [userRatings, movieId]);
+    if (!userRate) return;
+
+    setUserRating(userRate);
+  }, [userRatings, movieId, user]);
 
   if (!user) return null;
-
-  console.log(userRating);
 
   return (
     <button
