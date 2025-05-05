@@ -4,7 +4,6 @@ import { useParams } from "react-router";
 import Bookmark from "@components/ui/Bookmark";
 import { cardDetails } from "@interfaces/movies.ts";
 import UserRating from "@components/ui/UserRating";
-import { useUserStore } from "@store/userStore.ts";
 
 import SkeletonMoviePage from "@components/ui/SkeletonMoviePage";
 import ProductCard from "@components/ui/ProductCard";
@@ -26,7 +25,6 @@ interface MovieData {
 const MoviePage = () => {
   const { id } = useParams<string>();
   const [data, setData] = useState<MovieData>();
-  const user = useUserStore((state) => state.user);
 
   const skeletonUrl =
     "https://image.openmoviedb.com/kinopoisk-ott-images/1672343/2a0000019666a7b5ecf5f01b9e6f5456810e/orig";
@@ -84,12 +82,12 @@ const MoviePage = () => {
           <h1 className="text-3xl rounded-xl font-semibold">
             {data.movie.name ?? data.movie.alternativeName}
           </h1>
-          {user && (
-            <div className="flex gap-20">
-              <Bookmark id={id} />
-              <UserRating movieId={data.movie.id} />
-            </div>
-          )}
+
+          <div className="flex gap-20">
+            <Bookmark id={id} />
+            <UserRating movieId={data.movie.id} />
+          </div>
+
           {data.movie.description && (
             <p className="p-20 bg-lightdark rounded-2xl max-w-700 shadow-lg shadow-grey/10">
               {data.movie.description}
