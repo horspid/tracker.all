@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Bookmark2ICO from "@assets/images/icons/bookmark2.svg?react";
-import styles from "./Bookmark.module.scss";
 import { useUserStore } from "@store/userStore";
 import {
   addToWatchlist,
@@ -44,20 +43,15 @@ const Bookmark = ({ id }: BookmarkProps) => {
     checkIfMovieInWatchlist();
   }, [id]);
 
+  if (!user) return null;
+
   return (
-    <>
-      {user && (
-        <div className={styles.btn__bookmark}>
-          <button
-            className={active ? styles.active : ""}
-            onClick={onClickHandler}
-          >
-            <Bookmark2ICO />
-          </button>
-          {active ? <h2>Remove from Watchlist</h2> : <h2>Add to Watchlist</h2>}
-        </div>
-      )}
-    </>
+    <button
+      className={`cursor-pointer ${active ? "bookmark-active" : ""}`}
+      onClick={onClickHandler}
+    >
+      <Bookmark2ICO />
+    </button>
   );
 };
 

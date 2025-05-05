@@ -57,4 +57,18 @@
     height: 44px;
     background-color: var(--color-lightdark);
   }
+
+  .bookmark-active * rect {
+    fill: var(--color-red);
+    transition: color 0.2s ease-in;
+  }
+
+  .star-active * {
+    fill: var(--color-red);
+    stroke: var(--color-red);
+    transition: color 0.2s ease-in;
+  }
+  .star-disable * {
+    stroke: var(--color-white);
+  }
 }

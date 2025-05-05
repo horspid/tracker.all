@@ -60,7 +60,7 @@ const MoviePage = () => {
     fetchMovieDetails();
   }, [id]);
 
-  if (!id) return "Фильм не найден"; // СТРАНИЦА 404;
+  if (!id) return "Фильм не найден";
   if (!data) return <SkeletonMoviePage />;
 
   const ratingKp = data.movie.rating?.kp;
@@ -87,6 +87,7 @@ const MoviePage = () => {
           {user && (
             <div className="flex gap-20">
               <Bookmark id={id} />
+              <UserRating movieId={data.movie.id} />
             </div>
           )}
           {data.movie.description && (
@@ -107,9 +108,6 @@ const MoviePage = () => {
                 </p>
               )
             )}
-
-            {user && <UserRating movieId={data.movie.id} />}
-            <p className="params bg-red shadow-lg shadow-grey/10">10</p>
           </div>
           {data.movie.year && (
             <div className="flex gap-20 items-center">
