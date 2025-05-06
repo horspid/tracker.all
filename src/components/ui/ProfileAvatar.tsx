@@ -34,13 +34,11 @@ const ProfileAvatar = ({ avatarUrl, isCurrentUser }: ProfileAvatarProps) => {
     if (!inputValue) return;
     const isValid = await validateImageUrl(inputValue);
 
-    if (isValid) {
-      setUrl(inputValue);
-      await changeUserField({ avatar_url: inputValue });
-      setShowInput(false);
-    } else {
-      setError("Неверный формат изображения");
-    }
+    if (!isValid) setError("Неверный формат изображения");
+
+    setUrl(inputValue);
+    await changeUserField({ avatar_url: inputValue });
+    setShowInput(false);
   };
 
   useEffect(() => {
