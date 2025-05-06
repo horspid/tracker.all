@@ -1,5 +1,4 @@
 import SignICO from "@assets/images/icons/sign.svg?react";
-import { useNavigate } from "react-router";
 
 import { Link, useNavigate } from "react-router";
 import { logout } from "@services/userAuth";
