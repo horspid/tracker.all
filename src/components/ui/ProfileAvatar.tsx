@@ -1,5 +1,4 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import styles from "./ProfileAvatar.module.scss";
 import { changeUserField } from "@services/userAuth";
 
 interface ProfileAvatarProps {
@@ -14,7 +13,7 @@ const ProfileAvatar = ({ avatarUrl, isCurrentUser }: ProfileAvatarProps) => {
   const [error, setError] = useState<string>("");
 
   const handleAvatarClick = () => {
-    setShowInput(true);
+    setShowInput((prevShowInput) => !prevShowInput);
   };
 
   const handleUrlChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +39,7 @@ const ProfileAvatar = ({ avatarUrl, isCurrentUser }: ProfileAvatarProps) => {
       await changeUserField({ avatar_url: inputValue });
       setShowInput(false);
     } else {
-      setError("Ошибка: изображение недоступно.");
+      setError("Неверный формат изображения");
     }
   };
 
@@ -50,28 +49,38 @@ const ProfileAvatar = ({ avatarUrl, isCurrentUser }: ProfileAvatarProps) => {
   }, [avatarUrl, isCurrentUser]);
 
   return (
-    <div className={styles.avatar}>
-      <div
-        className={styles.avatar__block}
-        onClick={() => isCurrentUser && handleAvatarClick()}
-        style={url ? { backgroundImage: `url(${url})` } : {}}
-      >
-        {isCurrentUser && <div className={styles.avatar__plus}>+</div>}
+    <div className="flex flex-col justify-center items-center relative">
+      <div className="group relative">
+        <img
+          src={url}
+          alt="avatar"
+          onClick={() => isCurrentUser && handleAvatarClick()}
+          className={`rounded-full w-150 h-150 ${!url && "bg-grey"} object-cover bg-center ${isCurrentUser && "hover:opacity-30  cursor-pointer"}`}
+        />
+        {isCurrentUser && (
+          <div className="absolute top-1/2 left-1/2 -translate-1/2 opacity-0 group-hover:opacity-100 pointer-events-none">
+            +
+          </div>
+        )}
       </div>
-      {showInput && (
-        <div className={styles.avatar__form}>
-          {error && <p className={styles.avatar__error}>{error}</p>}
-          <input
-            type="url"
-            value={inputValue}
-            onChange={handleUrlChange}
-            placeholder="Введите URL"
-            className={styles.avatar__input}
-          />
 
-          <button onClick={handleUrlSubmit}>Добавить URL</button>
-        </div>
-      )}
+      <div
+        className={`w-full top-full mt-20 flex flex-col items-center ${showInput ? "visible" : "invisible"}`}
+      >
+        <input
+          type="url"
+          value={inputValue}
+          onChange={handleUrlChange}
+          placeholder="Введите URL"
+          className={`outline-0  px-20 py-10 bg-grey rounded-2xl ${error ? "text-red" : "text-white"}`}
+        />
+        <button
+          onClick={handleUrlSubmit}
+          className="w-max px-30 py-10 mt-10 rounded-2xl bg-red cursor-pointer"
+        >
+          Добавить URL
+        </button>
+      </div>
     </div>
   );
 };
