@@ -1,5 +1,5 @@
 import SignICO from "@assets/images/icons/sign.svg?react";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { logout } from "@services/userAuth";
 
 interface SignProps {
@@ -19,12 +19,13 @@ const Sign = ({ className, name, isLoggedIn }: SignProps) => {
   };
 
   return (
-    <Link to={`/login`} onClick={onClickHandler}>
-      <div className="flex gap-10 items-center bottom-20">
-        {className === "in" ? <SignICO /> : <SignICO className="rotate-180" />}
-        <span className="text-xl text-grey font-semibold">{name}</span>
-      </div>
-    </Link>
+    <div
+      className="flex gap-10 items-center bottom-20"
+      onClick={onClickHandler}
+    >
+      {className === "in" ? <SignICO /> : <SignICO className="rotate-180" />}
+      <span className="text-xl font-semibold">{name}</span>
+    </div>
   );
 };
 

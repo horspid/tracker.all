@@ -3,6 +3,7 @@ import Navigation from "./Navigation";
 
 import Logo from "@components/ui/Logo";
 import { useUserStore } from "@store/userStore";
+import { NavLink } from "react-router";
 
 const Sidebar = () => {
   const user = useUserStore((state) => state.user);
@@ -14,8 +15,26 @@ const Sidebar = () => {
 
       <div className="h-1 w-full bg-grey"></div>
 
-      {user && <Sign className={"out"} name="Выйти" isLoggedIn={true} />}
-      {!user && <Sign className={"in"} name="Войти" isLoggedIn={false} />}
+      {user && (
+        <NavLink
+          to="/login"
+          className={({ isActive }) =>
+            isActive ? "text-white **:fill-red" : " text-grey"
+          }
+        >
+          <Sign className={"out"} name="Выйти" isLoggedIn={true} />
+        </NavLink>
+      )}
+      {!user && (
+        <NavLink
+          to="/login"
+          className={({ isActive }) =>
+            isActive ? "text-white **:fill-red" : " text-grey"
+          }
+        >
+          <Sign className={"in"} name="Войти" isLoggedIn={false} />
+        </NavLink>
+      )}
     </aside>
   );
 };
