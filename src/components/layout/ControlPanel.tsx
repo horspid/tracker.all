@@ -41,12 +41,16 @@ const ControlPanel = () => {
 
   return (
     <section className="flex items-center gap-30">
-      <button className="cursor-pointer p-15 rounded-full bg-lightdark">
-        <BookmarkICO className="w-30 h-30" />
-      </button>
-      <button className="cursor-pointer p-15 rounded-full bg-lightdark">
-        <NotificationICO className="w-30 h-30" />
-      </button>
+      {user && (
+        <button className="cursor-pointer p-15 rounded-full bg-lightdark">
+          <BookmarkICO className="w-30 h-30" />
+        </button>
+      )}
+      {user && (
+        <button className="cursor-pointer p-15 rounded-full bg-lightdark">
+          <NotificationICO className="w-30 h-30" />
+        </button>
+      )}
       <button className="cursor-pointer" onClick={onProfileClick}>
         {isLoading ? (
           <div className="flex items-center gap-20 pr-20 cursor-pointer bg-lightdark [border-radius:50px_16px_16px_50px]">

@@ -16,3 +16,6 @@
 .ico__active .ico__category path:nth-child(3) {
   @apply fill-red;
 }
+.ico__active .ico__calendar path {
+  @apply stroke-red;
+}
