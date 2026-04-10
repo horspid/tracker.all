@@ -19,7 +19,7 @@ export const popularFilms = async () => {
     const data: MovieResponse = await response.json();
     return data.docs;
   } catch (error) {
-    console.error("Ошибка при запросе к популярным фильмам");
+    console.error(error);
     return null;
   }
 };
