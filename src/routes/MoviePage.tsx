@@ -1,4 +1,4 @@
-import { options } from "@config/config";
+import { API_URL, options } from "@config/config";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import Bookmark from "@components/ui/Bookmark";
@@ -31,8 +31,8 @@ const MoviePage = () => {
 
   const fetchMovieDetails = async () => {
     try {
-      const movieUrl = `https://api.kinopoisk.dev/v1.4/movie/${id}`;
-      const imagesUrl = `https://api.kinopoisk.dev/v1.4/image?movieId=${id}&limit=3`;
+      const movieUrl = `${API_URL}/v1.4/movie/${id}`;
+      const imagesUrl = `${API_URL}/v1.4/image?movieId=${id}&limit=3`;
 
       const [movieResponse, imagesResponse] = await Promise.all([
         fetch(movieUrl, options),
@@ -46,7 +46,7 @@ const MoviePage = () => {
 
       if (!movieResponse.ok || !imagesResponse.ok) {
         throw new Error(
-          `Ошибка HTTP: ${(movieResponse.status, imagesResponse.status)}`
+          `Ошибка HTTP: ${(movieResponse.status, imagesResponse.status)}`,
         );
       }
     } catch (error) {

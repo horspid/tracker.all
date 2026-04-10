@@ -1,4 +1,4 @@
-import { options } from "@config/config";
+import { API_URL, options } from "@config/config";
 import { cardPreview } from "@interfaces/movies";
 
 interface MovieResponse {
@@ -8,7 +8,7 @@ interface MovieResponse {
 export const popularFilms = async () => {
   try {
     const url = new URL(
-      "https://api.kinopoisk.dev/v1.4/movie?limit=100&sortField=votes.kp&sortType=-1"
+      `${API_URL}/v1.4/movie?limit=100&sortField=votes.kp&sortType=-1`,
     );
     const response = await fetch(url, options);
 
